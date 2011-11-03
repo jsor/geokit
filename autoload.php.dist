@@ -1,0 +1,14 @@
+<?php
+
+include_once __DIR__.'/vendor/symfony-classloader/UniversalClassLoader.php';
+
+use Symfony\Component\ClassLoader\UniversalClassLoader;
+
+$loader = new UniversalClassLoader();
+$loader->registerNamespaces(array(
+    'Geokit\\Tests' => __DIR__.'/tests',
+    'Geokit'        => __DIR__.'/src',
+    'Buzz'          => __DIR__.'/vendor/buzz/lib',
+));
+
+$loader->register();

@@ -1,0 +1,6 @@
+[submodule "vendor/buzz"]
+	path = vendor/buzz
+	url = git://github.com/kriswallsmith/Buzz.git
+[submodule "vendor/symfony-classloader"]
+	path = vendor/symfony-classloader
+	url = git://github.com/symfony/ClassLoader.git
