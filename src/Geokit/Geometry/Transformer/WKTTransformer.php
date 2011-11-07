@@ -58,7 +58,7 @@ class WKTTransformer implements TransformerInterface
      * @param \Geokit\Geometry\GeometryInterface $geometry
      * @return string
      */
-    public function extract(GeometryInterface $geometry)
+    protected function extract(GeometryInterface $geometry)
     {
         switch (strtoupper($geometry->getGeometryType())) {
             case 'POINT':
@@ -112,7 +112,7 @@ class WKTTransformer implements TransformerInterface
      * @param string $WKT A WKT string
      * @return \Geokit\Geometry\GeometryInterface
      */
-    public function parse($type, $str)
+    protected function parse($type, $str)
     {
         switch (strtoupper($type)) {
             case 'POINT':
