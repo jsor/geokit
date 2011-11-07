@@ -117,10 +117,109 @@ class WKBTransformer implements TransformerInterface
     /**
      * Reverse-transforms a WKB representation into a Geometry object.
      *
-     * @param string $str A WKT string
+     * @param string $str A WKB string
      * @return \Geokit\Geometry\GeometryInterface
      */
     public function reverseTransform($str)
     {
+        return $this->doReverseTransform($str);
+    }
+
+    /**
+     * Do Reverse-transformation of a WKB representation into a Geometry object.
+     *
+     * @param string $str A WKB string
+     * @return \Geokit\Geometry\GeometryInterface
+     */
+    public function doReverseTransform(&$str)
+    {
+        $base = unpack('corder/Ltype', substr($str, 0, 5));
+        $str = substr($str, 5);
+
+        if (1 !== $base['order']) {
+            throw new \InvalidArgumentException('Only NDR (little endian) is supported');
+        }
+
+        return $this->parse($base['type'], $str);
+    }
+
+    /**
+     * Parse a WKT string into Geometry object.
+     *
+     * @param string $WKT A WKT string
+     * @return \Geokit\Geometry\GeometryInterface
+     */
+    protected function parse($type, &$str)
+    {
+        switch ($type) {
+            case 1:
+            case 'POINT':
+                $coords = unpack('d*', substr($str, 0, 16));
+                $str = substr($str, 16);
+                return new Point($coords[1], $coords[2]);
+            case 4:
+            case 'MULTIPOINT':
+                $num = unpack('L', substr($str, 0, 4));
+                $str = substr($str, 4);
+
+                $components = array();
+                for ($i = 0; $i < $num[1]; $i++) {
+                    $components[] = $this->doReverseTransform($str);
+                }
+                return new MultiPoint($components);
+            case 2:
+            case 'LINESTRING':
+                $num = unpack('L', substr($str, 0, 4));
+                $str = substr($str, 4);
+
+                $components = array();
+                for ($i = 0; $i < $num[1]; $i++) {
+                    $components[] = $this->parse('POINT', $str);
+                }
+                return new LineString($components);
+            case 5:
+            case 'MULTILINESTRING':
+                $num = unpack('L', substr($str, 0, 4));
+                $str = substr($str, 4);
+
+                $components = array();
+                for ($i = 0; $i < $num[1]; $i++) {
+                    $components[] = $this->doReverseTransform($str);
+                }
+                return new MultiLineString($components);
+            case 3:
+            case 'POLYGON':
+                $num = unpack('L', substr($str, 0, 4));
+                $str = substr($str, 4);
+
+                $components = array();
+                for ($i = 0; $i < $num[1]; $i++) {
+                    $linestring = $this->parse('LINESTRING', $str);
+                    $components[] = new LinearRing($linestring->all());
+                }
+                return new Polygon($components);
+            case 6:
+            case 'MULTIPOLYGON':
+                $num = unpack('L', substr($str, 0, 4));
+                $str = substr($str, 4);
+
+                $components = array();
+                for ($i = 0; $i < $num[1]; $i++) {
+                    $components[] = $this->doReverseTransform($str);
+                }
+                return new MultiPolygon($components);
+            case 7:
+            case 'GEOMETRYCOLLECTION':
+                $num = unpack('L', substr($str, 0, 4));
+                $str = substr($str, 4);
+
+                $components = array();
+                for ($i = 0; $i < $num[1]; $i++) {
+                    $components[] = $this->doReverseTransform($str);
+                }
+                return new GeometryCollection($components);
+            default:
+                return null;
+        }
     }
 }

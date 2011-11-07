@@ -42,12 +42,12 @@ class WKBTransformerTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider geometryDataProvider
      */
-    /*public function testReverseTransform($a, $b, $message)
+    public function testReverseTransform($a, $b, $message)
     {
         $transformer = new WKBTransformer();
 
         $this->assertEquals($b, $transformer->reverseTransform($a), sprintf($message, 'reverseTransform()'));
-    }*/
+    }
 
     public function geometryDataProvider()
     {
