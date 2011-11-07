@@ -38,7 +38,7 @@ class WKTTransformer implements TransformerInterface
     );
 
     /**
-     * Transforms a Geometry into into a WKT string.
+     * Transforms a Geometry into a WKT string.
      *
      * @param \Geokit\Geometry\GeometryInterface $geometry
      * @return string The WKT string representation of the geometry
