@@ -39,7 +39,7 @@ class MultiPointTest extends \PHPUnit_Framework_TestCase
         $multiPoint = new MultiPoint($points);
 
         $this->assertEquals(
-            sprintf('MULTIPOINT((%F %F),(%F %F))', 1, 2, 3, 4),
+            sprintf('MULTIPOINT(%F %F,%F %F)', 1, 2, 3, 4), // PostGIS compliant by default
             $multiPoint->__toString(),
             '__toString() returns WKT'
         );

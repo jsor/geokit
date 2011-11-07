@@ -42,7 +42,7 @@ abstract class Geometry implements GeometryInterface
      */
     public function __toString()
     {
-        $transformer = new Transformer\WKTTransformer();
+        $transformer = new Transformer\WKTTransformer(true); // Transform with PostGIS compliance
         return (string) $transformer->transform($this);
     }
 }

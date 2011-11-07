@@ -263,7 +263,35 @@ class WKTTransformerTest extends \PHPUnit_Framework_TestCase
         return $data;
     }
 
-    public function testMultipointWithoutPointParens()
+    public function testTransformWithPostGISCompliance()
+    {
+        $transformer = new WKTTransformer(true);
+
+        $points = array();
+        for ($i = 0; $i < 3; $i++) {
+            $points[] = new Point(mt_rand(0, 100), mt_rand(0, 100));
+        }
+
+        $multipoint = new MultiPoint(array(
+            $points[0],
+            $points[1],
+            $points[2]
+        ));
+
+        $str = sprintf(
+                "MULTIPOINT(%F %F,%F %F,%F %F)",
+                $points[0]->getX(),
+                $points[0]->getY(),
+                $points[1]->getX(),
+                $points[1]->getY(),
+                $points[2]->getX(),
+                $points[2]->getY()
+            );
+
+        $this->assertEquals($str, $transformer->transform($multipoint));
+    }
+
+    public function testReverseTransforWithMultipointWithoutPointParens()
     {
         $transformer = new WKTTransformer();
 
@@ -288,7 +316,7 @@ class WKTTransformerTest extends \PHPUnit_Framework_TestCase
                 $points[2]->getY()
             );
 
-        $this->assertEquals($multipoint, $transformer->reverseTransform($str), 'reverseTransform() correctly processes MultiPoint without parens around Points');
+        $this->assertEquals($multipoint, $transformer->reverseTransform($str));
     }
 
     public function testUnknownGeometry()

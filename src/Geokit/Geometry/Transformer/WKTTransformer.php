@@ -38,6 +38,26 @@ class WKTTransformer implements TransformerInterface
     );
 
     /**
+     * Whether to transform MultiPoints PostGIS compliant
+     *
+     * The spec requires parens around the point (MultiPoint((1 1),(2 2)))
+     * while PostGIS does not (MultiPoint(1 1,2 2)).
+     *
+     * @var boolean
+     */
+    protected $postGisCompliant;
+
+    /**
+     * Constructor
+     *
+     * @param boolean $postGisCompliant
+     */
+    public function __construct($postGisCompliant = false)
+    {
+        $this->postGisCompliant = $postGisCompliant;
+    }
+
+    /**
      * Transforms a Geometry into a WKT string.
      *
      * @param \Geokit\Geometry\GeometryInterface $geometry
@@ -71,6 +91,12 @@ class WKTTransformer implements TransformerInterface
                 }
                 return implode(',', $array);
             case 'MULTIPOINT':
+                $pattern = $this->postGisCompliant ? '%s' : '(%s)';
+                $array = array();
+                foreach ($geometry->all() as $component) {
+                    $array[] = sprintf($pattern, $this->extract($component));
+                }
+                return implode(',', $array);
             case 'MULTILINESTRING':
             case 'POLYGON':
             case 'MULTIPOLYGON':
