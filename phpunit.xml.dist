@@ -23,6 +23,13 @@
         </whitelist>
     </filter>
 
+    <php>
+        <const name="DB_MYSQL_DSN" value="mysql:dbname=geokit;host=localhost" />
+        <const name="DB_MYSQL_USER" value="root" />
+        <const name="DB_MYSQL_PASSWD" value="" />
+        <const name="DB_MYSQL_DBNAME" value="geokit" />
+    </php>
+
     <!--<logging>
         <log type="coverage-html" target="build/coverage" title="Geokit"
              charset="UTF-8" yui="true" highlight="true"
