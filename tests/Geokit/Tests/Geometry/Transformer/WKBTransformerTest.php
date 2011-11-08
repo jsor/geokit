@@ -195,4 +195,12 @@ class WKBTransformerTest extends \PHPUnit_Framework_TestCase
 
         return $data;
     }
+
+    public function testUnknownGeometry()
+    {
+        $transformer = new WKBTransformer();
+        $this->assertNull($transformer->transform(new \Geokit\Tests\Geometry\Fixtures\TestGeometry1()), 'transform() returns NULL for unknown geometry');
+
+        $this->assertNull($transformer->reverseTransform(pack('cL', 1, 8)), 'reverseTransform() returns NULL for undefined geometry');
+    }
 }

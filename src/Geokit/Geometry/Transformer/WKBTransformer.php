@@ -78,7 +78,11 @@ class WKBTransformer implements TransformerInterface
                 break;
         }
 
-        $wkb .= $this->extract($geometry);
+        if (null === ($extracted = $this->extract($geometry))) {
+            return null;
+        }
+
+        $wkb .= $extracted;
 
         return $wkb;
     }
