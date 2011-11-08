@@ -29,10 +29,10 @@ class Util
      * two points using the Haversine formula and assuming an Earth radius of
      * self::EARTH_RADIUS.
      *
-     * @param LatLng $latLng1
-     * @param LatLng $latLng2
+     * @param mixed $latLng1
+     * @param mixed $latLng2
      */
-    public static function distance(LatLng $latLng1, LatLng $latLng2)
+    public static function distance($latLng1, $latLng2)
     {
         return self::EARTH_RADIUS * self::angularDistance($latLng1, $latLng2);
     }
@@ -41,11 +41,14 @@ class Util
      * Returns the angular distance between two points using the Haversine
      * formula.
      *
-     * @param LatLng $latLng1
-     * @param LatLng $latLng2
+     * @param mixed $latLng1
+     * @param mixed $latLng2
      */
-    public static function angularDistance(LatLng $latLng1, LatLng $latLng2)
+    public static function angularDistance($latLng1, $latLng2)
     {
+        $latLng1 = self::normalizeLatLng($latLng1);
+        $latLng2 = self::normalizeLatLng($latLng2);
+
         $phi1 = deg2rad($latLng1->getLatitude());
         $phi2 = deg2rad($latLng2->getLatitude());
 
