@@ -82,4 +82,16 @@ class LatLng
     {
         return Util::distance($this, $dest);
     }
+
+    /**
+     * Returns the (initial) heading from this point to the destination point in degrees.
+     *
+     * @param LatLng $latLng
+     * @return float  Initial heading in degrees from North
+     * @see \Geokit\Util::heading()
+     */
+    public function headingTo(LatLng $dest)
+    {
+        return Util::heading($this, $dest);
+    }
 }

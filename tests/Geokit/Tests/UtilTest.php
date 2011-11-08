@@ -137,6 +137,17 @@ class UtilTest extends \PHPUnit_Framework_TestCase
           );
     }
 
+    /**
+     * @dataProvider testDistanceDataProvider
+     */
+    public function testHeading()
+    {
+        $this->assertEquals(90, Util::heading(new LatLng(0, 0), new LatLng(0, 1)));
+        $this->assertEquals(0,  Util::heading(new LatLng(0, 0), new LatLng(1, 0)));
+        $this->assertEquals(270, Util::heading(new LatLng(0, 0), new LatLng(0, -1)));
+        $this->assertEquals(180, Util::heading(new LatLng(0, 0), new LatLng(-1, 0)));
+    }
+
     public function testNormalizeLatLngShouldThrowExceptionIfInvalidDataSupplied()
     {
         $this->setExpectedException('\InvalidArgumentException', 'Cannot create LatLng');

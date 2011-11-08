@@ -64,6 +64,31 @@ class Util
     }
 
     /**
+     * Returns the (initial) heading from the first point to the second point in degrees.
+     *
+     * @param mixed $latLng1
+     * @param mixed $latLng2
+     * @return float Initial heading in degrees from North
+     */
+    public static function heading($latLng1, $latLng2)
+    {
+        $latLng1 = self::normalizeLatLng($latLng1);
+        $latLng2 = self::normalizeLatLng($latLng2);
+
+        $lat1 = deg2rad($latLng1->getLatitude());
+        $lat2 = deg2rad($latLng2->getLatitude());
+        $dLon = deg2rad($latLng2->getLongitude() - $latLng1->getLongitude());
+
+        $y = sin($dLon) * cos($lat2);
+        $x = cos($lat1) * sin($lat2) -
+             sin($lat1) * cos($lat2) * cos($dLon);
+
+        $heading = atan2($y, $x);
+
+        return (rad2deg($heading) + 360) % 360;
+    }
+
+    /**
      * @param array|string|\Geokit\LatLng $var
      * @return \Geokit\LatLng
      * @throws \InvalidArgumentException
