@@ -106,7 +106,7 @@ class GoogleMapsGeocoder extends AbstractGeocoder
 
         $params += $this->getRequestParams() + $default;
 
-        $url = $this->getApiUri() . '?' . http_build_query($params, null, '&');
+        $url = $this->getApiUri().'?'.http_build_query($params, null, '&');
 
         $response = $this->getBrowser()->get($url);
         $statusCode = (integer) $response->getStatusCode();

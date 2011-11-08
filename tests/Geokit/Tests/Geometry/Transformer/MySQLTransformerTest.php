@@ -184,13 +184,13 @@ class MySQLTransformerTest extends \PHPUnit_Framework_TestCase
                 `MultiPolygon`,
                 `GeometryCollection`)
                 VALUES
-                (GeomFromText('". $point . "'),
-                GeomFromText('". $multipoint . "'),
-                GeomFromText('". $linestring . "'),
-                GeomFromText('". $multilinestring . "'),
-                GeomFromText('". $polygon . "'),
-                GeomFromText('". $multipolygon . "'),
-                GeomFromText('". $geometrycollection . "'))";
+                (GeomFromText('".$point."'),
+                GeomFromText('".$multipoint."'),
+                GeomFromText('".$linestring."'),
+                GeomFromText('".$multilinestring."'),
+                GeomFromText('".$polygon."'),
+                GeomFromText('".$multipolygon."'),
+                GeomFromText('".$geometrycollection."'))";
 
         $stmt = $pdo->prepare($sql);
 
