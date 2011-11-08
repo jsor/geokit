@@ -75,8 +75,8 @@ class LatLng
      * assuming an Earth radius of Util::EARTH_RADIUS.
      *
      * @param LatLng $latLng
-     * @return integer The distance, in meters, to the destination point.
-     * @see Util::distance()
+     * @return float The distance, in meters, to the destination point
+     * @see \Geokit\Util::distance()
      */
     public function distanceTo(LatLng $dest)
     {

@@ -31,6 +31,7 @@ class Util
      *
      * @param mixed $latLng1
      * @param mixed $latLng2
+     * @return float The distance in meters
      */
     public static function distance($latLng1, $latLng2)
     {
@@ -38,11 +39,11 @@ class Util
     }
 
     /**
-     * Returns the angular distance between two points using the Haversine
-     * formula.
+     * Returns the angular distance between two points using the Haversine formula.
      *
      * @param mixed $latLng1
      * @param mixed $latLng2
+     * @return float The distance in meters
      */
     public static function angularDistance($latLng1, $latLng2)
     {
