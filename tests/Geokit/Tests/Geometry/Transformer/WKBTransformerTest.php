@@ -203,4 +203,12 @@ class WKBTransformerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertNull($transformer->reverseTransform(pack('cL', 1, 8)), 'reverseTransform() returns NULL for undefined geometry');
     }
+
+    public function testReverseTransformThrowsExceptionForXDR()
+    {
+        $this->setExpectedException('\InvalidArgumentException', 'Only NDR (little endian) is supported');
+
+        $transformer = new WKBTransformer();
+        $this->assertNull($transformer->reverseTransform(pack('cLdd', 0, 1, 1, 1)));
+    }
 }
