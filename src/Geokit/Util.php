@@ -18,6 +18,48 @@ namespace Geokit;
 class Util
 {
     /**
+     * The radius of the Earth, in meters, assuming the Earth is a perfect sphere.
+     *
+     * @see http://en.wikipedia.org/wiki/Earth_radius
+     */
+    const EARTH_RADIUS = 6378135;
+
+    /**
+     * Returns the approximate sea level great circle (Earth) distance between
+     * two points using the Haversine formula and assuming an Earth radius of
+     * self::EARTH_RADIUS.
+     *
+     * @param LatLng $latLng1
+     * @param LatLng $latLng2
+     */
+    public static function distance(LatLng $latLng1, LatLng $latLng2)
+    {
+        return self::EARTH_RADIUS * self::angularDistance($latLng1, $latLng2);
+    }
+
+    /**
+     * Returns the angular distance between two points using the Haversine
+     * formula.
+     *
+     * @param LatLng $latLng1
+     * @param LatLng $latLng2
+     */
+    public static function angularDistance(LatLng $latLng1, LatLng $latLng2)
+    {
+        $phi1 = deg2rad($latLng1->getLatitude());
+        $phi2 = deg2rad($latLng2->getLatitude());
+
+        $dPhi = deg2rad($latLng2->getLatitude() - $latLng1->getLatitude());
+        $dLmd = deg2rad($latLng2->getLongitude() - $latLng1->getLongitude());
+
+        $a = pow(sin($dPhi / 2), 2) +
+                cos($phi1) * cos($phi2) *
+                  pow(sin($dLmd / 2), 2);
+
+        return 2 * atan2(sqrt($a), sqrt(1 - $a));
+    }
+
+    /**
      * @param array|string|\Geokit\LatLng $var
      * @return \Geokit\LatLng
      * @throws \InvalidArgumentException

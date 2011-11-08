@@ -68,4 +68,18 @@ class LatLng
     {
         return new Geometry\Point($this->getLongitude(), $this->getLatitude());
     }
+
+    /**
+     * Returns the approximate sea level great circle (Earth) distance between
+     * this point and the destination point using the Haversine formula and
+     * assuming an Earth radius of Util::EARTH_RADIUS.
+     *
+     * @param LatLng $latLng
+     * @return integer The distance, in meters, to the destination point.
+     * @see Util::distance()
+     */
+    public function distanceTo(LatLng $dest)
+    {
+        return Util::distance($this, $dest);
+    }
 }

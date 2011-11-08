@@ -85,4 +85,13 @@ class LatLngTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(1.1234, $point->getY());
         $this->assertSame(2.5678, $point->getX());
     }
+
+    public function testDistanceTo()
+    {
+        $latLng = new LatLng(44.65105198323727, 60.463472083210945);
+
+        $distance = $latLng->distanceTo(new LatLng(-35.21140778437257, 83.73959356918931));
+
+        $this->assertEquals(sprintf('%F', 9195565.498553), sprintf('%F', $distance));
+    }
 }
