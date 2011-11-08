@@ -12,8 +12,6 @@
 namespace Geokit\Geocoding;
 
 use Geokit\Geocoding\AbstractGeocoder;
-use Geokit\Geocoding\AddressGeocoderInterface;
-use Geokit\Geocoding\AddressReverseGeocoderInterface;
 use Geokit\Geocoding\LocationInterface;
 use Geokit\Geocoding\Response;
 use Geokit\LatLng;
