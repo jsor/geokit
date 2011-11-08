@@ -168,7 +168,7 @@ Content-Type: application/json; charset=UTF-8
         $response->fromString(file_get_contents(__DIR__.'/Fixtures/googlemapsgeocoder_response_2.txt'));
 
         $this->geocoder->getBrowser()->getClient()->sendToQueue($response);
-        $response = $this->geocoder->reverseGeocodeLatLng(new LatLng(0.714224, -73.961452));
+        $response = $this->geocoder->reverseGeocodeLatLng(new LatLng(40.714224, -73.961452));
 
         $this->assertInstanceOf('\Geokit\Geocoding\Response', $response);
         $this->assertEquals(200, $response->getCode());
