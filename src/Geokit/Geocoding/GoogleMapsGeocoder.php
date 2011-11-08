@@ -39,7 +39,7 @@ class GoogleMapsGeocoder extends AbstractGeocoder
 
     /**
      * @param string $apiUri
-     * @return Google\Geocoding
+     * @return GoogleMapsGeocoder
      */
     public function setApiUri($apiUri)
     {
@@ -57,7 +57,7 @@ class GoogleMapsGeocoder extends AbstractGeocoder
 
     /**
      * @param array $requestParams
-     * @return Google\Geocoding
+     * @return GoogleMapsGeocoder
      */
     public function setRequestParams(array $requestParams)
     {
