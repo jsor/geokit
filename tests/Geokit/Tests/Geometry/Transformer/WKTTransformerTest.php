@@ -325,7 +325,7 @@ class WKTTransformerTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($transformer->transform(new \Geokit\Tests\Geometry\Fixtures\TestGeometry1()), 'transform() returns NULL for unknown geometry');
 
         $this->assertNull($transformer->reverseTransform('(1 2)'), 'reverseTransform() returns NULL for undefined geometry');
-        $this->assertNull($transformer->reverseTransform('DummGeometry(1 2)'), 'reverseTransform() returns NULL for unknown geometry');
+        $this->assertNull($transformer->reverseTransform('DummyGeometry(1 2)'), 'reverseTransform() returns NULL for unknown geometry');
     }
 
     public function testWhitespace()
