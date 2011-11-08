@@ -26,12 +26,12 @@ use Geokit\Geometry\Polygon;
  * @version @package_version@
  *
  * @covers Geokit\Geometry\Transformer\MySQLTransformer
- * @group database
- * @group mysql
  */
 class MySQLTransformerTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @group database
+     * @group mysql
      * @dataProvider geometryDataProvider
      */
     public function testTransform($a, $b, $message)
@@ -42,6 +42,8 @@ class MySQLTransformerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @group database
+     * @group mysql
      * @dataProvider geometryDataProvider
      */
     public function testReverseTransform($a, $b, $message)
@@ -56,14 +58,14 @@ class MySQLTransformerTest extends \PHPUnit_Framework_TestCase
         $pdo = new \PDO(DB_MYSQL_DSN, DB_MYSQL_USER, DB_MYSQL_PASSWD);
 
         $pdo->exec("CREATE TABLE `geometry` (
-`Point` POINT NOT NULL ,
-`MultiPoint` MULTIPOINT NOT NULL ,
-`LineString` LINESTRING NOT NULL ,
-`MultiLineString` MULTILINESTRING NOT NULL ,
-`Polygon` POLYGON NOT NULL ,
-`MultiPolygon` MULTIPOLYGON NOT NULL ,
-`GeometryCollection` GEOMETRYCOLLECTION NOT NULL
-) ENGINE = MYISAM");
+                    `Point` POINT NOT NULL ,
+                    `MultiPoint` MULTIPOINT NOT NULL ,
+                    `LineString` LINESTRING NOT NULL ,
+                    `MultiLineString` MULTILINESTRING NOT NULL ,
+                    `Polygon` POLYGON NOT NULL ,
+                    `MultiPolygon` MULTIPOLYGON NOT NULL ,
+                    `GeometryCollection` GEOMETRYCOLLECTION NOT NULL
+                    )");
 
         $data = array();
 
