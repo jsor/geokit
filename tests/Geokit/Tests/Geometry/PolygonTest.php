@@ -35,6 +35,45 @@ class PolygonTest extends \PHPUnit_Framework_TestCase
         $linearRing = new Polygon(array(new Point(1, 2)));
     }
 
+    public function testGetArea()
+    {
+        $createSquareRing = function($area) {
+            $points = array(
+                new Point(0, 0),
+                new Point(0, $area),
+                new Point($area, $area),
+                new Point($area, 0)
+            );
+            return new LinearRing($points);
+        };
+
+        $components = array($createSquareRing(2));
+        $polygon = new Polygon($components);
+        $this->assertEquals(4, $polygon->getArea(), "getArea() for simple polygon");
+
+        $components = array(
+            $createSquareRing(10),
+            $createSquareRing(2),
+            $createSquareRing(3),
+            $createSquareRing(4)
+        );
+        $polygon = new Polygon($components);
+        $this->assertEquals(71, $polygon->getArea(), "getArea() for polygon with holes");
+
+        $components = array($createSquareRing(-2));
+        $polygon = new Polygon($components);
+        $this->assertEquals(4, $polygon->getArea(), "getArea() for simple negative polygon");
+
+        $components = array(
+            $createSquareRing(-10),
+            $createSquareRing(-2),
+            $createSquareRing(-3),
+            $createSquareRing(-4)
+        );
+        $polygon = new Polygon($components);
+        $this->assertEquals(71, $polygon->getArea(), "getArea() for negative polygon with holes");
+    }
+
     public function testToString()
     {
         $points = array(new Point(1, 2), new Point(3, 4), new Point(1, 2));

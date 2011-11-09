@@ -64,6 +64,31 @@ class GeometryCollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($collection1->equals($collection2));
     }
 
+    public function testGetArea()
+    {
+        $collection = new GeometryCollection();
+        $this->assertEquals(0, $collection->getArea());
+
+        $c1 = $this->getMockBuilder('\Geokit\Geometry\GeometryCollectionInterface')
+                   ->getMock();
+
+        $c1->expects($this->once())
+           ->method('getArea')
+           ->will($this->returnValue(50));
+
+        $c2 = $this->getMockBuilder('\Geokit\Geometry\GeometryCollectionInterface')
+                   ->getMock();
+
+        $c2->expects($this->once())
+           ->method('getArea')
+           ->will($this->returnValue(15));
+
+        $collection->add($c1);
+        $collection->add($c2);
+
+        $this->assertEquals(65, $collection->getArea());
+    }
+
     public function testGetCentroid()
     {
         $this->markTestSkipped('getCentroid() not implemented yet');

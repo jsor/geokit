@@ -66,4 +66,27 @@ class LinearRing extends LineString
 
         return $added;
     }
+
+    /**
+     * Note - The area is positive if the ring is oriented CW, otherwise
+     * it will be negative.
+     *
+     * @return float The signed area for a ring
+     */
+    public function getArea()
+    {
+        $area = 0;
+        if ($this->count() > 2) {
+            $sum = 0;
+            $components = $this->all();
+            for ($i = 0, $len = count($components); $i < $len - 1; $i++) {
+                $b = $components[$i];
+                $c = $components[$i + 1];
+                $sum += ($b->getX() + $c->getX()) * ($c->getY() - $b->getY());
+            }
+            $area = - ($sum / 2);
+        }
+
+        return $area;
+    }
 }

@@ -61,4 +61,18 @@ class LinearRingTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(array(new Point(1, 2), new Point(3, 4), new Point(1, 2), new Point(1, 2)), $linearRing->all());
     }
+
+    public function testGetArea()
+    {
+        $points = array(
+            new Point(0, 0),
+            new Point(0, 10),
+            new Point(10, 10),
+            new Point(10, 0)
+        );
+
+        $linearRing= new LinearRing($points);
+
+        $this->assertEquals(100, $linearRing->getArea());
+    }
 }

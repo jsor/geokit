@@ -17,7 +17,7 @@ use Geokit\Bounds;
  * @author  Jan Sorgalla <jsorgalla@googlemail.com>
  * @version @package_version@
  */
-class GeometryCollection extends Geometry implements \Countable
+class GeometryCollection extends Geometry implements GeometryCollectionInterface, \Countable
 {
     /**
      * @var array
@@ -104,6 +104,24 @@ class GeometryCollection extends Geometry implements \Countable
         }
 
         return true;
+    }
+
+    /**
+     * Calculate the area of this geometry. Note how this function is overridden
+     * in Polygon.
+     *
+     * @return float The area of the collection by summing its parts
+     */
+    public function getArea()
+    {
+        $area = 0;
+        foreach ($this->all() as $component) {
+            if ($component instanceof GeometryCollectionInterface) {
+                $area += $component->getArea();
+            }
+        }
+
+        return $area;
     }
 
     /**
