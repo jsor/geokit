@@ -12,7 +12,6 @@
 namespace Geokit\Tests\Geometry;
 
 use Geokit\Geometry\Point;
-use Geokit\LatLng;
 
 /**
  * @author  Jan Sorgalla <jsorgalla@googlemail.com>
@@ -39,15 +38,6 @@ class PointTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($point->equals(new Point(2, 2)));
         $this->assertFalse($point->equals(new Point(3, 4)));
         $this->assertFalse($point->equals(new Fixtures\TestGeometry1()));
-    }
-
-    public function testGetBounds()
-    {
-        $point = new Point(1, 2);
-
-        $this->assertInstanceOf('\Geokit\Bounds', $point->getBounds());
-        $this->assertEquals(new LatLng(2, 1), $point->getBounds()->getSouthWest());
-        $this->assertEquals(new LatLng(2, 1), $point->getBounds()->getNorthEast());
     }
 
     public function testGetCentroid()

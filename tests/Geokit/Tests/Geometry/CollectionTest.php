@@ -13,7 +13,6 @@ namespace Geokit\Tests\Geometry;
 
 use Geokit\Geometry\Collection;
 use Geokit\Geometry\Point;
-use Geokit\LatLng;
 
 /**
  * @author  Jan Sorgalla <jsorgalla@googlemail.com>
@@ -65,19 +64,10 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($collection1->equals($collection2));
     }
 
-    public function testGetBounds()
-    {
-        $collection = $this->getMockForAbstractClass('\Geokit\Geometry\Collection');
-        $collection->add(new Point(1, 1));
-        $collection->add(new Point(10, 10));
-
-        $this->assertInstanceOf('\Geokit\Bounds', $collection->getBounds());
-        $this->assertEquals(new LatLng(1, 1), $collection->getBounds()->getSouthWest());
-        $this->assertEquals(new LatLng(10, 10), $collection->getBounds()->getNorthEast());
-    }
-
     public function testGetCentroid()
     {
+        $this->markTestSkipped('getCentroid() not implemented yet');
+
         $collection = $this->getMockForAbstractClass('\Geokit\Geometry\Collection');
         $collection->add(new Point(1, 1));
         $collection->add(new Point(10, 10));

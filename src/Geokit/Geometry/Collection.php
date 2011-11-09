@@ -109,26 +109,9 @@ abstract class Collection extends Geometry implements \Countable
     /**
      * {@inheritDoc}
      */
-    public function getBounds()
-    {
-        $bounds = null;
-        foreach ($this->all() as $component) {
-            if (null === $bounds) {
-                $bounds = $component->getBounds();
-            } else {
-                $bounds->extendByBounds($component->getBounds());
-            }
-        }
-
-        return $bounds;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getCentroid()
     {
-        return $this->getBounds()->getCenter()->toGeometry();
+        // @Todo
     }
 
     /**

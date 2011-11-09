@@ -12,6 +12,8 @@
 namespace Geokit\Tests;
 
 use Geokit\LatLng;
+use Geokit\Geometry\Point;
+use Geokit\Geometry\MultiPoint;
 
 /**
  * @author  Jan Sorgalla <jsorgalla@googlemail.com>
@@ -21,6 +23,24 @@ use Geokit\LatLng;
  */
 class LatLngTest extends \PHPUnit_Framework_TestCase
 {
+    public function testFromGeometry()
+    {
+        $geometry = new Point(1, 2);
+
+        $latLng = LatLng::fromGeometry($geometry);
+
+        $this->assertInstanceOf('\Geokit\LatLng', $latLng);
+        $this->assertEquals(new LatLng(2, 1), $latLng);
+
+        $geometry = new MultiPoint(array(new Point(1, 1), new Point(10, 10)));
+
+        $latLng = LatLng::fromGeometry($geometry);
+
+        $this->assertInstanceOf('\Geokit\LatLng', $latLng);
+        $this->assertEquals(new LatLng(5.5, 5.5), $latLng);
+
+    }
+
     public function testConstructorShouldAcceptStringsAsArguments()
     {
         $latLng = new LatLng('1.1234', '2.5678');

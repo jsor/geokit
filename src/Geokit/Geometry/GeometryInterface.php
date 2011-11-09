@@ -31,11 +31,6 @@ interface GeometryInterface
     function equals(GeometryInterface $geometry);
 
     /**
-     * @return \Geokit\Bounds
-     */
-    function getBounds();
-
-    /**
      * @return \Geokit\Geometry\Point
      */
     function getCentroid();

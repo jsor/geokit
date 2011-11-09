@@ -28,6 +28,23 @@ class LatLng
     private $longitude;
 
     /**
+     * Static factory method to create a LatLng object from a Geometry object.
+     *
+     * For everything else than a point, the center point is returned.
+     *
+     * @param \Geokit\Geometry\GeometryInterface $geometry
+     * @return \Geokit\LatLng
+     */
+    public static function fromGeometry(Geometry\GeometryInterface $geometry)
+    {
+        if ('Point' === $geometry->getGeometryType()) {
+            return new self($geometry->getY(), $geometry->getX());
+        } else {
+            return Bounds::fromGeometry($geometry)->getCenter();
+        }
+    }
+
+    /**
      * @param float $latitude
      * @param float $longitude
      */

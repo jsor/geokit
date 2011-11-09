@@ -11,9 +11,6 @@
 
 namespace Geokit\Geometry;
 
-use Geokit\Bounds;
-use Geokit\LatLng;
-
 /**
  * @author  Jan Sorgalla <jsorgalla@googlemail.com>
  * @version @package_version@
@@ -67,17 +64,6 @@ class Point extends Geometry
 
         return $this->getX() === $geometry->getX() &&
                $this->getY() === $geometry->getY();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getBounds()
-    {
-        return new Bounds(
-            new LatLng($this->getY(), $this->getX()),
-            new LatLng($this->getY(), $this->getX())
-        );
     }
 
     /**
