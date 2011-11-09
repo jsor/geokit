@@ -18,78 +18,7 @@ namespace Geokit;
 class Util
 {
     /**
-     * The radius of the Earth, in meters, assuming the Earth is a perfect sphere.
-     *
-     * @see http://en.wikipedia.org/wiki/Earth_radius
-     */
-    const EARTH_RADIUS = 6378135;
-
-    /**
-     * Returns the approximate sea level great circle (Earth) distance between
-     * two points using the Haversine formula and assuming an Earth radius of
-     * self::EARTH_RADIUS.
-     *
-     * @param mixed $latLng1
-     * @param mixed $latLng2
-     * @return float The distance in meters
-     */
-    public static function distance($latLng1, $latLng2)
-    {
-        return self::EARTH_RADIUS * self::angularDistance($latLng1, $latLng2);
-    }
-
-    /**
-     * Returns the angular distance between two points using the Haversine formula.
-     *
-     * @param mixed $latLng1
-     * @param mixed $latLng2
-     * @return float The distance in meters
-     */
-    public static function angularDistance($latLng1, $latLng2)
-    {
-        $latLng1 = self::normalizeLatLng($latLng1);
-        $latLng2 = self::normalizeLatLng($latLng2);
-
-        $phi1 = deg2rad($latLng1->getLatitude());
-        $phi2 = deg2rad($latLng2->getLatitude());
-
-        $dPhi = deg2rad($latLng2->getLatitude() - $latLng1->getLatitude());
-        $dLmd = deg2rad($latLng2->getLongitude() - $latLng1->getLongitude());
-
-        $a = pow(sin($dPhi / 2), 2) +
-                cos($phi1) * cos($phi2) *
-                  pow(sin($dLmd / 2), 2);
-
-        return 2 * atan2(sqrt($a), sqrt(1 - $a));
-    }
-
-    /**
-     * Returns the (initial) heading from the first point to the second point in degrees.
-     *
-     * @param mixed $latLng1
-     * @param mixed $latLng2
-     * @return float Initial heading in degrees from North
-     */
-    public static function heading($latLng1, $latLng2)
-    {
-        $latLng1 = self::normalizeLatLng($latLng1);
-        $latLng2 = self::normalizeLatLng($latLng2);
-
-        $lat1 = deg2rad($latLng1->getLatitude());
-        $lat2 = deg2rad($latLng2->getLatitude());
-        $dLon = deg2rad($latLng2->getLongitude() - $latLng1->getLongitude());
-
-        $y = sin($dLon) * cos($lat2);
-        $x = cos($lat1) * sin($lat2) -
-             sin($lat1) * cos($lat2) * cos($dLon);
-
-        $heading = atan2($y, $x);
-
-        return (rad2deg($heading) + 360) % 360;
-    }
-
-    /**
-     * @param array|string|\Geokit\LatLng $var
+     * @param array|string|\Geokit\LatLng|\Geokit\Geometry\Point $var
      * @return \Geokit\LatLng
      * @throws \InvalidArgumentException
      */

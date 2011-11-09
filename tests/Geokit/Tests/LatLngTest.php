@@ -92,7 +92,7 @@ class LatLngTest extends \PHPUnit_Framework_TestCase
 
         $distance = $latLng->distanceTo(new LatLng(-35.21140778437257, 83.73959356918931));
 
-        $this->assertEquals(sprintf('%F', 9195565.498553), sprintf('%F', $distance));
+        $this->assertEquals(sprintf('%F', 9195568.382018), sprintf('%F', $distance));
     }
 
     public function testHeading()

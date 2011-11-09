@@ -80,7 +80,12 @@ class LatLng
      */
     public function distanceTo(LatLng $dest)
     {
-        return Util::distance($this, $dest);
+        return Calc::distanceHaversine(
+            $this->getLatitude(),
+            $this->getLongitude(),
+            $dest->getLatitude(),
+            $dest->getLongitude()
+        );
     }
 
     /**
@@ -92,6 +97,11 @@ class LatLng
      */
     public function headingTo(LatLng $dest)
     {
-        return Util::heading($this, $dest);
+        return Calc::heading(
+            $this->getLatitude(),
+            $this->getLongitude(),
+            $dest->getLatitude(),
+            $dest->getLongitude()
+        );
     }
 }
