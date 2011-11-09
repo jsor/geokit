@@ -43,6 +43,8 @@ class Util
                 $lat = $var['latitude'];
             } elseif (isset($var['lat'])) {
                 $lat = $var['lat'];
+            } elseif (isset($var['y'])) {
+                $lat = $var['y'];
             }
 
             if (isset($var['longitude'])) {
@@ -51,6 +53,8 @@ class Util
                 $lng = $var['lng'];
             } elseif (isset($var['lon'])) {
                 $lng = $var['lon'];
+            } elseif (isset($var['x'])) {
+                $lng = $var['x'];
             }
         }
 

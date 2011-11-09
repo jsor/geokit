@@ -74,6 +74,14 @@ class UtilTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(2.5678, $latLng->getLongitude());
     }
 
+    public function testNormalizeLatLngShouldAcceptArrayArgumentWithXYKeys()
+    {
+        $latLng = Util::normalizeLatLng(array('x' => 2.5678, 'y' => 1.1234));
+
+        $this->assertSame(1.1234, $latLng->getLatitude());
+        $this->assertSame(2.5678, $latLng->getLongitude());
+    }
+
     public function testNormalizeLatLngShouldAcceptArrayAccessArgument()
     {
         $latLng = Util::normalizeLatLng(new \ArrayObject(array('latitude' => 1.1234, 'longitude' => 2.5678)));
