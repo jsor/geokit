@@ -15,7 +15,7 @@ namespace Geokit\Geometry;
  * @author  Jan Sorgalla <jsorgalla@googlemail.com>
  * @version @package_version@
  */
-class Polygon extends Collection
+class Polygon extends GeometryCollection
 {
     /**
      * {@inheritDoc}

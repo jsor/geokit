@@ -15,7 +15,7 @@ namespace Geokit\Geometry;
  * @author  Jan Sorgalla <jsorgalla@googlemail.com>
  * @version @package_version@
  */
-class MultiLineString extends Collection
+class MultiLineString extends GeometryCollection
 {
     /**
      * {@inheritDoc}
