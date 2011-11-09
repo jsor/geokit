@@ -133,9 +133,10 @@ class WKTTransformer implements TransformerInterface
     }
 
     /**
-     * Parse a WKT string into Geometry object.
+     * Parse a WKT string into a Geometry object.
      *
-     * @param string $WKT A WKT string
+     * @param string $type The Geometry type
+     * @param string $str The WKT string
      * @return \Geokit\Geometry\GeometryInterface
      */
     protected function parse($type, $str)

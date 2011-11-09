@@ -130,7 +130,7 @@ class WKBTransformer implements TransformerInterface
     }
 
     /**
-     * Do Reverse-transformation of a WKB representation into a Geometry object.
+     * Do reverse-transformation of a WKB representation into a Geometry object.
      *
      * @param string $str A WKB string
      * @return \Geokit\Geometry\GeometryInterface
@@ -148,9 +148,10 @@ class WKBTransformer implements TransformerInterface
     }
 
     /**
-     * Parse a WKT string into Geometry object.
+     * Parse a WKB string into a Geometry object.
      *
-     * @param string $WKT A WKT string
+     * @param string $type The Geometry type
+     * @param string $str The WKT string
      * @return \Geokit\Geometry\GeometryInterface
      */
     protected function parse($type, &$str)
