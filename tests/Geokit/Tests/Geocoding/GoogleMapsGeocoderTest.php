@@ -28,6 +28,11 @@ use Buzz\Browser;
 class GoogleMapsGeocoderTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @var \Buzz\Browser
+     */
+    private $browser;
+
+    /**
      * @var \Geokit\Geocoding\GoogleMapsGeocoder
      */
     private $geocoder;
@@ -36,37 +41,33 @@ class GoogleMapsGeocoderTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $client = new \Buzz\Client\Mock\FIFO();
-        $browser = new Browser($client);
+        $this->browser = $this->getMockBuilder('\Buzz\Browser')
+                               ->getMock();
 
-        $this->geocoder = new GoogleMapsGeocoder(new LocationFactory(), $browser);
+        $this->geocoder = new GoogleMapsGeocoder(new LocationFactory(), $this->browser);
     }
 
     public function tearDown()
     {
         parent::tearDown();
         $this->geocoder = null;
+        $this->browser  = null;
     }
 
     public function testCustomUrlAndParameters()
     {
-        $browser = $this->getMockBuilder('\Buzz\Browser')
-                        ->getMock();
-
         $response = new \Buzz\Message\Response();
         $response->addHeader('HTTP/1.0 404 Not Found');
 
-        $browser->expects($this->once())
-                ->method('get')
-                ->with('http://example.com?address=742+Evergreen+Terrace&language=de&foo=bar&sensor=false')
-                ->will($this->returnValue($response));
+        $this->browser->expects($this->once())
+                      ->method('get')
+                      ->with('http://example.com?address=742+Evergreen+Terrace&language=de&foo=bar&sensor=false')
+                      ->will($this->returnValue($response));
 
-        $geocoder = new GoogleMapsGeocoder(null, $browser);
+        $this->geocoder->setApiUri('http://example.com');
+        $this->geocoder->setRequestParams(array('language' => 'de', 'foo' => 'bar'));
 
-        $geocoder->setApiUri('http://example.com');
-        $geocoder->setRequestParams(array('language' => 'de', 'foo' => 'bar'));
-
-        $geocoder->geocodeAddress('742 Evergreen Terrace');
+        $this->geocoder->geocodeAddress('742 Evergreen Terrace');
     }
 
     public function testGeocodeAddressZeroResultsResponse()
@@ -77,7 +78,10 @@ Content-Type: application/json; charset=UTF-8
 
 {"status": "ZERO_RESULTS", "results": []}');
 
-        $this->geocoder->getBrowser()->getClient()->sendToQueue($response);
+        $this->browser->expects($this->once())
+                      ->method('get')
+                      ->will($this->returnValue($response));
+
         $response = $this->geocoder->geocodeAddress('742 Evergreen Terrace');
 
         $this->assertInstanceOf('\Geokit\Geocoding\Response', $response);
@@ -93,7 +97,10 @@ Content-Type: application/json; charset=UTF-8
 
 {"status": "INVALID_REQUEST", "results": []}');
 
-        $this->geocoder->getBrowser()->getClient()->sendToQueue($response);
+        $this->browser->expects($this->once())
+                      ->method('get')
+                      ->will($this->returnValue($response));
+
         $response = $this->geocoder->geocodeAddress('742 Evergreen Terrace');
 
         $this->assertInstanceOf('\Geokit\Geocoding\Response', $response);
@@ -109,7 +116,10 @@ Content-Type: application/json; charset=UTF-8
 
 {"status": "REQUEST_DENIED", "results": []}');
 
-        $this->geocoder->getBrowser()->getClient()->sendToQueue($response);
+        $this->browser->expects($this->once())
+                      ->method('get')
+                      ->will($this->returnValue($response));
+
         $response = $this->geocoder->geocodeAddress('742 Evergreen Terrace');
 
         $this->assertInstanceOf('\Geokit\Geocoding\Response', $response);
@@ -125,7 +135,10 @@ Content-Type: application/json; charset=UTF-8
 
 {"status": "REQUEST_DENIED", "results": []}');
 
-        $this->geocoder->getBrowser()->getClient()->sendToQueue($response);
+        $this->browser->expects($this->once())
+                      ->method('get')
+                      ->will($this->returnValue($response));
+
         $response = $this->geocoder->geocodeAddress('742 Evergreen Terrace');
 
         $this->assertInstanceOf('\Geokit\Geocoding\Response', $response);
@@ -138,7 +151,10 @@ Content-Type: application/json; charset=UTF-8
         $response = new \Buzz\Message\Response();
         $response->fromString(file_get_contents(__DIR__.'/Fixtures/googlemapsgeocoder_response_1.txt'));
 
-        $this->geocoder->getBrowser()->getClient()->sendToQueue($response);
+        $this->browser->expects($this->once())
+                      ->method('get')
+                      ->will($this->returnValue($response));
+
         $response = $this->geocoder->geocodeAddress('1600 Amphitheatre Parkway, Mountain View, CA');
 
         $this->assertInstanceOf('\Geokit\Geocoding\Response', $response);
@@ -167,7 +183,10 @@ Content-Type: application/json; charset=UTF-8
         $response = new \Buzz\Message\Response();
         $response->fromString(file_get_contents(__DIR__.'/Fixtures/googlemapsgeocoder_response_2.txt'));
 
-        $this->geocoder->getBrowser()->getClient()->sendToQueue($response);
+        $this->browser->expects($this->once())
+                      ->method('get')
+                      ->will($this->returnValue($response));
+
         $response = $this->geocoder->reverseGeocodeLatLng(new LatLng(40.714224, -73.961452));
 
         $this->assertInstanceOf('\Geokit\Geocoding\Response', $response);

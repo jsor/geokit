@@ -28,6 +28,11 @@ use Buzz\Browser;
 class HostipGeocoderTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @var \Buzz\Browser
+     */
+    private $browser;
+
+    /**
      * @var \Geokit\Geocoding\HostipGeocoder
      */
     private $geocoder;
@@ -36,10 +41,10 @@ class HostipGeocoderTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $client = new \Buzz\Client\Mock\FIFO();
-        $browser = new Browser($client);
+        $this->browser = $this->getMockBuilder('\Buzz\Browser')
+                               ->getMock();
 
-        $this->geocoder = new HostipGeocoder(new LocationFactory(), $browser);
+        $this->geocoder = new HostipGeocoder(new LocationFactory(), $this->browser);
     }
 
     public function tearDown()
@@ -50,22 +55,17 @@ class HostipGeocoderTest extends \PHPUnit_Framework_TestCase
 
     public function testCustomUrl()
     {
-        $browser = $this->getMockBuilder('\Buzz\Browser')
-                        ->getMock();
-
         $response = new \Buzz\Message\Response();
         $response->addHeader('HTTP/1.0 404 Not Found');
 
-        $browser->expects($this->once())
-                ->method('get')
-                ->with('http://example.com?ip=12.215.42.19&position=true')
-                ->will($this->returnValue($response));
+        $this->browser->expects($this->once())
+                      ->method('get')
+                      ->with('http://example.com?ip=12.215.42.19&position=true')
+                      ->will($this->returnValue($response));
 
-        $geocoder = new HostipGeocoder(null, $browser);
+        $this->geocoder->setApiUri('http://example.com');
 
-        $geocoder->setApiUri('http://example.com');
-
-        $geocoder->geocodeIp('12.215.42.19');
+        $this->geocoder->geocodeIp('12.215.42.19');
     }
 
     public function testGeocodeAddressZeroResultsResponse()
@@ -95,7 +95,10 @@ Content-Type: text/xml; charset=iso-8859-1
 </HostipLookupResultSet>
 ');
 
-        $this->geocoder->getBrowser()->getClient()->sendToQueue($response);
+        $this->browser->expects($this->once())
+                      ->method('get')
+                      ->will($this->returnValue($response));
+
         $response = $this->geocoder->geocodeIp('foo');
 
         $this->assertInstanceOf('\Geokit\Geocoding\Response', $response);
@@ -138,7 +141,10 @@ Content-Type: text/xml; charset=iso-8859-1
 </HostipLookupResultSet>
 ');
 
-        $this->geocoder->getBrowser()->getClient()->sendToQueue($response);
+        $this->browser->expects($this->once())
+                      ->method('get')
+                      ->will($this->returnValue($response));
+
         $response = $this->geocoder->geocodeIp('12.215.42.19');
 
         $this->assertInstanceOf('\Geokit\Geocoding\Response', $response);

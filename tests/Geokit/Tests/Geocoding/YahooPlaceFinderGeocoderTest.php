@@ -28,6 +28,11 @@ use Buzz\Browser;
 class YahooPlaceFinderGeocoderTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @var \Buzz\Browser
+     */
+    private $browser;
+
+    /**
      * @var \Geokit\Geocoding\YahooPlaceFinderGeocoder
      */
     private $geocoder;
@@ -36,10 +41,10 @@ class YahooPlaceFinderGeocoderTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $client = new \Buzz\Client\Mock\FIFO();
-        $browser = new Browser($client);
+        $this->browser = $this->getMockBuilder('\Buzz\Browser')
+                               ->getMock();
 
-        $this->geocoder = new YahooPlaceFinderGeocoder('appId', new LocationFactory(), $browser);
+        $this->geocoder = new YahooPlaceFinderGeocoder('appId', new LocationFactory(), $this->browser);
     }
 
     public function tearDown()
@@ -62,17 +67,15 @@ class YahooPlaceFinderGeocoderTest extends \PHPUnit_Framework_TestCase
         $response = new \Buzz\Message\Response();
         $response->addHeader('HTTP/1.0 404 Not Found');
 
-        $browser->expects($this->once())
-                ->method('get')
-                ->with('http://example.com?q=742+Evergreen+Terrace&locale=de_DE&foo=bar&appid=appId&flags=JX')
-                ->will($this->returnValue($response));
+        $this->browser->expects($this->once())
+                      ->method('get')
+                      ->with('http://example.com?q=742+Evergreen+Terrace&locale=de_DE&foo=bar&appid=appId&flags=JX')
+                      ->will($this->returnValue($response));
 
-        $geocoder = new YahooPlaceFinderGeocoder('appId', null, $browser);
+        $this->geocoder->setApiUri('http://example.com');
+        $this->geocoder->setRequestParams(array('locale' => 'de_DE', 'foo' => 'bar'));
 
-        $geocoder->setApiUri('http://example.com');
-        $geocoder->setRequestParams(array('locale' => 'de_DE', 'foo' => 'bar'));
-
-        $geocoder->geocodeAddress('742 Evergreen Terrace');
+        $this->geocoder->geocodeAddress('742 Evergreen Terrace');
     }
 
     public function testJFlagAutomaticallyAdded()
@@ -83,17 +86,15 @@ class YahooPlaceFinderGeocoderTest extends \PHPUnit_Framework_TestCase
         $response = new \Buzz\Message\Response();
         $response->addHeader('HTTP/1.0 404 Not Found');
 
-        $browser->expects($this->once())
-                ->method('get')
-                ->with('http://example.com?q=742+Evergreen+Terrace&flags=XJ&appid=appId&locale=en_US')
-                ->will($this->returnValue($response));
+        $this->browser->expects($this->once())
+                      ->method('get')
+                      ->with('http://example.com?q=742+Evergreen+Terrace&flags=XJ&appid=appId&locale=en_US')
+                      ->will($this->returnValue($response));
 
-        $geocoder = new YahooPlaceFinderGeocoder('appId', null, $browser);
+        $this->geocoder->setApiUri('http://example.com');
+        $this->geocoder->setRequestParams(array('flags' => 'X'));
 
-        $geocoder->setApiUri('http://example.com');
-        $geocoder->setRequestParams(array('flags' => 'X'));
-
-        $geocoder->geocodeAddress('742 Evergreen Terrace');
+        $this->geocoder->geocodeAddress('742 Evergreen Terrace');
     }
 
     public function testGeocodeAddressZeroResultsResponse()
@@ -104,7 +105,10 @@ Content-Type: application/json; charset=UTF-8
 
 {"ResultSet":{"version":"1.0","Error":0,"ErrorMessage":"No error","Locale":"us_US","Quality":10,"Found":0}}');
 
-        $this->geocoder->getBrowser()->getClient()->sendToQueue($response);
+        $this->browser->expects($this->once())
+                      ->method('get')
+                      ->will($this->returnValue($response));
+
         $response = $this->geocoder->geocodeAddress('742 Evergreen Terrace');
 
         $this->assertInstanceOf('\Geokit\Geocoding\Response', $response);
@@ -120,7 +124,10 @@ Content-Type: application/json; charset=UTF-8
 
 {"ResultSet":{"version":"1.0","Error":100,"ErrorMessage":"No location parameters","Locale":"us_US","Quality":0,"Found":0}}');
 
-        $this->geocoder->getBrowser()->getClient()->sendToQueue($response);
+        $this->browser->expects($this->once())
+                      ->method('get')
+                      ->will($this->returnValue($response));
+
         $response = $this->geocoder->geocodeAddress('742 Evergreen Terrace');
 
         $this->assertInstanceOf('\Geokit\Geocoding\Response', $response);
@@ -133,7 +140,10 @@ Content-Type: application/json; charset=UTF-8
         $response = new \Buzz\Message\Response();
         $response->fromString(file_get_contents(__DIR__.'/Fixtures/yahooplacefindergeocoder_response_1.txt'));
 
-        $this->geocoder->getBrowser()->getClient()->sendToQueue($response);
+        $this->browser->expects($this->once())
+                      ->method('get')
+                      ->will($this->returnValue($response));
+
         $response = $this->geocoder->geocodeAddress('1600 Amphitheatre Parkway, Mountain View, CA');
 
         $this->assertInstanceOf('\Geokit\Geocoding\Response', $response);
@@ -162,7 +172,10 @@ Content-Type: application/json; charset=UTF-8
         $response = new \Buzz\Message\Response();
         $response->fromString(file_get_contents(__DIR__.'/Fixtures/yahooplacefindergeocoder_response_2.txt'));
 
-        $this->geocoder->getBrowser()->getClient()->sendToQueue($response);
+        $this->browser->expects($this->once())
+                      ->method('get')
+                      ->will($this->returnValue($response));
+
         $response = $this->geocoder->reverseGeocodeLatLng(new LatLng(40.714224, -73.961452));
 
         $this->assertInstanceOf('\Geokit\Geocoding\Response', $response);
