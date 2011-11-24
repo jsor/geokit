@@ -89,7 +89,7 @@ class GeometryCollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(65, $collection->getArea());
     }
 
-    public function testGetCentroid()
+    /*public function testGetCentroid()
     {
         $this->markTestSkipped('getCentroid() not implemented yet');
 
@@ -99,7 +99,7 @@ class GeometryCollectionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('\Geokit\Geometry\Point', $collection->getCentroid());
         $this->assertEquals(new Point(5.5, 5.5), $collection->getCentroid());
-    }
+    }*/
 
     public function testToArray()
     {
