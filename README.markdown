@@ -1,10 +1,9 @@
 Geokit
 ======
 
-What is Geokit?
----------------
-
 Geokit is a PHP 5.3+ toolkit to solve geo-related tasks like geometric calculations, geocoding etc.
+
+[![Build Status](https://secure.travis-ci.org/jsor/Geokit.png)](http://travis-ci.org/jsor/Geokit)
 
 Installation
 ------------
