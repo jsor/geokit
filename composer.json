@@ -6,12 +6,19 @@
     "homepage": "https://github.com/jsor/Geokit",
     "license": "MIT",
     "authors": [
-        {"name": "Jan Sorgalla", "email": "jsorgalla@googlemail.com"}
+        {
+            "name": "Jan Sorgalla",
+            "email": "jsorgalla@googlemail.com",
+            "homepage": "http://sorgalla.com"
+        }
     ],
     "require": {
-        "php": ">=5.3.0"
+        "php": ">=5.3.0",
+        "kriswallsmith/buzz": ">=0.5.0"
     },
     "autoload": {
-        "psr-0": { "Geokit": "src/" }
+        "psr-0": {
+            "Geokit": "src/"
+        }
     }
 }

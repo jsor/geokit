@@ -1,3 +1,5 @@
 build/
-autoload.php
+composer.lock
+composer.phar
 phpunit.xml
+vendor/
