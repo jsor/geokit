@@ -22,35 +22,32 @@ use Geokit\Geometry\Point;
 use Geokit\Geometry\Polygon;
 
 /**
- * MySQL has a non-standard method of storing and retrieving spatial objects.
- * It almost matches the OGS, using the Well Known Binary format, but breaks
- * compatibility by pre-pending a 4-byte (the SRID) value to the WKB blob.
- * Since Geokit ignores SRIDs, we simple cut it off.
- *
  * @author  Jan Sorgalla <jsorgalla@googlemail.com>
  * @version @package_version@
  */
-class MySQLTransformer extends WKBTransformer
+class EWKBHexTransformer extends EWKBTransformer
 {
     /**
-     * Transforms a Geometry into a MySQL string.
+     * Transforms a Geometry into a EWKB Hex string.
      *
      * @param \Geokit\Geometry\GeometryInterface $geometry
-     * @return string The MySQL representation of the geometry
+     * @return string The EWKB representation of the geometry
      */
     public function transform(GeometryInterface $geometry)
     {
-        return pack('xxxx').parent::transform($geometry);
+        $ewkb = parent::transform($geometry);
+        $unpacked = unpack('H*', $ewkb);
+        return $unpacked[1];
     }
 
     /**
-     * Reverse-transforms a MySQL representation into a Geometry object.
+     * Reverse-transforms a EWKB Hex representation into a Geometry object.
      *
-     * @param string $str A MySQL string
+     * @param string $str A EWKB string
      * @return \Geokit\Geometry\GeometryInterface
      */
     public function reverseTransform($str)
     {
-        return parent::reverseTransform(substr($str, 4));
+        return parent::reverseTransform(pack('H*', $str));
     }
 }

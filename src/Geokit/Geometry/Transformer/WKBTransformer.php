@@ -159,9 +159,7 @@ class WKBTransformer implements TransformerInterface
         switch ($type) {
             case 1:
             case 'POINT':
-                $coords = unpack('d*', substr($str, 0, 16));
-                $str = substr($str, 16);
-                return new Point($coords[1], $coords[2]);
+                return $this->parsePoint($str);
             case 4:
             case 'MULTIPOINT':
                 $num = unpack('L', substr($str, 0, 4));
@@ -226,5 +224,19 @@ class WKBTransformer implements TransformerInterface
             default:
                 return null;
         }
+    }
+
+    /**
+     * Parses a point object.
+     *
+     * @param string $str
+     * @return \Geokit\Geometry\Point
+     */
+    protected function parsePoint(&$str)
+    {
+        $coords = unpack('d*', substr($str, 0, 16));
+        $str = substr($str, 16);
+
+        return new Point($coords[1], $coords[2]);
     }
 }

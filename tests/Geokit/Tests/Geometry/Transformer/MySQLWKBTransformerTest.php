@@ -11,7 +11,7 @@
 
 namespace Geokit\Tests\Geometry\Transformer;
 
-use Geokit\Geometry\Transformer\MySQLTransformer;
+use Geokit\Geometry\Transformer\MySQLWKBTransformer;
 use Geokit\Geometry\GeometryCollection;
 use Geokit\Geometry\LineString;
 use Geokit\Geometry\LinearRing;
@@ -25,9 +25,9 @@ use Geokit\Geometry\Polygon;
  * @author  Jan Sorgalla <jsorgalla@googlemail.com>
  * @version @package_version@
  *
- * @covers Geokit\Geometry\Transformer\MySQLTransformer
+ * @covers Geokit\Geometry\Transformer\MySQLWKBTransformer
  */
-class MySQLTransformerTest extends \PHPUnit_Framework_TestCase
+class MySQLWKBTransformerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @group database
@@ -36,7 +36,7 @@ class MySQLTransformerTest extends \PHPUnit_Framework_TestCase
      */
     public function testTransform($a, $b, $message)
     {
-        $transformer = new MySQLTransformer();
+        $transformer = new MySQLWKBTransformer();
 
         $this->assertEquals($a, $transformer->transform($b), sprintf($message, 'transform()'));
     }
@@ -48,7 +48,7 @@ class MySQLTransformerTest extends \PHPUnit_Framework_TestCase
      */
     public function testReverseTransform($a, $b, $message)
     {
-        $transformer = new MySQLTransformer();
+        $transformer = new MySQLWKBTransformer();
 
         $this->assertEquals($b, $transformer->reverseTransform($a), sprintf($message, 'reverseTransform()'));
     }
