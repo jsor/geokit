@@ -16,6 +16,7 @@ use Geokit\Geocoding\LocationInterface;
 use Geokit\Geocoding\Response;
 use Geokit\LatLng;
 use Geokit\Bounds;
+use Geokit\Util;
 use Buzz\Browser;
 
 /**
@@ -127,8 +128,10 @@ class YahooPlaceFinderGeocoder extends AbstractGeocoder
     /**
      * {@inheritDoc}
      */
-    public function reverseGeocodeLatLng(LatLng $latLng)
+    public function reverseGeocodeLatLng($latLng)
     {
+        $latLng = Util::normalizeLatLng($latLng);
+
         $params = array(
             'q'      => sprintf('%F,%F', $latLng->getLatitude(), $latLng->getLongitude()),
             'gflags' => 'R'

@@ -11,8 +11,6 @@
 
 namespace Geokit\Geocoding;
 
-use Geokit\LatLng;
-
 /**
  * @author  Jan Sorgalla <jsorgalla@googlemail.com>
  * @version @package_version@
@@ -26,10 +24,10 @@ interface GeocoderInterface
     function geocodeAddress($address);
 
     /**
-     * @param \Geokit\LatLng $latLng
+     * @param mixed $latLng A latitude/longitude pair which can be normalized by \Geokit\Util::normalizeLatLng()
      * @return \Geokit\Geocoding\Response
      */
-    function reverseGeocodeLatLng(LatLng $latLng);
+    function reverseGeocodeLatLng($latLng);
 
     /**
      * @param string $ip

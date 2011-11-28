@@ -11,7 +11,6 @@
 
 namespace Geokit\Geocoding;
 
-use Geokit\LatLng;
 use Buzz\Browser;
 
 /**
@@ -95,7 +94,7 @@ abstract class AbstractGeocoder implements GeocoderInterface
     /**
      * {@inheritDoc}
      */
-    public function reverseGeocodeLatLng(LatLng $latLng)
+    public function reverseGeocodeLatLng($latLng)
     {
         return new Response(501, $this); // Not implemented
     }

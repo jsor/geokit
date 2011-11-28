@@ -11,8 +11,6 @@
 
 namespace Geokit\Geocoding;
 
-use Geokit\LatLng;
-
 /**
  * @author  Jan Sorgalla <jsorgalla@googlemail.com>
  * @version @package_version@
@@ -72,7 +70,7 @@ class MultiGeocoder implements GeocoderInterface
     /**
      * {@inheritDoc}
      */
-    public function reverseGeocodeLatLng(LatLng $latLng)
+    public function reverseGeocodeLatLng($latLng)
     {
         foreach ($this->geocoders as $geocoder) {
             $response = $geocoder->reverseGeocodeLatLng($latLng);

@@ -16,6 +16,7 @@ use Geokit\Geocoding\LocationInterface;
 use Geokit\Geocoding\Response;
 use Geokit\LatLng;
 use Geokit\Bounds;
+use Geokit\Util;
 
 /**
  * @author  Jan Sorgalla <jsorgalla@googlemail.com>
@@ -85,8 +86,10 @@ class GoogleMapsGeocoder extends AbstractGeocoder
     /**
      * {@inheritDoc}
      */
-    public function reverseGeocodeLatLng(LatLng $latLng)
+    public function reverseGeocodeLatLng($latLng)
     {
+        $latLng = Util::normalizeLatLng($latLng);
+
         $params = array('latlng' => sprintf('%F,%F', $latLng->getLatitude(), $latLng->getLongitude()));
         return $this->_doRequest($params);
     }
