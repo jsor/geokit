@@ -136,6 +136,15 @@ class YahooPlaceFinderGeocoder extends AbstractGeocoder
 
         return $this->_doRequest($params);
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function geocodeIp($ip)
+    {
+        $params = array('q' => $ip);
+        return $this->_doRequest($params);
+    }
 
     /**
      * Request googles geocoding service.

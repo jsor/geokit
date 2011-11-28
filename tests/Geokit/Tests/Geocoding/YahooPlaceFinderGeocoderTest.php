@@ -201,4 +201,36 @@ Content-Type: application/json; charset=UTF-8
 
         $this->assertCount(0, $response->getAdditionalLocations());
     }
+    
+    public function testGeocodeIp()
+    {
+        $response = new \Buzz\Message\Response();
+        $response->fromString(file_get_contents(__DIR__.'/Fixtures/yahooplacefindergeocoder_response_3.txt'));
+
+        $this->browser->expects($this->once())
+                      ->method('get')
+                      ->will($this->returnValue($response));
+
+        $response = $this->geocoder->geocodeIp('12.215.42.19');
+
+        $this->assertInstanceOf('\Geokit\Geocoding\Response', $response);
+        $this->assertEquals(200, $response->getCode());
+        $this->assertSame($this->geocoder, $response->getGeocoder());
+
+        $location = $response->getLocation();
+
+        $this->assertInstanceOf('\Geokit\Geocoding\LocationInterface', $location);
+        $this->assertEquals(new LatLng(41.346561, -88.842659), $location->getLatLng());
+        $this->assertEquals(LocationInterface::ACCURACY_CENTER, $location->getAccuracy());
+        $this->assertEquals(new Bounds(new LatLng(41.308990, -88.875221), new LatLng(41.389130, -88.795303)), $location->getBounds());
+        $this->assertEquals(null, $location->getViewport());
+        $this->assertEquals(null, $location->getFormattedAddress());
+        $this->assertEquals(null, $location->getStreetNumber());
+        $this->assertEquals(null, $location->getStreetName());
+        $this->assertEquals('61350', $location->getPostalCode());
+        $this->assertEquals('Ottawa', $location->getLocality());
+        $this->assertEquals('Illinois', $location->getRegion());
+        $this->assertEquals('United States', $location->getCountryName());
+        $this->assertEquals('US', $location->getCountryCode());
+    }
 }
