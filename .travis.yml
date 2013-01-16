@@ -6,7 +6,6 @@ php:
 
 before_script:
   - sh -c "mysql -e 'create database IF NOT EXISTS geokit;'"
-  - wget -nc http://getcomposer.org/composer.phar
-  - php composer.phar update
+  - composer --prefer-source --dev install
 
 script: phpunit --coverage-text --configuration phpunit.travis.xml
