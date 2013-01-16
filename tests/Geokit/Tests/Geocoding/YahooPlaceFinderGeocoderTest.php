@@ -99,8 +99,7 @@ class YahooPlaceFinderGeocoderTest extends \PHPUnit_Framework_TestCase
 
     public function testGeocodeAddressZeroResultsResponse()
     {
-        $response = new \Buzz\Message\Response();
-        $response->fromString('HTTP/1.0 200 OK
+        $response = \Geokit\Tests\TestHelper::createBuzzResponseFromString('HTTP/1.0 200 OK
 Content-Type: application/json; charset=UTF-8
 
 {"ResultSet":{"version":"1.0","Error":0,"ErrorMessage":"No error","Locale":"us_US","Quality":10,"Found":0}}');
@@ -118,8 +117,7 @@ Content-Type: application/json; charset=UTF-8
 
     public function testGeocodeAddressInvalidRequestResponse()
     {
-        $response = new \Buzz\Message\Response();
-        $response->fromString('HTTP/1.0 200 OK
+        $response = \Geokit\Tests\TestHelper::createBuzzResponseFromString('HTTP/1.0 200 OK
 Content-Type: application/json; charset=UTF-8
 
 {"ResultSet":{"version":"1.0","Error":100,"ErrorMessage":"No location parameters","Locale":"us_US","Quality":0,"Found":0}}');
@@ -137,8 +135,7 @@ Content-Type: application/json; charset=UTF-8
 
     public function testGeocodeAddress()
     {
-        $response = new \Buzz\Message\Response();
-        $response->fromString(file_get_contents(__DIR__.'/Fixtures/yahooplacefindergeocoder_response_1.txt'));
+        $response = \Geokit\Tests\TestHelper::createBuzzResponseFromString(file_get_contents(__DIR__.'/Fixtures/yahooplacefindergeocoder_response_1.txt'));
 
         $this->browser->expects($this->once())
                       ->method('get')
@@ -169,8 +166,7 @@ Content-Type: application/json; charset=UTF-8
 
     public function testReverseGeocodeLatLng()
     {
-        $response = new \Buzz\Message\Response();
-        $response->fromString(file_get_contents(__DIR__.'/Fixtures/yahooplacefindergeocoder_response_2.txt'));
+        $response = \Geokit\Tests\TestHelper::createBuzzResponseFromString(file_get_contents(__DIR__.'/Fixtures/yahooplacefindergeocoder_response_2.txt'));
 
         $this->browser->expects($this->once())
                       ->method('get')
@@ -204,8 +200,7 @@ Content-Type: application/json; charset=UTF-8
     
     public function testGeocodeIp()
     {
-        $response = new \Buzz\Message\Response();
-        $response->fromString(file_get_contents(__DIR__.'/Fixtures/yahooplacefindergeocoder_response_3.txt'));
+        $response = \Geokit\Tests\TestHelper::createBuzzResponseFromString(file_get_contents(__DIR__.'/Fixtures/yahooplacefindergeocoder_response_3.txt'));
 
         $this->browser->expects($this->once())
                       ->method('get')

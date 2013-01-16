@@ -72,8 +72,7 @@ class GoogleMapsGeocoderTest extends \PHPUnit_Framework_TestCase
 
     public function testGeocodeAddressZeroResultsResponse()
     {
-        $response = new \Buzz\Message\Response();
-        $response->fromString('HTTP/1.0 200 OK
+        $response = \Geokit\Tests\TestHelper::createBuzzResponseFromString('HTTP/1.0 200 OK
 Content-Type: application/json; charset=UTF-8
 
 {"status": "ZERO_RESULTS", "results": []}');
@@ -91,8 +90,7 @@ Content-Type: application/json; charset=UTF-8
 
     public function testGeocodeAddressInvalidRequestResponse()
     {
-        $response = new \Buzz\Message\Response();
-        $response->fromString('HTTP/1.0 200 OK
+        $response = \Geokit\Tests\TestHelper::createBuzzResponseFromString('HTTP/1.0 200 OK
 Content-Type: application/json; charset=UTF-8
 
 {"status": "INVALID_REQUEST", "results": []}');
@@ -110,8 +108,7 @@ Content-Type: application/json; charset=UTF-8
 
     public function testGeocodeAddressRequestDeniedResponse()
     {
-        $response = new \Buzz\Message\Response();
-        $response->fromString('HTTP/1.0 200 OK
+        $response = \Geokit\Tests\TestHelper::createBuzzResponseFromString('HTTP/1.0 200 OK
 Content-Type: application/json; charset=UTF-8
 
 {"status": "REQUEST_DENIED", "results": []}');
@@ -129,8 +126,7 @@ Content-Type: application/json; charset=UTF-8
 
     public function testGeocodeAddressOverQueryLimitResponse()
     {
-        $response = new \Buzz\Message\Response();
-        $response->fromString('HTTP/1.0 200 OK
+        $response = \Geokit\Tests\TestHelper::createBuzzResponseFromString('HTTP/1.0 200 OK
 Content-Type: application/json; charset=UTF-8
 
 {"status": "REQUEST_DENIED", "results": []}');
@@ -148,8 +144,7 @@ Content-Type: application/json; charset=UTF-8
 
     public function testGeocodeAddress()
     {
-        $response = new \Buzz\Message\Response();
-        $response->fromString(file_get_contents(__DIR__.'/Fixtures/googlemapsgeocoder_response_1.txt'));
+        $response = \Geokit\Tests\TestHelper::createBuzzResponseFromString(file_get_contents(__DIR__.'/Fixtures/googlemapsgeocoder_response_1.txt'));
 
         $this->browser->expects($this->once())
                       ->method('get')
@@ -180,8 +175,7 @@ Content-Type: application/json; charset=UTF-8
 
     public function testReverseGeocodeLatLng()
     {
-        $response = new \Buzz\Message\Response();
-        $response->fromString(file_get_contents(__DIR__.'/Fixtures/googlemapsgeocoder_response_2.txt'));
+        $response = \Geokit\Tests\TestHelper::createBuzzResponseFromString(file_get_contents(__DIR__.'/Fixtures/googlemapsgeocoder_response_2.txt'));
 
         $this->browser->expects($this->once())
                       ->method('get')

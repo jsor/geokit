@@ -70,8 +70,7 @@ class HostipGeocoderTest extends \PHPUnit_Framework_TestCase
 
     public function testGeocodeAddressZeroResultsResponse()
     {
-        $response = new \Buzz\Message\Response();
-        $response->fromString('HTTP/1.0 200 OK
+        $response = \Geokit\Tests\TestHelper::createBuzzResponseFromString('HTTP/1.0 200 OK
 Content-Type: text/xml; charset=iso-8859-1
 
 <?xml version="1.0" encoding="ISO-8859-1" ?>
@@ -108,8 +107,7 @@ Content-Type: text/xml; charset=iso-8859-1
 
     public function testGeocodeIp()
     {
-        $response = new \Buzz\Message\Response();
-        $response->fromString('HTTP/1.0 200 OK
+        $response = \Geokit\Tests\TestHelper::createBuzzResponseFromString('HTTP/1.0 200 OK
 Content-Type: text/xml; charset=iso-8859-1
 
 <?xml version="1.0" encoding="ISO-8859-1" ?>
