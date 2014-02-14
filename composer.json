@@ -2,7 +2,7 @@
     "name": "geokit/geokit",
     "type": "library",
     "description": "Geo-Toolkit for PHP 5.3+",
-    "keywords": ["geo", "geometry", "geocoding"],
+    "keywords": ["geo", "geometry"],
     "homepage": "https://github.com/jsor/Geokit",
     "license": "MIT",
     "authors": [
@@ -13,8 +13,7 @@
         }
     ],
     "require": {
-        "php": ">=5.3.0",
-        "kriswallsmith/buzz": ">=0.5.0"
+        "php": ">=5.3.0"
     },
     "autoload": {
         "psr-4": {
