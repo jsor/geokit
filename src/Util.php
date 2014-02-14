@@ -18,7 +18,7 @@ namespace Geokit;
 class Util
 {
     /**
-     * @param array|string|\Geokit\LatLng|\Geokit\Geometry\Point $var
+     * @param array|string|\Geokit\LatLng $var
      * @return \Geokit\LatLng
      * @throws \InvalidArgumentException
      */
@@ -30,9 +30,6 @@ class Util
         if ($var instanceof LatLng) {
             $lat = $var->getLatitude();
             $lng = $var->getLongitude();
-        } elseif ($var instanceof Geometry\Point) {
-            $lat = $var->getY();
-            $lng = $var->getX();
         } elseif (is_string($var)) {
             if (preg_match('/(\-?\d+\.?\d*)[, ] ?(\-?\d+\.?\d*)$/', $var, $match)) {
                 $lat = $match[1];

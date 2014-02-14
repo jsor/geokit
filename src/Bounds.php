@@ -28,33 +28,6 @@ class Bounds
     private $northEast;
 
     /**
-     * Static factory method to create a Bounds object from a Geometry object.
-     *
-     * @param \Geokit\Geometry\GeometryInterface $geometry
-     * @return \Geokit\Bounds
-     */
-    public static function fromGeometry(Geometry\GeometryInterface $geometry)
-    {
-        if ('Point' === $geometry->getGeometryType()) {
-            return new self(
-                new LatLng($geometry->getY(), $geometry->getX()),
-                new LatLng($geometry->getY(), $geometry->getX())
-            );
-        } else {
-            $bounds = null;
-            foreach ($geometry->all() as $component) {
-                if (null === $bounds) {
-                    $bounds = self::fromGeometry($component);
-                } else {
-                    $bounds->extendByBounds(self::fromGeometry($component));
-                }
-            }
-
-            return $bounds;
-        }
-    }
-
-    /**
      * @param \Geokit\LatLng $southWest
      * @param \Geokit\LatLng $northEast
      */
@@ -175,41 +148,6 @@ class Bounds
         $this->extendByLatLng($bounds->getNorthEast());
 
         return $this;
-    }
-
-    /**
-     * @return \Geokit\Geometry\Polygon
-     */
-    public function toGeometry()
-    {
-        $points = array(
-            // bottom left
-            new Geometry\Point(
-                $this->southWest->getLongitude(),
-                $this->southWest->getLatitude()
-            ),
-            // bottom right
-            new Geometry\Point(
-                $this->northEast->getLongitude(),
-                $this->southWest->getLatitude()
-            ),
-            // top right
-            new Geometry\Point(
-                $this->northEast->getLongitude(),
-                $this->northEast->getLatitude()
-            ),
-            // top left
-            new Geometry\Point(
-                $this->southWest->getLongitude(),
-                $this->northEast->getLatitude()
-            ),
-        );
-
-        return new Geometry\Polygon(
-            array(
-                new Geometry\LinearRing($points)
-            )
-        );
     }
 
     /**

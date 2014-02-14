@@ -13,7 +13,6 @@ namespace Geokit\Tests;
 
 use Geokit\Util;
 use Geokit\LatLng;
-use Geokit\Geometry\Point;
 
 /**
  * @author  Jan Sorgalla <jsorgalla@googlemail.com>
@@ -35,14 +34,6 @@ class UtilTest extends \PHPUnit_Framework_TestCase
         $latLng2 = Util::normalizeLatLng($latLng1);
 
         $this->assertEquals($latLng1, $latLng2);
-    }
-
-    public function testNormalizeLatLngShouldAcceptPointArgument()
-    {
-        $point = new Point(2.5678, 1.1234);
-        $latLng2 = Util::normalizeLatLng($point);
-
-        $this->assertEquals(new LatLng(1.1234, 2.5678), $latLng2);
     }
 
     public function testNormalizeLatLngShouldAcceptStringArgument()

@@ -12,9 +12,6 @@
 namespace Geokit\Tests;
 
 use Geokit\Calc;
-use Geokit\LatLng;
-use Geokit\Util;
-use Geokit\Geometry\Point;
 
 /**
  * @author  Jan Sorgalla <jsorgalla@googlemail.com>

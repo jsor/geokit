@@ -13,9 +13,6 @@ namespace Geokit\Tests;
 
 use Geokit\Bounds;
 use Geokit\LatLng;
-use Geokit\Geometry\Point;
-use Geokit\Geometry\MultiPoint;
-use Geokit\Geometry\LinearRing;
 
 /**
  * @author  Jan Sorgalla <jsorgalla@googlemail.com>
@@ -31,17 +28,6 @@ class BoundsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($e, $b->getNorthEast()->getLongitude());
         $this->assertEquals($s, $b->getSouthWest()->getLatitude());
         $this->assertEquals($w, $b->getSouthWest()->getLongitude());
-    }
-
-    public function testFromGeometry()
-    {
-        $geometry = new MultiPoint(array(new Point(1, 1), new Point(10, 10)));
-
-        $bounds = Bounds::fromGeometry($geometry);
-
-        $this->assertInstanceOf('\Geokit\Bounds', $bounds);
-        $this->assertEquals(new LatLng(1, 1), $bounds->getSouthWest());
-        $this->assertEquals(new LatLng(10, 10), $bounds->getNorthEast());
     }
 
     public function testConstructorShouldAcceptLatLngsAsFirstAndSecondArgument()
@@ -134,27 +120,5 @@ class BoundsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($bounds->crossesAntimeridian());
         $this->assertEquals(90, $bounds->getSpan()->getLatitude());
         $this->assertEquals(2, $bounds->getSpan()->getLongitude());
-    }
-
-    public function testToGeometryShouldReturnGeometryPolygonObject()
-    {
-        $bounds = new Bounds(new LatLng(40.73083, -73.99756), new LatLng(40.741404,  -73.988135));
-
-        $polygon = $bounds->toGeometry();
-
-        $all = array(
-            new LinearRing(
-                array (
-                    new Point(-73.99756, 40.73083),
-                    new Point(-73.988135, 40.73083),
-                    new Point(-73.988135, 40.741404),
-                    new Point(-73.99756, 40.741404),
-                    new Point(-73.99756, 40.73083)
-                )
-            )
-        );
-
-        $this->assertInstanceOf('\Geokit\Geometry\Polygon', $polygon);
-        $this->assertEquals($all, $polygon->all());
     }
 }
