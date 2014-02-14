@@ -79,11 +79,11 @@ class Util
      */
     public static function normalizeLng($lng)
     {
-        if ($lng % 360 === 180) {
+        $mod = fmod($lng, 360);
+
+        if ($mod === 180) {
             return 180;
         }
-
-        $mod = fmod($lng, 360);
 
         return $mod < -180 ? $mod + 360 : ($mod > 180 ? $mod - 360 : $mod);
     }

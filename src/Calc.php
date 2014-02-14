@@ -140,6 +140,6 @@ class Calc
 
         $heading = atan2($y, $x);
 
-        return (rad2deg($heading) + 360) % 360;
+        return fmod(rad2deg($heading) + 360, 360);
     }
 }
