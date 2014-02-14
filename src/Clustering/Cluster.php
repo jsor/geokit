@@ -14,10 +14,6 @@ namespace Geokit\Clustering;
 use Geokit\Bounds;
 use Geokit\LatLng;
 
-/**
- * @author  Jan Sorgalla <jsorgalla@googlemail.com>
- * @version @package_version@
- */
 class Cluster implements ClusterInterface
 {
     /**

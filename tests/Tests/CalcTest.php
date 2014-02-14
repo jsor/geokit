@@ -14,9 +14,6 @@ namespace Geokit\Tests;
 use Geokit\Calc;
 
 /**
- * @author  Jan Sorgalla <jsorgalla@googlemail.com>
- * @version @package_version@
- *
  * @covers Geokit\Calc
  */
 class CalcTest extends \PHPUnit_Framework_TestCase

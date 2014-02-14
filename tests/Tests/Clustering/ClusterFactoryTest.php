@@ -15,9 +15,6 @@ use Geokit\Clustering\ClusterFactory;
 use Geokit\LatLng;
 
 /**
- * @author  Jan Sorgalla <jsorgalla@googlemail.com>
- * @version @package_version@
- *
  * @covers Geokit\Clustering\ClusterFactory
  */
 class ClusterFactoryTest extends \PHPUnit_Framework_TestCase

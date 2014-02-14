@@ -13,10 +13,6 @@ namespace Geokit\Tests\Clustering\Fixtures;
 
 use Geokit\Clustering\Cluster;
 
-/**
- * @author  Jan Sorgalla <jsorgalla@googlemail.com>
- * @version @package_version@
- */
 class TestCluster extends Cluster
 {
 }

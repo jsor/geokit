@@ -14,10 +14,6 @@ namespace Geokit\Clustering;
 use Geokit\LatLng;
 use Geokit\Util;
 
-/**
- * @author  Jan Sorgalla <jsorgalla@googlemail.com>
- * @version @package_version@
- */
 abstract class AbstractClusterer implements ClustererInterface
 {
     /**

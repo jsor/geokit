@@ -11,10 +11,6 @@
 
 namespace Geokit;
 
-/**
- * @author  Jan Sorgalla <jsorgalla@googlemail.com>
- * @version @package_version@
- */
 class LatLng
 {
     /**
@@ -66,7 +62,7 @@ class LatLng
      * this point and the destination point using the Haversine formula and
      * assuming an Earth radius of Util::EARTH_RADIUS.
      *
-     * @param LatLng $latLng
+     * @param \Geokit\LatLng $dest
      * @return float The distance, in meters, to the destination point
      * @see \Geokit\Util::distance()
      */
@@ -83,7 +79,7 @@ class LatLng
     /**
      * Returns the (initial) heading from this point to the destination point in degrees.
      *
-     * @param LatLng $latLng
+     * @param \Geokit\LatLng $dest
      * @return float  Initial heading in degrees from North
      * @see \Geokit\Util::heading()
      */

@@ -11,14 +11,8 @@
 
 namespace Geokit\Clustering;
 
-use Geokit\Clustering\AbstractClusterer;
-use Geokit\Clustering\ClusterFactoryInterface;
 use Geokit\LatLng;
 
-/**
- * @author  Jan Sorgalla <jsorgalla@googlemail.com>
- * @version @package_version@
- */
 class GoogleMapsClusterer extends AbstractClusterer
 {
     /**
@@ -62,9 +56,9 @@ class GoogleMapsClusterer extends AbstractClusterer
     protected $clusterRadius = 100;
 
     /**
-     * @param \Geokit\ClusterFactoryInterface $clusterFactory
-     * @param integer $mapZoomLevel
-     * @param integer $clusterRadius
+     * @param \Geokit\Clustering\ClusterFactoryInterface|null $clusterFactory
+     * @param integer|null $mapZoomLevel
+     * @param integer|null $clusterRadius
      */
     public function __construct(ClusterFactoryInterface $clusterFactory = null, $mapZoomLevel = null, $clusterRadius = null)
     {

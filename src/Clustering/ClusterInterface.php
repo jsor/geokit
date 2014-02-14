@@ -13,10 +13,6 @@ namespace Geokit\Clustering;
 
 use Geokit\LatLng;
 
-/**
- * @author  Jan Sorgalla <jsorgalla@googlemail.com>
- * @version @package_version@
- */
 interface ClusterInterface extends \Countable
 {
     /**

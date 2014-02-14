@@ -11,10 +11,6 @@
 
 namespace Geokit;
 
-/**
- * @author  Jan Sorgalla <jsorgalla@googlemail.com>
- * @version @package_version@
- */
 class Util
 {
     /**

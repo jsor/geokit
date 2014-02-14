@@ -11,10 +11,6 @@
 
 namespace Geokit\Clustering;
 
-/**
- * @author  Jan Sorgalla <jsorgalla@googlemail.com>
- * @version @package_version@
- */
 interface ClusterFactoryInterface
 {
     /**

@@ -15,9 +15,6 @@ use Geokit\Bounds;
 use Geokit\LatLng;
 
 /**
- * @author  Jan Sorgalla <jsorgalla@googlemail.com>
- * @version @package_version@
- *
  * @covers Geokit\Clustering\AbstractClusterer
  */
 class AbstractClustererTest extends \PHPUnit_Framework_TestCase

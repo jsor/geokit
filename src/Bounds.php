@@ -11,10 +11,6 @@
 
 namespace Geokit;
 
-/**
- * @author  Jan Sorgalla <jsorgalla@googlemail.com>
- * @version @package_version@
- */
 class Bounds
 {
     /**
@@ -91,6 +87,7 @@ class Bounds
     }
 
     /**
+     * @param \Geokit\LatLng $latLng
      * @return boolean
      */
     public function containsLatLng(LatLng $latLng)

@@ -15,9 +15,6 @@ use Geokit\Clustering\GoogleMapsClusterer;
 use Geokit\LatLng;
 
 /**
- * @author  Jan Sorgalla <jsorgalla@googlemail.com>
- * @version @package_version@
- *
  * @covers Geokit\Clustering\GoogleMapsClusterer
  */
 class GoogleMapsClustererTest extends \PHPUnit_Framework_TestCase

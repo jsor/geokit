@@ -1,12 +1,9 @@
 language: php
 
-php: 
+php:
+  - 5.3.3
   - 5.3
   - 5.4
   - 5.5
 
-before_script:
-  - sh -c "mysql -e 'create database IF NOT EXISTS geokit;'"
-  - composer --prefer-source --dev install
-
-script: phpunit --coverage-text --configuration phpunit.travis.xml
+script: phpunit --coverage-text
