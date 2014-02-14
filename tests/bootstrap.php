@@ -10,4 +10,4 @@
  */
 
 $loader = require __DIR__.'/../vendor/autoload.php';
-$loader->add('Geokit\\Tests', __DIR__);
+$loader->addPsr4('Geokit\\', __DIR__);

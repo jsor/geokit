@@ -13,13 +13,13 @@
 >
     <testsuites>
         <testsuite name="Geokit Test Suite">
-            <directory>./tests/Geokit/</directory>
+            <directory>./tests/</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
-            <directory>./src/Geokit/</directory>
+            <directory>./src/</directory>
         </whitelist>
     </filter>
 
