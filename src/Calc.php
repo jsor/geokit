@@ -14,9 +14,30 @@ namespace Geokit;
 class Calc
 {
     /**
+     * The Earth's equatorial radius in meters, assuming the Earth is a perfect sphere.
+     *
+     * @see http://en.wikipedia.org/wiki/Earth_radius#Equatorial_radius
+     */
+    const EARTH_EQUATORIAL_RADIUS = 6378137.0;
+
+    /**
+     * The Earth's polar radius.
+     *
+     * @see http://en.wikipedia.org/wiki/Earth_radius#Polar_radius
+     */
+    const EARTH_POLAR_RADIUS = 6356752.314245;
+
+    /**
+     * The Earth's flattening.
+     *
+     * @see http://en.wikipedia.org/wiki/Earth_radius#Physics_of_Earth.27s_deformation
+     */
+    const EARTH_FLATTENING = 0.00335281066475; //1/298.257223563
+
+    /**
      * Returns the approximate sea level great circle (Earth) distance between
      * two points using the Haversine formula and assuming an Earth radius of
-     * EARTH_EQUATORIAL_RADIUS.
+     * self::EARTH_EQUATORIAL_RADIUS.
      *
      * @see http://www.movable-type.co.uk/scripts/latlong.html
      * @param float $lat1
@@ -41,7 +62,7 @@ class Calc
 
         $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
 
-        return new Distance(EARTH_EQUATORIAL_RADIUS * $c);
+        return new Distance(self::EARTH_EQUATORIAL_RADIUS * $c);
     }
 
     /**
@@ -58,9 +79,9 @@ class Calc
     public static function distanceVincenty($lat1, $lng1, $lat2, $lng2)
     {
         // WGS-84 ellipsoid params
-        $a = EARTH_EQUATORIAL_RADIUS;
-        $b = EARTH_POLAR_RADIUS;
-        $f = EARTH_FLATTENING;
+        $a = self::EARTH_EQUATORIAL_RADIUS;
+        $b = self::EARTH_POLAR_RADIUS;
+        $f = self::EARTH_FLATTENING;
 
         $L  = deg2rad($lng2 - $lng1);
         $U1 = atan((1 - $f) * tan(deg2rad($lat1)));
