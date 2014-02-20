@@ -17,6 +17,9 @@
     "autoload": {
         "psr-4": {
             "Geokit\\": "src/"
-        }
+        },
+        "files": [
+            "src/constants.php"
+        ]
     }
 }
