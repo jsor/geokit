@@ -158,6 +158,64 @@ class Calc
     }
 
     /**
+     * Calculates an intermediate point on the geodesic between the two given
+     * points.
+     *
+     * @see http://www.movable-type.co.uk/scripts/latlong.html
+     * @param float $lat1
+     * @param float $lng1
+     * @param float $lat2
+     * @param float $lng2
+     * @return \Geokit\LatLng
+     */
+    public static function midpoint($lat1, $lng1, $lat2, $lng2)
+    {
+        $lat1 = deg2rad($lat1);
+        $lat2 = deg2rad($lat2);
+        $dLon = deg2rad($lng2 - $lng1);
+
+        $Bx = cos($lat2) * cos($dLon);
+        $By = cos($lat2) * sin($dLon);
+
+        $lat3 = atan2(sin($lat1) + sin($lat2),
+                sqrt( (cos($lat1) + $Bx) * (cos($lat1) + $Bx) + $By * $By ) );
+        $lon3 = deg2rad($lng1) + atan2($By, cos($lat1) + $Bx);
+
+        return new LatLng(rad2deg($lat3), rad2deg($lon3));
+    }
+
+    /**
+     * Calculates the destination point along a geodesic, given an initial heading
+     * and distance, from the given start point.
+     *
+     * @see http://www.movable-type.co.uk/scripts/latlong.html
+     * @param float $lat
+     * @param float $lng
+     * @param float $heading (in degrees)
+     * @param float|\Geokit\Distance $distance (in meters)
+     * @return \Geokit\LatLng
+     */
+    public static function endpoint($lat, $lng, $heading, $distance)
+    {
+        if ($distance instanceof Distance) {
+            $distance = $distance->meters();
+        }
+
+        $lat = deg2rad($lat);
+        $lng = deg2rad($lng);
+
+        $angularDistance = $distance / self::EARTH_EQUATORIAL_RADIUS;
+        $heading = deg2rad($heading);
+
+        $lat2 = asin(sin($lat) * cos($angularDistance) +
+                cos($lat) * sin($angularDistance) * cos($heading));
+        $lon2 = $lng + atan2(sin($heading) * sin($angularDistance) * cos($lat),
+                cos($angularDistance) - sin($lat) * sin($lat2));
+
+        return new LatLng(rad2deg($lat2), rad2deg($lon2));
+    }
+
+    /**
      * Normalizes a latitude to the (-90, 90) range. Latitudes above 90 or
      * below -90 are capped, not wrapped.
      *

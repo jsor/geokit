@@ -12,6 +12,8 @@
 namespace Geokit\Tests;
 
 use Geokit\Calc;
+use Geokit\Distance;
+use Geokit\LatLng;
 
 /**
  * @covers Geokit\Calc
@@ -258,6 +260,34 @@ class CalcTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(0,   Calc::heading(0, 0, 1, 0));
         $this->assertEquals(270, Calc::heading(0, 0, 0, -1));
         $this->assertEquals(180, Calc::heading(0, 0, -1, 0));
+    }
+
+    public function testMidpoint()
+    {
+        $midpoint = Calc::midpoint(32.918593, -96.958444, 32.969527, -96.990159);
+
+        $this->assertEquals(
+            32.94406100147102,
+            $midpoint->getLatitude()
+        );
+        $this->assertEquals(
+            -96.974296932499726,
+            $midpoint->getLongitude()
+        );
+    }
+
+    public function testEndpoint()
+    {
+        $endpoint = Calc::endpoint(32.918593, -96.958444, 332, new Distance(6389.09568));
+
+        $this->assertEquals(
+            32.969264985093176,
+            $endpoint->getLatitude()
+        );
+        $this->assertEquals(
+            -96.990560988610554,
+            $endpoint->getLongitude()
+        );
     }
 
     /**
