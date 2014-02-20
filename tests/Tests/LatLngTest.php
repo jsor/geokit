@@ -89,4 +89,63 @@ class LatLngTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(270, $latLng->headingTo(new LatLng(0, -1)));
         $this->assertEquals(180, $latLng->headingTo(new LatLng(-1, 0)));
     }
+
+    public function testNormalizeShouldThrowExceptionIfInvalidDataSupplied()
+    {
+        $this->setExpectedException('\InvalidArgumentException', 'Cannot create LatLng');
+        LatLng::normalize(null);
+    }
+
+    public function testNormalizeShouldAcceptLatLngArgument()
+    {
+        $latLng1 = new LatLng(1.1234, 2.5678);
+        $latLng2 = LatLng::normalize($latLng1);
+
+        $this->assertEquals($latLng1, $latLng2);
+    }
+
+    public function testNormalizeShouldAcceptStringArgument()
+    {
+        $latLng = LatLng::normalize('1.1234,2.5678');
+
+        $this->assertSame(1.1234, $latLng->getLatitude());
+        $this->assertSame(2.5678, $latLng->getLongitude());
+    }
+
+    public function testNormalizeShouldAcceptArrayArgument()
+    {
+        $latLng = LatLng::normalize(array('latitude' => 1.1234, 'longitude' => 2.5678));
+
+        $this->assertSame(1.1234, $latLng->getLatitude());
+        $this->assertSame(2.5678, $latLng->getLongitude());
+    }
+
+    public function testNormalizeShouldAcceptArrayArgumentWithShortKeys()
+    {
+        $latLng = LatLng::normalize(array('lat' => 1.1234, 'lon' => 2.5678));
+
+        $this->assertSame(1.1234, $latLng->getLatitude());
+        $this->assertSame(2.5678, $latLng->getLongitude());
+
+        $latLng = LatLng::normalize(array('lat' => 1.1234, 'lng' => 2.5678));
+
+        $this->assertSame(1.1234, $latLng->getLatitude());
+        $this->assertSame(2.5678, $latLng->getLongitude());
+    }
+
+    public function testNormalizeShouldAcceptArrayArgumentWithXYKeys()
+    {
+        $latLng = LatLng::normalize(array('x' => 2.5678, 'y' => 1.1234));
+
+        $this->assertSame(1.1234, $latLng->getLatitude());
+        $this->assertSame(2.5678, $latLng->getLongitude());
+    }
+
+    public function testNormalizeShouldAcceptArrayAccessArgument()
+    {
+        $latLng = LatLng::normalize(new \ArrayObject(array('latitude' => 1.1234, 'longitude' => 2.5678)));
+
+        $this->assertSame(1.1234, $latLng->getLatitude());
+        $this->assertSame(2.5678, $latLng->getLongitude());
+    }
 }

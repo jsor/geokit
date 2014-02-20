@@ -56,7 +56,7 @@ class Bounds
     {
         if ($this->crossesAntimeridian()) {
             $span = $this->lngSpan($this->southWest->getLongitude(), $this->northEast->getLongitude());
-            $lng  = Util::normalizeLng($this->southWest->getLongitude() + $span / 2);
+            $lng  = Calc::normalizeLng($this->southWest->getLongitude() + $span / 2);
         } else {
             $lng = ($this->southWest->getLongitude() + $this->northEast->getLongitude()) / 2;
         }

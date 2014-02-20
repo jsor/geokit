@@ -90,4 +90,62 @@ class LatLng
             $dest->getLongitude()
         );
     }
+
+    /**
+     * Takes anything which looks like a point and generates a LatLng object
+     * from it.
+     *
+     * $var can be:
+     *
+     * 1) A string in the format "1.1234, 2.5678" or "1.1234 2.5678"
+     * 2) An array in the format
+     *    * ['latitude' => 1.1234, 'longitude' => 2.5678]
+     *    * ['lat' => 1.1234, 'lng' => 2.5678]
+     *    * ['lat' => 1.1234, 'lon' => 2.5678]
+     *    * ['x' => 1.1234, 'y' => 2.5678]
+     * 3) a LatLng (which is just passed through as-is)
+     *
+     * @param array|string|\Geokit\LatLng $var
+     * @return \Geokit\LatLng
+     * @throws \InvalidArgumentException
+     */
+    public static function normalize($var)
+    {
+        $lat = null;
+        $lng = null;
+
+        if ($var instanceof self) {
+            $lat = $var->getLatitude();
+            $lng = $var->getLongitude();
+        } elseif (is_string($var)) {
+            if (preg_match('/(\-?\d+\.?\d*)[, ] ?(\-?\d+\.?\d*)$/', $var, $match)) {
+                $lat = $match[1];
+                $lng = $match[2];
+            }
+        } elseif (is_array($var) || $var instanceof \ArrayAccess) {
+            if (isset($var['latitude'])) {
+                $lat = $var['latitude'];
+            } elseif (isset($var['lat'])) {
+                $lat = $var['lat'];
+            } elseif (isset($var['y'])) {
+                $lat = $var['y'];
+            }
+
+            if (isset($var['longitude'])) {
+                $lng = $var['longitude'];
+            } elseif (isset($var['lng'])) {
+                $lng = $var['lng'];
+            } elseif (isset($var['lon'])) {
+                $lng = $var['lon'];
+            } elseif (isset($var['x'])) {
+                $lng = $var['x'];
+            }
+        }
+
+        if (null === $lat || null === $lng) {
+            throw new \InvalidArgumentException('Cannot create LatLng');
+        }
+
+        return new self(Calc::normalizeLat($lat), Calc::normalizeLng($lng));
+    }
 }

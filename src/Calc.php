@@ -156,4 +156,34 @@ class Calc
 
         return fmod(rad2deg($heading) + 360, 360);
     }
+
+    /**
+     * Normalizes a latitude to the (-90, 90) range. Latitudes above 90 or
+     * below -90 are capped, not wrapped.
+     *
+     * @param float $lat The latitude to normalize, in degrees
+     * @return float The latitude, fit within the (-90, 90) range
+     */
+    public static function normalizeLat($lat)
+    {
+        return max(-90, min(90, $lat));
+    }
+
+    /**
+     * Normalizes a longitude to the (-180, 180) range. Longitudes above 180
+     * or below -180 are wrapped.
+     *
+     * @param float $lng The longitude to normalize, in degrees
+     * @return float The longitude, fit within the (-180, 180) range
+     */
+    public static function normalizeLng($lng)
+    {
+        $mod = fmod($lng, 360);
+
+        if ($mod === 180) {
+            return 180;
+        }
+
+        return $mod < -180 ? $mod + 360 : ($mod > 180 ? $mod - 360 : $mod);
+    }
 }
