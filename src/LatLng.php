@@ -63,8 +63,7 @@ class LatLng
      * assuming an Earth radius of Util::EARTH_RADIUS.
      *
      * @param \Geokit\LatLng $dest
-     * @return float The distance, in meters, to the destination point
-     * @see \Geokit\Util::distance()
+     * @return \Geokit\Distance The distance to the destination point
      */
     public function distanceTo(LatLng $dest)
     {
@@ -80,8 +79,7 @@ class LatLng
      * Returns the (initial) heading from this point to the destination point in degrees.
      *
      * @param \Geokit\LatLng $dest
-     * @return float  Initial heading in degrees from North
-     * @see \Geokit\Util::heading()
+     * @return float Initial heading in degrees from North
      */
     public function headingTo(LatLng $dest)
     {

@@ -23,7 +23,10 @@ class CalcTest extends \PHPUnit_Framework_TestCase
      */
     public function testDistanceHaversine($latLng1, $latLng2, $distance)
     {
-        $this->assertEquals(sprintf('%F', $distance), sprintf('%F', Calc::distanceHaversine($latLng1[0], $latLng1[1], $latLng2[0], $latLng2[1])));
+        $this->assertEquals(
+            sprintf('%F', $distance),
+            sprintf('%F', Calc::distanceHaversine($latLng1[0], $latLng1[1], $latLng2[0], $latLng2[1])->meters())
+        );
     }
 
     public static function testDistanceHaversineDataProvider()
@@ -137,7 +140,10 @@ class CalcTest extends \PHPUnit_Framework_TestCase
      */
     public function testDistanceVincenty($latLng1, $latLng2, $distance)
     {
-        $this->assertEquals(sprintf('%F', $distance), sprintf('%F', Calc::distanceVincenty($latLng1[0], $latLng1[1], $latLng2[0], $latLng2[1])));
+        $this->assertEquals(
+            sprintf('%F', $distance),
+            sprintf('%F', Calc::distanceVincenty($latLng1[0], $latLng1[1], $latLng2[0], $latLng2[1])->meters())
+        );
     }
 
     public static function testDistanceVincentyDataProvider()

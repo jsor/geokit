@@ -23,7 +23,7 @@ class Calc
      * @param float $lng1
      * @param float $lat2
      * @param float $lng2
-     * @return float The distance in meters
+     * @return \Geokit\Distance
      */
     public static function distanceHaversine($lat1, $lng1, $lat2, $lng2)
     {
@@ -41,7 +41,7 @@ class Calc
 
         $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
 
-        return EARTH_EQUATORIAL_RADIUS * $c;
+        return new Distance(EARTH_EQUATORIAL_RADIUS * $c);
     }
 
     /**
@@ -53,7 +53,7 @@ class Calc
      * @param float $lng1
      * @param float $lat2
      * @param float $lng2
-     * @return float The distance in meters
+     * @return \Geokit\Distance
      */
     public static function distanceVincenty($lat1, $lng1, $lat2, $lng2)
     {
@@ -109,7 +109,7 @@ class Calc
             $B / 6 * $cos2SigmaM * (-3 + 4 * $sinSigma * $sinSigma) * (-3 + 4 * $cos2SigmaM * $cos2SigmaM)));
         $s = $b * $A * ($sigma - $deltaSigma);
 
-        return $s;
+        return new Distance($s);
     }
 
     /**
