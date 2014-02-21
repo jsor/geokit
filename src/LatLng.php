@@ -92,20 +92,20 @@ class LatLng
     }
 
     /**
-     * Takes anything which looks like a point and generates a LatLng object
-     * from it.
+     * Takes anything which looks like a coordinate and generates a LatLng
+     * object from it.
      *
      * $var can be:
      *
      * 1) A string in the format "1.1234, 2.5678" or "1.1234 2.5678"
-     * 2) An array in the format
+     * 2) An array or ArrayAccess object in the format
      *    * ['latitude' => 1.1234, 'longitude' => 2.5678]
      *    * ['lat' => 1.1234, 'lng' => 2.5678]
      *    * ['lat' => 1.1234, 'lon' => 2.5678]
-     *    * ['x' => 1.1234, 'y' => 2.5678]
-     * 3) a LatLng (which is just passed through as-is)
+     *    * ['x' => 2.5678, 'y' => 1.1234] // Note that y = LAT and x = LNG!
+     * 3) A LatLng object
      *
-     * @param  array|string|\Geokit\LatLng $var
+     * @param  array|\ArrayAccess|string|\Geokit\LatLng $var
      * @return \Geokit\LatLng
      * @throws \InvalidArgumentException
      */
