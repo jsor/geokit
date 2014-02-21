@@ -62,7 +62,7 @@ class LatLng
      * this point and the destination point using the Haversine formula and
      * assuming an Earth radius of Util::EARTH_RADIUS.
      *
-     * @param \Geokit\LatLng $dest
+     * @param  \Geokit\LatLng   $dest
      * @return \Geokit\Distance The distance to the destination point
      */
     public function distanceTo(LatLng $dest)
@@ -78,8 +78,8 @@ class LatLng
     /**
      * Returns the (initial) heading from this point to the destination point in degrees.
      *
-     * @param \Geokit\LatLng $dest
-     * @return float Initial heading in degrees from North
+     * @param  \Geokit\LatLng $dest
+     * @return float          Initial heading in degrees from North
      */
     public function headingTo(LatLng $dest)
     {
@@ -105,7 +105,7 @@ class LatLng
      *    * ['x' => 1.1234, 'y' => 2.5678]
      * 3) a LatLng (which is just passed through as-is)
      *
-     * @param array|string|\Geokit\LatLng $var
+     * @param  array|string|\Geokit\LatLng $var
      * @return \Geokit\LatLng
      * @throws \InvalidArgumentException
      */

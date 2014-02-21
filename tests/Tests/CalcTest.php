@@ -13,7 +13,6 @@ namespace Geokit\Tests;
 
 use Geokit\Calc;
 use Geokit\Distance;
-use Geokit\LatLng;
 
 /**
  * @covers Geokit\Calc

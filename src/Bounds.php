@@ -87,7 +87,7 @@ class Bounds
     }
 
     /**
-     * @param \Geokit\LatLng $latLng
+     * @param  \Geokit\LatLng $latLng
      * @return boolean
      */
     public function containsLatLng(LatLng $latLng)
@@ -95,7 +95,6 @@ class Bounds
       // check latitude
       if ($this->southWest->getLatitude() > $latLng->getLatitude() ||
           $latLng->getLatitude() > $this->northEast->getLatitude()) {
-
           return false;
       }
 
@@ -104,7 +103,7 @@ class Bounds
     }
 
     /**
-     * @param LatLng $latLng
+     * @param  LatLng $latLng
      * @return Bounds
      */
     public function extendByLatLng(LatLng $latLng)
@@ -136,7 +135,7 @@ class Bounds
 
     /**
      *
-     * @param Bounds $bounds
+     * @param  Bounds $bounds
      * @return Bounds
      */
     public function extendByBounds(Bounds $bounds)
@@ -150,7 +149,7 @@ class Bounds
     /**
      * Returns whether or not the given line of longitude is inside the bounds.
      *
-     * @param float $lng
+     * @param  float   $lng
      * @return boolean
      */
     protected function containsLng($lng)
@@ -167,8 +166,8 @@ class Bounds
     /**
      * Gets the longitudinal span of the given west and east coordinates.
      *
-     * @param float $west
-     * @param float $east
+     * @param  float $west
+     * @param  float $east
      * @return float
      */
     protected function lngSpan($west, $east)

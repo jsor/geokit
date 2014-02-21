@@ -40,10 +40,10 @@ class Calc
      * self::EARTH_EQUATORIAL_RADIUS.
      *
      * @see http://www.movable-type.co.uk/scripts/latlong.html
-     * @param float $lat1
-     * @param float $lng1
-     * @param float $lat2
-     * @param float $lng2
+     * @param  float            $lat1
+     * @param  float            $lng1
+     * @param  float            $lat2
+     * @param  float            $lng2
      * @return \Geokit\Distance
      */
     public static function distanceHaversine($lat1, $lng1, $lat2, $lng2)
@@ -70,10 +70,10 @@ class Calc
      * Vincenty inverse formula for ellipsoids.
      *
      * @see http://www.movable-type.co.uk/scripts/latlong-vincenty.html
-     * @param float $lat1
-     * @param float $lng1
-     * @param float $lat2
-     * @param float $lng2
+     * @param  float            $lat1
+     * @param  float            $lng1
+     * @param  float            $lat2
+     * @param  float            $lng2
      * @return \Geokit\Distance
      */
     public static function distanceVincenty($lat1, $lng1, $lat2, $lng2)
@@ -136,10 +136,10 @@ class Calc
     /**
      * Returns the (initial) heading from the first point to the second point in degrees.
      *
-     * @param float $lat1
-     * @param float $lng1
-     * @param float $lat2
-     * @param float $lng2
+     * @param  float $lat1
+     * @param  float $lng1
+     * @param  float $lat2
+     * @param  float $lng2
      * @return float Initial heading in degrees from North
      */
     public static function heading($lat1, $lng1, $lat2, $lng2)
@@ -162,10 +162,10 @@ class Calc
      * points.
      *
      * @see http://www.movable-type.co.uk/scripts/latlong.html
-     * @param float $lat1
-     * @param float $lng1
-     * @param float $lat2
-     * @param float $lng2
+     * @param  float          $lat1
+     * @param  float          $lng1
+     * @param  float          $lat2
+     * @param  float          $lng2
      * @return \Geokit\LatLng
      */
     public static function midpoint($lat1, $lng1, $lat2, $lng2)
@@ -178,7 +178,7 @@ class Calc
         $By = cos($lat2) * sin($dLon);
 
         $lat3 = atan2(sin($lat1) + sin($lat2),
-                sqrt( (cos($lat1) + $Bx) * (cos($lat1) + $Bx) + $By * $By ) );
+                sqrt((cos($lat1) + $Bx) * (cos($lat1) + $Bx) + $By * $By));
         $lon3 = deg2rad($lng1) + atan2($By, cos($lat1) + $Bx);
 
         return new LatLng(rad2deg($lat3), rad2deg($lon3));
@@ -189,10 +189,10 @@ class Calc
      * and distance, from the given start point.
      *
      * @see http://www.movable-type.co.uk/scripts/latlong.html
-     * @param float $lat
-     * @param float $lng
-     * @param float $heading (in degrees)
-     * @param float|\Geokit\Distance $distance (in meters)
+     * @param  float                  $lat
+     * @param  float                  $lng
+     * @param  float                  $heading  (in degrees)
+     * @param  float|\Geokit\Distance $distance (in meters)
      * @return \Geokit\LatLng
      */
     public static function endpoint($lat, $lng, $heading, $distance)
@@ -219,7 +219,7 @@ class Calc
      * Normalizes a latitude to the (-90, 90) range. Latitudes above 90 or
      * below -90 are capped, not wrapped.
      *
-     * @param float $lat The latitude to normalize, in degrees
+     * @param  float $lat The latitude to normalize, in degrees
      * @return float The latitude, fit within the (-90, 90) range
      */
     public static function normalizeLat($lat)
@@ -231,7 +231,7 @@ class Calc
      * Normalizes a longitude to the (-180, 180) range. Longitudes above 180
      * or below -180 are wrapped.
      *
-     * @param float $lng The longitude to normalize, in degrees
+     * @param  float $lng The longitude to normalize, in degrees
      * @return float The longitude, fit within the (-180, 180) range
      */
     public static function normalizeLng($lng)
