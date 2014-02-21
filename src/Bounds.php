@@ -127,23 +127,18 @@ class Bounds
             }
         }
 
-        $this->southWest = new LatLng($newSouth, $newWest);
-        $this->northEast = new LatLng($newNorth, $newEast);
-
-        return $this;
+        return new self(new LatLng($newSouth, $newWest), new LatLng($newNorth, $newEast));
     }
 
     /**
-     *
      * @param  Bounds $bounds
      * @return Bounds
      */
     public function extendByBounds(Bounds $bounds)
     {
-        $this->extendByLatLng($bounds->getSouthWest());
-        $this->extendByLatLng($bounds->getNorthEast());
+        $newBounds = $this->extendByLatLng($bounds->getSouthWest());
 
-        return $this;
+        return $newBounds->extendByLatLng($bounds->getNorthEast());
     }
 
     /**
