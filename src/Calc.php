@@ -14,27 +14,6 @@ namespace Geokit;
 class Calc
 {
     /**
-     * The Earth's equatorial radius in meters, assuming the Earth is a perfect sphere.
-     *
-     * @see http://en.wikipedia.org/wiki/Earth_radius#Equatorial_radius
-     */
-    const EARTH_EQUATORIAL_RADIUS = 6378137.0;
-
-    /**
-     * The Earth's polar radius.
-     *
-     * @see http://en.wikipedia.org/wiki/Earth_radius#Polar_radius
-     */
-    const EARTH_POLAR_RADIUS = 6356752.314245;
-
-    /**
-     * The Earth's flattening.
-     *
-     * @see http://en.wikipedia.org/wiki/Earth_radius#Physics_of_Earth.27s_deformation
-     */
-    const EARTH_FLATTENING = 0.00335281066475; //1/298.257223563
-
-    /**
      * Returns the approximate sea level great circle (Earth) distance between
      * two points using the Haversine formula and assuming an Earth radius of
      * self::EARTH_EQUATORIAL_RADIUS.
@@ -44,10 +23,13 @@ class Calc
      * @param  float            $lng1
      * @param  float            $lat2
      * @param  float            $lng2
+     * @param  mixed            $ellipsoid
      * @return \Geokit\Distance
      */
-    public static function distanceHaversine($lat1, $lng1, $lat2, $lng2)
+    public static function distanceHaversine($lat1, $lng1, $lat2, $lng2, $ellipsoid = null)
     {
+        $ellipsoid = Ellipsoid::normalize($ellipsoid);
+
         $lat1 = deg2rad($lat1);
         $lng1 = deg2rad($lng1);
         $lat2 = deg2rad($lat2);
@@ -62,7 +44,7 @@ class Calc
 
         $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
 
-        return new Distance(self::EARTH_EQUATORIAL_RADIUS * $c);
+        return new Distance($ellipsoid->getSemiMajorAxis() * $c);
     }
 
     /**
@@ -74,14 +56,16 @@ class Calc
      * @param  float            $lng1
      * @param  float            $lat2
      * @param  float            $lng2
+     * @param  mixed            $ellipsoid
      * @return \Geokit\Distance
      */
-    public static function distanceVincenty($lat1, $lng1, $lat2, $lng2)
+    public static function distanceVincenty($lat1, $lng1, $lat2, $lng2, $ellipsoid = null)
     {
-        // WGS-84 ellipsoid params
-        $a = self::EARTH_EQUATORIAL_RADIUS;
-        $b = self::EARTH_POLAR_RADIUS;
-        $f = self::EARTH_FLATTENING;
+        $ellipsoid = Ellipsoid::normalize($ellipsoid);
+
+        $a = $ellipsoid->getSemiMajorAxis();
+        $b = $ellipsoid->getSemiMinorAxis();
+        $f = $ellipsoid->getFlattening();
 
         $L  = deg2rad($lng2 - $lng1);
         $U1 = atan((1 - $f) * tan(deg2rad($lat1)));
@@ -191,12 +175,15 @@ class Calc
      * @see http://www.movable-type.co.uk/scripts/latlong.html
      * @param  float                  $lat
      * @param  float                  $lng
-     * @param  float                  $heading  (in degrees)
-     * @param  float|\Geokit\Distance $distance (in meters)
+     * @param  float                  $heading   (in degrees)
+     * @param  float|\Geokit\Distance $distance  (in meters)
+     * @param  mixed                  $ellipsoid
      * @return \Geokit\LatLng
      */
-    public static function endpoint($lat, $lng, $heading, $distance)
+    public static function endpoint($lat, $lng, $heading, $distance, $ellipsoid = null)
     {
+        $ellipsoid = Ellipsoid::normalize($ellipsoid);
+
         if ($distance instanceof Distance) {
             $distance = $distance->meters();
         }
@@ -204,7 +191,7 @@ class Calc
         $lat = deg2rad($lat);
         $lng = deg2rad($lng);
 
-        $angularDistance = $distance / self::EARTH_EQUATORIAL_RADIUS;
+        $angularDistance = $distance / $ellipsoid->getSemiMajorAxis();
         $heading = deg2rad($heading);
 
         $lat2 = asin(sin($lat) * cos($angularDistance) +
