@@ -92,7 +92,7 @@ class LatLngTest extends \PHPUnit_Framework_TestCase
 
     public function testNormalizeShouldThrowExceptionIfInvalidDataSupplied()
     {
-        $this->setExpectedException('\InvalidArgumentException', 'Cannot create LatLng');
+        $this->setExpectedException('\InvalidArgumentException', 'Cannot normalize LatLng from input null.');
         LatLng::normalize(null);
     }
 
@@ -144,6 +144,14 @@ class LatLngTest extends \PHPUnit_Framework_TestCase
     public function testNormalizeShouldAcceptArrayAccessArgument()
     {
         $latLng = LatLng::normalize(new \ArrayObject(array('latitude' => 1.1234, 'longitude' => 2.5678)));
+
+        $this->assertSame(1.1234, $latLng->getLatitude());
+        $this->assertSame(2.5678, $latLng->getLongitude());
+    }
+
+    public function testNormalizeShouldAcceptIndexedArrayArgument()
+    {
+        $latLng = LatLng::normalize(array(2.5678, 1.1234));
 
         $this->assertSame(1.1234, $latLng->getLatitude());
         $this->assertSame(2.5678, $latLng->getLongitude());

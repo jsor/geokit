@@ -13,15 +13,21 @@ namespace Geokit;
 
 class LatLng
 {
-    /**
-     * @var float
-     */
     private $latitude;
-
-    /**
-     * @var float
-     */
     private $longitude;
+
+    private static $latitudeKeys = array(
+        'latitude',
+        'lat',
+        'y'
+    );
+
+    private static $longitudeKeys = array(
+        'longitude',
+        'lng',
+        'lon',
+        'x'
+    );
 
     /**
      * @param float $latitude
@@ -29,8 +35,8 @@ class LatLng
      */
     public function __construct($latitude, $longitude)
     {
-        $this->latitude  = (float) $latitude;
-        $this->longitude = (float) $longitude;
+        $this->latitude = Calc::normalizeLat((float) $latitude);
+        $this->longitude = Calc::normalizeLng((float) $longitude);
     }
 
     /**
@@ -95,57 +101,80 @@ class LatLng
      * Takes anything which looks like a coordinate and generates a LatLng
      * object from it.
      *
-     * $var can be:
+     * $input can be either a string, an array, an \ArrayAccess object or a
+     * LatLng object.
      *
-     * 1) A string in the format "1.1234, 2.5678" or "1.1234 2.5678"
-     * 2) An array or ArrayAccess object in the format
-     *    * ['latitude' => 1.1234, 'longitude' => 2.5678]
-     *    * ['lat' => 1.1234, 'lng' => 2.5678]
-     *    * ['lat' => 1.1234, 'lon' => 2.5678]
-     *    * ['x' => 2.5678, 'y' => 1.1234] // Note that y = LAT and x = LNG!
-     * 3) A LatLng object
+     * If $input is a string, it can be in the format "1.1234, 2.5678" or
+     * "1.1234 2.5678".
      *
-     * @param  array|\ArrayAccess|string|\Geokit\LatLng $var
+     * If $input is an array or \ArrayAccess object, it must have a latitude
+     * and longitude entry.
+     *
+     * Recognized keys are:
+     *
+     *  * Latitude:
+     *    * latitude
+     *    * lat
+     *    * y
+     *
+     *  * Longitude:
+     *    * longitude
+     *    * lng
+     *    * lon
+     *    * x
+     *
+     * If $input is an indexed array, it assumes the longitude at index 0
+     * and the latitude at index 1, eg. [180.0, 90.0].
+     *
+     * If $input is an LatLng object, it is just passed through.
+     *
+     * @param  string|array|\ArrayAccess|\Geokit\LatLng $input
      * @return \Geokit\LatLng
      * @throws \InvalidArgumentException
      */
-    public static function normalize($var)
+    public static function normalize($input)
     {
+        if ($input instanceof self) {
+            return $input;
+        }
+
         $lat = null;
         $lng = null;
 
-        if ($var instanceof self) {
-            $lat = $var->getLatitude();
-            $lng = $var->getLongitude();
-        } elseif (is_string($var)) {
-            if (preg_match('/(\-?\d+\.?\d*)[, ] ?(\-?\d+\.?\d*)$/', $var, $match)) {
-                $lat = $match[1];
-                $lng = $match[2];
-            }
-        } elseif (is_array($var) || $var instanceof \ArrayAccess) {
-            if (isset($var['latitude'])) {
-                $lat = $var['latitude'];
-            } elseif (isset($var['lat'])) {
-                $lat = $var['lat'];
-            } elseif (isset($var['y'])) {
-                $lat = $var['y'];
+        if (is_string($input) && preg_match('/(\-?\d+\.?\d*)[, ] ?(\-?\d+\.?\d*)$/', $input, $match)) {
+            $lat = $match[1];
+            $lng = $match[2];
+        } elseif (is_array($input) || $input instanceof \ArrayAccess) {
+            $lat = self::extract($input, self::$latitudeKeys);
+
+            if (!$lat && isset($input[1])) {
+                $lat = $input[1];
             }
 
-            if (isset($var['longitude'])) {
-                $lng = $var['longitude'];
-            } elseif (isset($var['lng'])) {
-                $lng = $var['lng'];
-            } elseif (isset($var['lon'])) {
-                $lng = $var['lon'];
-            } elseif (isset($var['x'])) {
-                $lng = $var['x'];
+            $lng = self::extract($input, self::$longitudeKeys);
+
+            if (!$lng && isset($input[0])) {
+                $lng = $input[0];
             }
         }
 
-        if (null === $lat || null === $lng) {
-            throw new \InvalidArgumentException('Cannot create LatLng');
+        if (null !== $lat || null !== $lng) {
+            return new self($lat, $lng);
         }
 
-        return new self(Calc::normalizeLat($lat), Calc::normalizeLng($lng));
+        throw new \InvalidArgumentException(sprintf('Cannot normalize LatLng from input %s.', json_encode($input)));
+    }
+
+    private static function extract($input, $keys)
+    {
+        foreach ($keys as $key) {
+            if (!isset($input[$key])) {
+                continue;
+            }
+
+            return $input[$key];
+        }
+
+        return null;
     }
 }
