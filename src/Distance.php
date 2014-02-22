@@ -31,7 +31,7 @@ class Distance
     public function __construct($value, $unit = self::DEFAULT_UNIT)
     {
         if (!isset(self::$units[$unit])) {
-            throw new \InvalidArgumentException(sprintf('Unknown unit type: %s', $unit));
+            throw new \InvalidArgumentException(sprintf('Unknown unit type %s.', json_encode($unit)));
         }
 
         $this->value = $value * self::$units[$unit];
