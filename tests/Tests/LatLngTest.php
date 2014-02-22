@@ -50,6 +50,53 @@ class LatLngTest extends \PHPUnit_Framework_TestCase
         setlocale(LC_NUMERIC, $currentLocale);
     }
 
+    public function testArrayAccess()
+    {
+        $keys = array(
+            'latitude',
+            'lat',
+            'y',
+            'longitude',
+            'lng',
+            'lon',
+            'x'
+        );
+
+        $latLng = new LatLng(1, 2);
+
+        foreach ($keys as $key) {
+            $this->assertTrue(isset($latLng[$key]));
+            $this->assertNotNull($latLng[$key]);
+        }
+    }
+
+    public function testOffsetGetThrowsExceptionForInvalidKey()
+    {
+        $this->setExpectedException('\InvalidArgumentException', 'Invalid offset "foo".');
+
+        $latLng = new LatLng(1, 2);
+
+        $latLng['foo'];
+    }
+
+    public function testOffsetSetThrowsException()
+    {
+        $this->setExpectedException('\BadMethodCallException');
+
+        $latLng = new LatLng(1, 2);
+
+        $latLng['lat'] = 5;
+    }
+
+    public function testOffsetUnsetThrowsException()
+    {
+        $this->setExpectedException('\BadMethodCallException');
+
+        $latLng = new LatLng(1, 2);
+
+        unset($latLng['lat']);
+    }
+
     public function testToStringShouldReturnLatitudeAndLongitudeAsCommaSeparatedString()
     {
         $latLng = new LatLng(1.1234, 2.5678);
