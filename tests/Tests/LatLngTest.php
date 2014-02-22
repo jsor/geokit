@@ -34,6 +34,14 @@ class LatLngTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(2.5678, $latLng->getLongitude());
     }
 
+    public function testConstructorShouldNormalizeLatLng()
+    {
+        $latLng = new LatLng(91, 181);
+
+        $this->assertEquals(90, $latLng->getLatitude());
+        $this->assertEquals(-179, $latLng->getLongitude());
+    }
+
     public function testConstructorShouldAcceptLocalizedFloatsAsArguments()
     {
         $currentLocale = setlocale(LC_NUMERIC, '0');
