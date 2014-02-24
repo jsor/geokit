@@ -87,7 +87,7 @@ class Calc
                       ($cosU1 * $sinU2 - $sinU1 * $cosU2 * $cosLambda));
 
           if ($sinSigma == 0) {
-              return 0;  // co-incident points
+              return new Distance(0);  // co-incident points
           }
 
           $cosSigma = $sinU1 * $sinU2 + $cosU1 * $cosU2 * $cosLambda;
@@ -103,7 +103,7 @@ class Calc
         } while (abs($lambda - $lambdaP) > 1e-12 && --$iterLimit > 0);
 
         if ($iterLimit == 0) {
-            return null;  // formula failed to converge
+            return new \RuntimeException('Vincenty formula failed to converge.');
         }
 
         $uSq = $cosSqAlpha * ($a * $a - $b * $b) / ($b * $b);
