@@ -77,7 +77,6 @@ class Calc
         $cosU2 = cos($U2);
 
         $lambda    = $L;
-        $lambdaP   = 2 * pi();
         $iterLimit = 100;
 
         do {
