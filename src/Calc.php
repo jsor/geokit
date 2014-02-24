@@ -150,7 +150,7 @@ class Calc
      * @param  float          $lng1
      * @param  float          $lat2
      * @param  float          $lng2
-     * @return \Geokit\LatLng
+     * @return \Geokit\LngLat
      */
     public static function midpoint($lat1, $lng1, $lat2, $lng2)
     {
@@ -165,7 +165,7 @@ class Calc
                 sqrt((cos($lat1) + $Bx) * (cos($lat1) + $Bx) + $By * $By));
         $lon3 = deg2rad($lng1) + atan2($By, cos($lat1) + $Bx);
 
-        return new LatLng(rad2deg($lat3), rad2deg($lon3));
+        return new LngLat(rad2deg($lon3), rad2deg($lat3));
     }
 
     /**
@@ -178,7 +178,7 @@ class Calc
      * @param  float                  $heading   (in degrees)
      * @param  float|\Geokit\Distance $distance  (in meters)
      * @param  mixed                  $ellipsoid
-     * @return \Geokit\LatLng
+     * @return \Geokit\LngLat
      */
     public static function endpoint($lat, $lng, $heading, $distance, $ellipsoid = null)
     {
@@ -199,7 +199,7 @@ class Calc
         $lon2 = $lng + atan2(sin($heading) * sin($angularDistance) * cos($lat),
                 cos($angularDistance) - sin($lat) * sin($lat2));
 
-        return new LatLng(rad2deg($lat2), rad2deg($lon2));
+        return new LngLat(rad2deg($lon2), rad2deg($lat2));
     }
 
     /**

@@ -12,7 +12,7 @@
 namespace Geokit\Tests;
 
 use Geokit\Bounds;
-use Geokit\LatLng;
+use Geokit\LngLat;
 
 /**
  * @covers Geokit\Bounds
@@ -27,81 +27,81 @@ class BoundsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($w, $b->getSouthWest()->getLongitude());
     }
 
-    public function testConstructorShouldAcceptLatLngsAsFirstAndSecondArgument()
+    public function testConstructorShouldAcceptLngLatsAsFirstAndSecondArgument()
     {
-        $bounds = new Bounds(new LatLng(1.1234, 2.5678), new LatLng(3.1234, 4.5678));
+        $bounds = new Bounds(new LngLat(1.1234, 2.5678), new LngLat(3.1234, 4.5678));
 
-        $this->assertTrue($bounds->getSouthWest() instanceof LatLng);
-        $this->assertEquals(1.1234, $bounds->getSouthWest()->getLatitude());
-        $this->assertEquals(2.5678, $bounds->getSouthWest()->getLongitude());
+        $this->assertTrue($bounds->getSouthWest() instanceof LngLat);
+        $this->assertEquals(1.1234, $bounds->getSouthWest()->getLongitude());
+        $this->assertEquals(2.5678, $bounds->getSouthWest()->getLatitude());
 
-        $this->assertTrue($bounds->getNorthEast() instanceof LatLng);
-        $this->assertEquals(3.1234, $bounds->getNorthEast()->getLatitude());
-        $this->assertEquals(4.5678, $bounds->getNorthEast()->getLongitude());
+        $this->assertTrue($bounds->getNorthEast() instanceof LngLat);
+        $this->assertEquals(3.1234, $bounds->getNorthEast()->getLongitude());
+        $this->assertEquals(4.5678, $bounds->getNorthEast()->getLatitude());
     }
 
-    public function testGetCenterShouldReturnALatLngObject()
+    public function testGetCenterShouldReturnALngLatObject()
     {
-        $bounds = new Bounds(new LatLng(1.1234, 2.5678), new LatLng(3.1234, 4.5678));
-        $center = new LatLng(2.1234, 3.5678);
+        $bounds = new Bounds(new LngLat(1.1234, 2.5678), new LngLat(3.1234, 4.5678));
+        $center = new LngLat(2.1234, 3.5678);
 
         $this->assertEquals($center, $bounds->getCenter());
 
-        $bounds = new Bounds(new LatLng(-45, 179), new LatLng(45, -179));
-        $center = new LatLng(0, 180);
+        $bounds = new Bounds(new LngLat(179, -45), new LngLat(-179, 45));
+        $center = new LngLat(180, 0);
 
         $this->assertEquals($center, $bounds->getCenter());
     }
 
-    public function testGetSpanShouldReturnALatLngObject()
+    public function testGetSpanShouldReturnALngLatObject()
     {
-        $bounds = new Bounds(new LatLng(1.1234, 2.5678), new LatLng(3.1234, 4.5678));
+        $bounds = new Bounds(new LngLat(1.1234, 2.5678), new LngLat(3.1234, 4.5678));
 
-        $span = new LatLng(2, 2);
+        $span = new LngLat(2, 2);
 
         $this->assertEquals($span, $bounds->getSpan());
     }
 
-    public function testContainsLatLng()
+    public function testContainsLngLat()
     {
-        $bounds = new Bounds(new LatLng(1.1234, 2.5678), new LatLng(3.1234, 4.5678));
+        $bounds = new Bounds(new LngLat(1.1234, 2.5678), new LngLat(3.1234, 4.5678));
 
-        $span = new LatLng(2, 2);
+        $span = new LngLat(2, 2);
 
         $this->assertEquals($span, $bounds->getSpan());
     }
 
-    public function testExtendByLatLng()
+    public function testExtendByLngLat()
     {
-        $bounds = new Bounds(new LatLng(37, -122), new LatLng(38, -123));
+        $bounds = new Bounds(new LngLat(37, -122), new LngLat(38, -123));
 
-        $this->assertTrue($bounds->containsLatLng(new LatLng(37, -122)));
-        $this->assertTrue($bounds->containsLatLng(new LatLng(38, -123)));
+        $this->assertTrue($bounds->containsLngLat(new LngLat(37, -122)));
+        $this->assertTrue($bounds->containsLngLat(new LngLat(38, -123)));
 
-        $this->assertFalse($bounds->containsLatLng(new LatLng(-12, -70)));
+        $this->assertFalse($bounds->containsLngLat(new LngLat(-12, -70)));
     }
 
-    public function testExtendByLatLngInACircle()
+    public function testExtendByLngLatInACircle()
     {
-        $bounds = new Bounds(new LatLng(0, 0), new LatLng(0, 0));
-        $bounds = $bounds->extendByLatLng(new LatLng(0, 1));
-        $bounds = $bounds->extendByLatLng(new LatLng(1, 0));
-        $bounds = $bounds->extendByLatLng(new LatLng(0, -1));
-        $bounds = $bounds->extendByLatLng(new LatLng(-1, 0));
+        $bounds = new Bounds(new LngLat(0, 0), new LngLat(0, 0));
+        $bounds = $bounds->extendByLngLat(new LngLat(1, 0));
+        $bounds = $bounds->extendByLngLat(new LngLat(0, 1));
+        $bounds = $bounds->extendByLngLat(new LngLat(-1, 0));
+        $bounds = $bounds->extendByLngLat(new LngLat(0, -1));
         $this->assertBounds($bounds, 1, 1, -1, -1);
     }
 
     public function testExtendByBounds()
     {
-        $bounds = new Bounds(new LatLng(37, -122), new LatLng(37, -122));
+        $bounds = new Bounds(new LngLat(-122, 37), new LngLat(-122, 37));
 
-        $bounds = $bounds->extendByBounds(new Bounds(new LatLng(38, -123), new LatLng(-12, -70)));
+        $bounds = $bounds->extendByBounds(new Bounds(new LngLat(-123, 38), new LngLat(-70, -12)));
         $this->assertBounds($bounds, 38, -70, -12, -123);
     }
 
     public function testCrossesAntimeridian()
     {
-        $bounds = new Bounds(new LatLng(-45, 179), new LatLng(45, -179));
+        $bounds = new Bounds(new LngLat(179, -45), new LngLat(-179, 45));
 
         $this->assertTrue($bounds->crossesAntimeridian());
         $this->assertEquals(90, $bounds->getSpan()->getLatitude());
@@ -110,9 +110,9 @@ class BoundsTest extends \PHPUnit_Framework_TestCase
 
     public function testCrossesAntimeridianViaExtend()
     {
-        $bounds = new Bounds(new LatLng(-45, 179), new LatLng(-45, 179));
+        $bounds = new Bounds(new LngLat(179, -45), new LngLat(179, -45));
 
-        $bounds = $bounds->extendByLatLng(new LatLng(45, -179));
+        $bounds = $bounds->extendByLngLat(new LngLat(-179, 45));
 
         $this->assertTrue($bounds->crossesAntimeridian());
         $this->assertEquals(90, $bounds->getSpan()->getLatitude());

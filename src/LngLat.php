@@ -11,16 +11,10 @@
 
 namespace Geokit;
 
-class LatLng implements \ArrayAccess
+class LngLat implements \ArrayAccess
 {
-    private $latitude;
     private $longitude;
-
-    private static $latitudeKeys = array(
-        'latitude',
-        'lat',
-        'y'
-    );
+    private $latitude;
 
     private static $longitudeKeys = array(
         'longitude',
@@ -29,22 +23,20 @@ class LatLng implements \ArrayAccess
         'x'
     );
 
-    /**
-     * @param float $latitude
-     * @param float $longitude
-     */
-    public function __construct($latitude, $longitude)
-    {
-        $this->latitude = Calc::normalizeLat((float) $latitude);
-        $this->longitude = Calc::normalizeLng((float) $longitude);
-    }
+    private static $latitudeKeys = array(
+        'latitude',
+        'lat',
+        'y'
+    );
 
     /**
-     * @return float
+     * @param float $longitude
+     * @param float $latitude
      */
-    public function getLatitude()
+    public function __construct($longitude, $latitude)
     {
-        return $this->latitude;
+        $this->longitude = Calc::normalizeLng((float) $longitude);
+        $this->latitude = Calc::normalizeLat((float) $latitude);
     }
 
     /**
@@ -53,6 +45,14 @@ class LatLng implements \ArrayAccess
     public function getLongitude()
     {
         return $this->longitude;
+    }
+
+    /**
+     * @return float
+     */
+    public function getLatitude()
+    {
+        return $this->latitude;
     }
 
     public function offsetExists($offset)
@@ -76,12 +76,12 @@ class LatLng implements \ArrayAccess
 
     public function offsetUnset($offset)
     {
-        throw new \BadMethodCallException('LatLng is immutable.');
+        throw new \BadMethodCallException('LngLat is immutable.');
     }
 
     public function offsetSet($offset, $value)
     {
-        throw new \BadMethodCallException('LatLng is immutable.');
+        throw new \BadMethodCallException('LngLat is immutable.');
     }
 
     /**
@@ -89,7 +89,7 @@ class LatLng implements \ArrayAccess
      */
     public function __toString()
     {
-        return sprintf('%F,%F', $this->getLatitude(), $this->getLongitude());
+        return sprintf('%F,%F', $this->getLongitude(), $this->getLatitude());
     }
 
     /**
@@ -97,10 +97,10 @@ class LatLng implements \ArrayAccess
      * this point and the destination point using the Haversine formula and
      * assuming an Earth radius of Util::EARTH_RADIUS.
      *
-     * @param  \Geokit\LatLng   $dest
+     * @param  \Geokit\LngLat   $dest
      * @return \Geokit\Distance The distance to the destination point
      */
-    public function distanceTo(LatLng $dest)
+    public function distanceTo(LngLat $dest)
     {
         return Calc::distanceHaversine(
             $this->getLatitude(),
@@ -113,10 +113,10 @@ class LatLng implements \ArrayAccess
     /**
      * Returns the (initial) heading from this point to the destination point in degrees.
      *
-     * @param  \Geokit\LatLng $dest
+     * @param  \Geokit\LngLat $dest
      * @return float          Initial heading in degrees from North
      */
-    public function headingTo(LatLng $dest)
+    public function headingTo(LngLat $dest)
     {
         return Calc::heading(
             $this->getLatitude(),
@@ -127,11 +127,11 @@ class LatLng implements \ArrayAccess
     }
 
     /**
-     * Takes anything which looks like a coordinate and generates a LatLng
+     * Takes anything which looks like a coordinate and generates a LngLat
      * object from it.
      *
      * $input can be either a string, an array, an \ArrayAccess object or a
-     * LatLng object.
+     * LngLat object.
      *
      * If $input is a string, it can be in the format "1.1234, 2.5678" or
      * "1.1234 2.5678".
@@ -141,24 +141,24 @@ class LatLng implements \ArrayAccess
      *
      * Recognized keys are:
      *
-     *  * Latitude:
-     *    * latitude
-     *    * lat
-     *    * y
-     *
      *  * Longitude:
      *    * longitude
      *    * lng
      *    * lon
      *    * x
      *
+     *  * Latitude:
+     *    * latitude
+     *    * lat
+     *    * y
+     *
      * If $input is an indexed array, it assumes the longitude at index 0
      * and the latitude at index 1, eg. [180.0, 90.0].
      *
-     * If $input is an LatLng object, it is just passed through.
+     * If $input is an LngLat object, it is just passed through.
      *
-     * @param  string|array|\ArrayAccess|\Geokit\LatLng $input
-     * @return \Geokit\LatLng
+     * @param  string|array|\ArrayAccess|\Geokit\LngLat $input
+     * @return \Geokit\LngLat
      * @throws \InvalidArgumentException
      */
     public static function normalize($input)
@@ -171,8 +171,8 @@ class LatLng implements \ArrayAccess
         $lng = null;
 
         if (is_string($input) && preg_match('/(\-?\d+\.?\d*)[, ] ?(\-?\d+\.?\d*)$/', $input, $match)) {
-            $lat = $match[1];
-            $lng = $match[2];
+            $lng = $match[1];
+            $lat = $match[2];
         } elseif (is_array($input) || $input instanceof \ArrayAccess) {
             $lat = self::extract($input, self::$latitudeKeys);
 
@@ -188,10 +188,10 @@ class LatLng implements \ArrayAccess
         }
 
         if (null !== $lat || null !== $lng) {
-            return new self($lat, $lng);
+            return new self($lng, $lat);
         }
 
-        throw new \InvalidArgumentException(sprintf('Cannot normalize LatLng from input %s.', json_encode($input)));
+        throw new \InvalidArgumentException(sprintf('Cannot normalize LngLat from input %s.', json_encode($input)));
     }
 
     private static function extract($input, $keys)

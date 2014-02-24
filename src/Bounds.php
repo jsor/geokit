@@ -14,27 +14,27 @@ namespace Geokit;
 class Bounds
 {
     /**
-     * @var LatLng
+     * @var LngLat
      */
     private $southWest;
 
     /**
-     * @var LatLng
+     * @var LngLat
      */
     private $northEast;
 
     /**
-     * @param \Geokit\LatLng $southWest
-     * @param \Geokit\LatLng $northEast
+     * @param \Geokit\LngLat $southWest
+     * @param \Geokit\LngLat $northEast
      */
-    public function __construct(LatLng $southWest, LatLng $northEast)
+    public function __construct(LngLat $southWest, LngLat $northEast)
     {
         $this->southWest = $southWest;
         $this->northEast = $northEast;
     }
 
     /**
-     * @return \Geokit\LatLng
+     * @return \Geokit\LngLat
      */
     public function getSouthWest()
     {
@@ -42,7 +42,7 @@ class Bounds
     }
 
     /**
-     * @return \Geokit\LatLng
+     * @return \Geokit\LngLat
      */
     public function getNorthEast()
     {
@@ -50,7 +50,7 @@ class Bounds
     }
 
     /**
-     * @return \Geokit\LatLng
+     * @return \Geokit\LngLat
      */
     public function getCenter()
     {
@@ -61,20 +61,20 @@ class Bounds
             $lng = ($this->southWest->getLongitude() + $this->northEast->getLongitude()) / 2;
         }
 
-        return new LatLng(
-            ($this->southWest->getLatitude() + $this->northEast->getLatitude()) / 2,
-            $lng
+        return new LngLat(
+            $lng,
+            ($this->southWest->getLatitude() + $this->northEast->getLatitude()) / 2
         );
     }
 
     /**
-     * @return \Geokit\LatLng
+     * @return \Geokit\LngLat
      */
     public function getSpan()
     {
-        return new LatLng(
-            $this->northEast->getLatitude() - $this->southWest->getLatitude(),
-            $this->lngSpan($this->southWest->getLongitude(), $this->northEast->getLongitude())
+        return new LngLat(
+            $this->lngSpan($this->southWest->getLongitude(), $this->northEast->getLongitude()),
+            $this->northEast->getLatitude() - $this->southWest->getLatitude()
         );
     }
 
@@ -87,10 +87,10 @@ class Bounds
     }
 
     /**
-     * @param  \Geokit\LatLng $latLng
+     * @param  \Geokit\LngLat $latLng
      * @return boolean
      */
-    public function containsLatLng(LatLng $latLng)
+    public function containsLngLat(LngLat $latLng)
     {
       // check latitude
       if ($this->southWest->getLatitude() > $latLng->getLatitude() ||
@@ -103,10 +103,10 @@ class Bounds
     }
 
     /**
-     * @param  LatLng $latLng
+     * @param  LngLat $latLng
      * @return Bounds
      */
-    public function extendByLatLng(LatLng $latLng)
+    public function extendByLngLat(LngLat $latLng)
     {
         $newSouth = min($this->southWest->getLatitude(), $latLng->getLatitude());
         $newNorth = max($this->northEast->getLatitude(), $latLng->getLatitude());
@@ -127,7 +127,7 @@ class Bounds
             }
         }
 
-        return new self(new LatLng($newSouth, $newWest), new LatLng($newNorth, $newEast));
+        return new self(new LngLat($newWest, $newSouth), new LngLat($newEast, $newNorth));
     }
 
     /**
@@ -136,9 +136,9 @@ class Bounds
      */
     public function extendByBounds(Bounds $bounds)
     {
-        $newBounds = $this->extendByLatLng($bounds->getSouthWest());
+        $newBounds = $this->extendByLngLat($bounds->getSouthWest());
 
-        return $newBounds->extendByLatLng($bounds->getNorthEast());
+        return $newBounds->extendByLngLat($bounds->getNorthEast());
     }
 
     /**
