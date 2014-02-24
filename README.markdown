@@ -1,21 +1,28 @@
 Geokit
 ======
 
-Geokit is a PHP 5.3+ toolkit to solve geo-related tasks like geometric calculations.
+Geokit is a PHP toolkit to solve geo-related tasks like:
+
+* Distance calculations.
+* Heading, midpoint and endpoint calculations.
+* Rectangular bounds calculations.
 
 [![Build Status](https://secure.travis-ci.org/jsor/Geokit.png)](http://travis-ci.org/jsor/Geokit)
 
 Installation
 ------------
 
-Geokit can be installed using the [Composer](http://packagist.org/) tool. You can either add `geokit/geokit` to your package dependencies, or if you want to install Geokit as standalone, go to the main directory of this package and run:
+Install [through composer](http://getcomposer.org). Check the
+[packagist page](https://packagist.org/packages/geokit/geokit) for all
+available versions.
 
-    $ wget http://getcomposer.org/composer.phar
-    $ php composer.phar install
-
-You can then use the composer-generated autoloader to access the Geokit classes:
-
-    require 'vendor/autoload.php';
+```json
+{
+    "require": {
+        "geokit/geokit": "0.2.*@dev"
+    }
+}
+```
 
 License
 -------
@@ -25,5 +32,10 @@ Geokit is released under the [MIT License](https://github.com/jsor/Geokit/blob/m
 Credits
 -------
 
-Some parts have been ported from the [OpenLayers](https://github.com/openlayers/openlayers)
-and [geojs](http://code.google.com/p/geojs) libraries.
+Geokit has been inspired and/or contains ported code from the following
+libraries:
+
+* [OpenLayers](https://github.com/openlayers/openlayers)
+* [GeoPy](https://github.com/geopy/geopy)
+* [scalaz-geo](https://github.com/scalaz/scalaz-geo)
+* [geojs](http://code.google.com/p/geojs)
