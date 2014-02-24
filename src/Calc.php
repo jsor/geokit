@@ -15,8 +15,7 @@ class Calc
 {
     /**
      * Returns the approximate sea level great circle (Earth) distance between
-     * two points using the Haversine formula and assuming an Earth radius of
-     * self::EARTH_EQUATORIAL_RADIUS.
+     * two points using the Haversine formula.
      *
      * @see http://www.movable-type.co.uk/scripts/latlong.html
      * @param  float            $lat1
@@ -48,7 +47,7 @@ class Calc
     }
 
     /**
-     * Calculates geodetic distance between two points using
+     * Calculates the geodetic distance between two points using the
      * Vincenty inverse formula for ellipsoids.
      *
      * @see http://www.movable-type.co.uk/scripts/latlong-vincenty.html
@@ -117,7 +116,8 @@ class Calc
     }
 
     /**
-     * Returns the (initial) heading from the first point to the second point in degrees.
+     * Returns the (initial) heading from the first point to the second point
+     * in degrees.
      *
      * @param  float $lat1
      * @param  float $lng1
@@ -168,8 +168,8 @@ class Calc
     }
 
     /**
-     * Calculates the destination point along a geodesic, given an initial heading
-     * and distance, from the given start point.
+     * Calculates the destination point along a geodesic, given an initial
+     * heading and distance, from the given start point.
      *
      * @see http://www.movable-type.co.uk/scripts/latlong.html
      * @param  float                  $lat
