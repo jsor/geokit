@@ -97,33 +97,23 @@ class LngLat implements \ArrayAccess
      * this point and the destination point using the Haversine formula and
      * assuming an Earth radius of Util::EARTH_RADIUS.
      *
-     * @param  \Geokit\LngLat   $dest
+     * @param  mixed            $dest
      * @return \Geokit\Distance The distance to the destination point
      */
-    public function distanceTo(LngLat $dest)
+    public function distanceTo($dest)
     {
-        return Calc::distanceHaversine(
-            $this->getLatitude(),
-            $this->getLongitude(),
-            $dest->getLatitude(),
-            $dest->getLongitude()
-        );
+        return Calc::distanceHaversine($this, $dest);
     }
 
     /**
      * Returns the (initial) heading from this point to the destination point in degrees.
      *
-     * @param  \Geokit\LngLat $dest
-     * @return float          Initial heading in degrees from North
+     * @param  mixed $dest
+     * @return float Initial heading in degrees from North
      */
-    public function headingTo(LngLat $dest)
+    public function headingTo($dest)
     {
-        return Calc::heading(
-            $this->getLatitude(),
-            $this->getLongitude(),
-            $dest->getLatitude(),
-            $dest->getLongitude()
-        );
+        return Calc::heading($this, $dest);
     }
 
     /**

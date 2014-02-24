@@ -229,8 +229,8 @@ class Ellipsoid implements \ArrayAccess
 
 
     /**
-     * @param  float     $semiMajorAxis
-     * @param  float     $inverseFlattening
+     * @param  float                     $semiMajorAxis
+     * @param  float                     $inverseFlattening
      * @return Ellipsoid
      * @throws \InvalidArgumentException
      */
@@ -251,8 +251,8 @@ class Ellipsoid implements \ArrayAccess
     }
 
     /**
-     * @param  float     $semiMajorAxis
-     * @param  float     $semiMinorAxis
+     * @param  float                     $semiMajorAxis
+     * @param  float                     $semiMinorAxis
      * @return Ellipsoid
      * @throws \InvalidArgumentException
      */

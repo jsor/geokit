@@ -18,21 +18,21 @@ class Calc
      * two points using the Haversine formula.
      *
      * @see http://www.movable-type.co.uk/scripts/latlong.html
-     * @param  float            $lat1
-     * @param  float            $lng1
-     * @param  float            $lat2
-     * @param  float            $lng2
+     * @param  mixed            $from
+     * @param  mixed            $to
      * @param  mixed            $ellipsoid
      * @return \Geokit\Distance
      */
-    public static function distanceHaversine($lat1, $lng1, $lat2, $lng2, $ellipsoid = null)
+    public static function distanceHaversine($from, $to, $ellipsoid = null)
     {
+        $from = LngLat::normalize($from);
+        $to = LngLat::normalize($to);
         $ellipsoid = Ellipsoid::normalize($ellipsoid);
 
-        $lat1 = deg2rad($lat1);
-        $lng1 = deg2rad($lng1);
-        $lat2 = deg2rad($lat2);
-        $lng2 = deg2rad($lng2);
+        $lat1 = deg2rad($from->getLatitude());
+        $lng1 = deg2rad($from->getLongitude());
+        $lat2 = deg2rad($to->getLatitude());
+        $lng2 = deg2rad($to->getLongitude());
 
         $dLat = $lat2 - $lat1;
         $dLon = $lng2 - $lng1;
@@ -51,16 +51,21 @@ class Calc
      * Vincenty inverse formula for ellipsoids.
      *
      * @see http://www.movable-type.co.uk/scripts/latlong-vincenty.html
-     * @param  float            $lat1
-     * @param  float            $lng1
-     * @param  float            $lat2
-     * @param  float            $lng2
+     * @param  mixed            $from
+     * @param  mixed            $to
      * @param  mixed            $ellipsoid
      * @return \Geokit\Distance
      */
-    public static function distanceVincenty($lat1, $lng1, $lat2, $lng2, $ellipsoid = null)
+    public static function distanceVincenty($from, $to, $ellipsoid = null)
     {
+        $from = LngLat::normalize($from);
+        $to = LngLat::normalize($to);
         $ellipsoid = Ellipsoid::normalize($ellipsoid);
+
+        $lat1 = $from->getLatitude();
+        $lng1 = $from->getLongitude();
+        $lat2 = $to->getLatitude();
+        $lng2 = $to->getLongitude();
 
         $a = $ellipsoid->getSemiMajorAxis();
         $b = $ellipsoid->getSemiMinorAxis();
@@ -119,14 +124,20 @@ class Calc
      * Returns the (initial) heading from the first point to the second point
      * in degrees.
      *
-     * @param  float $lat1
-     * @param  float $lng1
-     * @param  float $lat2
-     * @param  float $lng2
+     * @param  mixed $from
+     * @param  mixed $to
      * @return float Initial heading in degrees from North
      */
-    public static function heading($lat1, $lng1, $lat2, $lng2)
+    public static function heading($from, $to)
     {
+        $from = LngLat::normalize($from);
+        $to = LngLat::normalize($to);
+
+        $lat1 = $from->getLatitude();
+        $lng1 = $from->getLongitude();
+        $lat2 = $to->getLatitude();
+        $lng2 = $to->getLongitude();
+
         $lat1 = deg2rad($lat1);
         $lat2 = deg2rad($lat2);
         $dLon = deg2rad($lng2 - $lng1);
@@ -145,14 +156,20 @@ class Calc
      * points.
      *
      * @see http://www.movable-type.co.uk/scripts/latlong.html
-     * @param  float          $lat1
-     * @param  float          $lng1
-     * @param  float          $lat2
-     * @param  float          $lng2
+     * @param  mixed          $from
+     * @param  mixed          $to
      * @return \Geokit\LngLat
      */
-    public static function midpoint($lat1, $lng1, $lat2, $lng2)
+    public static function midpoint($from, $to)
     {
+        $from = LngLat::normalize($from);
+        $to = LngLat::normalize($to);
+
+        $lat1 = $from->getLatitude();
+        $lng1 = $from->getLongitude();
+        $lat2 = $to->getLatitude();
+        $lng2 = $to->getLongitude();
+
         $lat1 = deg2rad($lat1);
         $lat2 = deg2rad($lat2);
         $dLon = deg2rad($lng2 - $lng1);
@@ -172,25 +189,22 @@ class Calc
      * heading and distance, from the given start point.
      *
      * @see http://www.movable-type.co.uk/scripts/latlong.html
-     * @param  float                  $lat
-     * @param  float                  $lng
-     * @param  float                  $heading   (in degrees)
-     * @param  float|\Geokit\Distance $distance  (in meters)
-     * @param  mixed                  $ellipsoid
+     * @param  mixed          $start
+     * @param  float          $heading   (in degrees)
+     * @param  mixed          $distance  (in meters)
+     * @param  mixed          $ellipsoid
      * @return \Geokit\LngLat
      */
-    public static function endpoint($lat, $lng, $heading, $distance, $ellipsoid = null)
+    public static function endpoint($start, $heading, $distance, $ellipsoid = null)
     {
+        $start = LngLat::normalize($start);
+        $distance = Distance::normalize($distance);
         $ellipsoid = Ellipsoid::normalize($ellipsoid);
 
-        if ($distance instanceof Distance) {
-            $distance = $distance->meters();
-        }
+        $lat = deg2rad($start->getLatitude());
+        $lng = deg2rad($start->getLongitude());
 
-        $lat = deg2rad($lat);
-        $lng = deg2rad($lng);
-
-        $angularDistance = $distance / $ellipsoid->getSemiMajorAxis();
+        $angularDistance = $distance->meters() / $ellipsoid->getSemiMajorAxis();
         $heading = deg2rad($heading);
 
         $lat2 = asin(sin($lat) * cos($angularDistance) +
