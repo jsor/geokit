@@ -22,12 +22,4 @@
             <directory>./src/</directory>
         </whitelist>
     </filter>
-
-    <php>
-        <const name="DB_MYSQL_DSN" value="mysql:dbname=geokit;host=localhost" />
-        <const name="DB_MYSQL_USER" value="root" />
-        <const name="DB_MYSQL_PASSWD" value="" />
-        <const name="DB_MYSQL_DBNAME" value="geokit" />
-    </php>
-
 </phpunit>
