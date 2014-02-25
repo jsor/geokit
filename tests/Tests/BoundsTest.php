@@ -19,25 +19,25 @@ use Geokit\LngLat;
  */
 class BoundsTest extends \PHPUnit_Framework_TestCase
 {
-    protected function assertBounds(Bounds $b, $n, $e, $s, $w)
+    protected function assertBounds(Bounds $b, $w, $s, $e, $n)
     {
-        $this->assertEquals($n, $b->getNorthEast()->getLatitude());
-        $this->assertEquals($e, $b->getNorthEast()->getLongitude());
-        $this->assertEquals($s, $b->getSouthWest()->getLatitude());
-        $this->assertEquals($w, $b->getSouthWest()->getLongitude());
+        $this->assertEquals($n, $b->getEastNorth()->getLatitude());
+        $this->assertEquals($e, $b->getEastNorth()->getLongitude());
+        $this->assertEquals($s, $b->getWestSouth()->getLatitude());
+        $this->assertEquals($w, $b->getWestSouth()->getLongitude());
     }
 
     public function testConstructorShouldAcceptLngLatsAsFirstAndSecondArgument()
     {
         $bounds = new Bounds(new LngLat(1.1234, 2.5678), new LngLat(3.1234, 4.5678));
 
-        $this->assertTrue($bounds->getSouthWest() instanceof LngLat);
-        $this->assertEquals(1.1234, $bounds->getSouthWest()->getLongitude());
-        $this->assertEquals(2.5678, $bounds->getSouthWest()->getLatitude());
+        $this->assertTrue($bounds->getWestSouth() instanceof LngLat);
+        $this->assertEquals(1.1234, $bounds->getWestSouth()->getLongitude());
+        $this->assertEquals(2.5678, $bounds->getWestSouth()->getLatitude());
 
-        $this->assertTrue($bounds->getNorthEast() instanceof LngLat);
-        $this->assertEquals(3.1234, $bounds->getNorthEast()->getLongitude());
-        $this->assertEquals(4.5678, $bounds->getNorthEast()->getLatitude());
+        $this->assertTrue($bounds->getEastNorth() instanceof LngLat);
+        $this->assertEquals(3.1234, $bounds->getEastNorth()->getLongitude());
+        $this->assertEquals(4.5678, $bounds->getEastNorth()->getLatitude());
     }
 
     public function testGetCenterShouldReturnALngLatObject()
@@ -60,6 +60,55 @@ class BoundsTest extends \PHPUnit_Framework_TestCase
         $span = new LngLat(2, 2);
 
         $this->assertEquals($span, $bounds->getSpan());
+    }
+
+    public function testArrayAccess()
+    {
+        $keys = array(
+            'westsouth',
+            'west_south',
+            'westSouth',
+            'eastnorth',
+            'east_north',
+            'eastNorth',
+
+            'center',
+            'span'
+        );
+
+        $bounds = new Bounds(new LngLat(1.1234, 2.5678), new LngLat(3.1234, 4.5678));
+
+        foreach ($keys as $key) {
+            $this->assertTrue(isset($bounds[$key]));
+            $this->assertNotNull($bounds[$key]);
+        }
+    }
+
+    public function testOffsetGetThrowsExceptionForInvalidKey()
+    {
+        $this->setExpectedException('\InvalidArgumentException', 'Invalid offset "foo".');
+
+        $bounds = new Bounds(new LngLat(1.1234, 2.5678), new LngLat(3.1234, 4.5678));
+
+        $bounds['foo'];
+    }
+
+    public function testOffsetSetThrowsException()
+    {
+        $this->setExpectedException('\BadMethodCallException');
+
+        $bounds = new Bounds(new LngLat(1.1234, 2.5678), new LngLat(3.1234, 4.5678));
+
+        $bounds['southwest'] = 5;
+    }
+
+    public function testOffsetUnsetThrowsException()
+    {
+        $this->setExpectedException('\BadMethodCallException');
+
+        $bounds = new Bounds(new LngLat(1.1234, 2.5678), new LngLat(3.1234, 4.5678));
+
+        unset($bounds['southwest']);
     }
 
     public function testContainsLngLat()
@@ -88,7 +137,7 @@ class BoundsTest extends \PHPUnit_Framework_TestCase
         $bounds = $bounds->extendByLngLat(new LngLat(0, 1));
         $bounds = $bounds->extendByLngLat(new LngLat(-1, 0));
         $bounds = $bounds->extendByLngLat(new LngLat(0, -1));
-        $this->assertBounds($bounds, 1, 1, -1, -1);
+        $this->assertBounds($bounds, -1, -1, 1, 1);
     }
 
     public function testExtendByBounds()
@@ -96,7 +145,7 @@ class BoundsTest extends \PHPUnit_Framework_TestCase
         $bounds = new Bounds(new LngLat(-122, 37), new LngLat(-122, 37));
 
         $bounds = $bounds->extendByBounds(new Bounds(new LngLat(-123, 38), new LngLat(-70, -12)));
-        $this->assertBounds($bounds, 38, -70, -12, -123);
+        $this->assertBounds($bounds, -123, -12, -70, 38);
     }
 
     public function testCrossesAntimeridian()
@@ -110,12 +159,93 @@ class BoundsTest extends \PHPUnit_Framework_TestCase
 
     public function testCrossesAntimeridianViaExtend()
     {
-        $bounds = new Bounds(new LngLat(179, -45), new LngLat(179, -45));
+        $bounds = new Bounds(new LngLat(179, -45), new LngLat(-179, 45));
 
-        $bounds = $bounds->extendByLngLat(new LngLat(-179, 45));
+        $bounds = $bounds->extendByLngLat(new LngLat(-180, 90));
 
         $this->assertTrue($bounds->crossesAntimeridian());
         $this->assertEquals(90, $bounds->getSpan()->getLatitude());
         $this->assertEquals(2, $bounds->getSpan()->getLongitude());
+    }
+
+    public function testNormalizeShouldAcceptBoundsArgument()
+    {
+        $bounds1 = new Bounds(new LngLat(179, -45), new LngLat(-179, 45));
+        $bounds2 = Bounds::normalize($bounds1);
+
+        $this->assertEquals($bounds1, $bounds2);
+    }
+
+    public function testNormalizeShouldAcceptStringArgument()
+    {
+        $bounds = Bounds::normalize('179 -45 -179 45');
+        $this->assertBounds($bounds, 179, -45, -179, 45);
+
+        $bounds = Bounds::normalize('179, -45, -179, 45');
+        $this->assertBounds($bounds, 179, -45, -179, 45);
+    }
+
+    /**
+     * @dataProvider testNormalizeShouldAcceptArrayArgumentDataProvider
+     */
+    public function testNormalizeShouldAcceptArrayArgument($array)
+    {
+        $bounds = Bounds::normalize($array);
+        $this->assertBounds($bounds, 179, -45, -179, 45);
+    }
+
+    public function testNormalizeShouldAcceptArrayArgumentDataProvider()
+    {
+        $westSouthKeys = array(
+            'westsouth',
+            'west_south',
+            'westSouth'
+        );
+
+        $eastNorthKeys = array(
+            'eastnorth',
+            'east_north',
+            'eastNorth'
+        );
+
+        $data = array();
+
+        foreach ($westSouthKeys as $westSouthKey) {
+            foreach ($eastNorthKeys as $eastNorthKey) {
+                $data[] = array(
+                    array(
+                        $westSouthKey => array(179, -45),
+                        $eastNorthKey => array(-179, 45)
+                    )
+                );
+            }
+        }
+
+        $data[] = array(
+            array(
+                array(179, -45),
+                array(-179, 45)
+            )
+        );
+
+        return $data;
+    }
+
+    public function testNormalizeShouldThrowExceptionForInvalidArrayInput()
+    {
+        $this->setExpectedException('\InvalidArgumentException', 'Cannot normalize Bounds from input ["foo",""].');
+        Bounds::normalize(array('foo', ''));
+    }
+
+    public function testNormalizeShouldThrowExceptionForInvalidStringInput()
+    {
+        $this->setExpectedException('\InvalidArgumentException', 'Cannot normalize Bounds from input "foo".');
+        Bounds::normalize('foo');
+    }
+
+    public function testNormalizeShouldThrowExceptionForInvalidObjectInput()
+    {
+        $this->setExpectedException('\InvalidArgumentException', 'Cannot normalize Bounds from input {}.');
+        Bounds::normalize(new \stdClass());
     }
 }
