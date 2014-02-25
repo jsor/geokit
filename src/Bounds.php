@@ -31,11 +31,16 @@ class Bounds implements \ArrayAccess
     /**
      * @param \Geokit\LngLat $westSouth
      * @param \Geokit\LngLat $eastNorth
+     * @throws \LogicException
      */
     public function __construct(LngLat $westSouth, LngLat $eastNorth)
     {
         $this->westSouth = $westSouth;
         $this->eastNorth = $eastNorth;
+
+        if ($this->westSouth->getLatitude() > $this->eastNorth->getLatitude()) {
+            throw new \LogicException('Bounds west-south coordinate cannot be north of the east-north coordinate');
+        }
     }
 
     /**

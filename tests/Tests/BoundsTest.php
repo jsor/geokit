@@ -21,10 +21,10 @@ class BoundsTest extends \PHPUnit_Framework_TestCase
 {
     protected function assertBounds(Bounds $b, $w, $s, $e, $n)
     {
-        $this->assertEquals($n, $b->getEastNorth()->getLatitude());
-        $this->assertEquals($e, $b->getEastNorth()->getLongitude());
-        $this->assertEquals($s, $b->getWestSouth()->getLatitude());
         $this->assertEquals($w, $b->getWestSouth()->getLongitude());
+        $this->assertEquals($s, $b->getWestSouth()->getLatitude());
+        $this->assertEquals($e, $b->getEastNorth()->getLongitude());
+        $this->assertEquals($n, $b->getEastNorth()->getLatitude());
     }
 
     public function testConstructorShouldAcceptLngLatsAsFirstAndSecondArgument()
@@ -38,6 +38,12 @@ class BoundsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($bounds->getEastNorth() instanceof LngLat);
         $this->assertEquals(3.1234, $bounds->getEastNorth()->getLongitude());
         $this->assertEquals(4.5678, $bounds->getEastNorth()->getLatitude());
+    }
+
+    public function testConstructorShouldThrowExceptionForInvalidSouthCoordinate()
+    {
+        $this->setExpectedException('\LogicException');
+        new Bounds(new LngLat(90, 1), new LngLat(90, 0));
     }
 
     public function testGetCenterShouldReturnALngLatObject()
@@ -144,8 +150,8 @@ class BoundsTest extends \PHPUnit_Framework_TestCase
     {
         $bounds = new Bounds(new LngLat(-122, 37), new LngLat(-122, 37));
 
-        $bounds = $bounds->extendByBounds(new Bounds(new LngLat(-123, 38), new LngLat(-70, -12)));
-        $this->assertBounds($bounds, -123, -12, -70, 38);
+        $bounds = $bounds->extendByBounds(new Bounds(new LngLat(123, -38), new LngLat(-123, 38)));
+        $this->assertBounds($bounds, 123, -38, -122, 38);
     }
 
     public function testCrossesAntimeridian()
