@@ -9,10 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Geokit\Tests;
-
-use Geokit\Calc;
-use Geokit\Distance;
+namespace Geokit;
 
 /**
  * @covers Geokit\Calc

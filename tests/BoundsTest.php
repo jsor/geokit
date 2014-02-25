@@ -9,10 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Geokit\Tests;
-
-use Geokit\Bounds;
-use Geokit\LngLat;
+namespace Geokit;
 
 /**
  * @covers Geokit\Bounds
