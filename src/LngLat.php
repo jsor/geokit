@@ -177,7 +177,7 @@ class LngLat implements \ArrayAccess
             }
         }
 
-        if (null !== $lat || null !== $lng) {
+        if (is_numeric($lat) && is_numeric($lng)) {
             return new self($lng, $lat);
         }
 
