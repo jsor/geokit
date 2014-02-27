@@ -114,40 +114,31 @@ class BoundsTest extends \PHPUnit_Framework_TestCase
         unset($bounds['southwest']);
     }
 
-    public function testContainsLngLat()
-    {
-        $bounds = new Bounds(new LngLat(1.1234, 2.5678), new LngLat(3.1234, 4.5678));
-
-        $span = new LngLat(2, 2);
-
-        $this->assertEquals($span, $bounds->getSpan());
-    }
-
-    public function testExtendByLngLat()
+    public function testContains()
     {
         $bounds = new Bounds(new LngLat(37, -122), new LngLat(38, -123));
 
-        $this->assertTrue($bounds->containsLngLat(new LngLat(37, -122)));
-        $this->assertTrue($bounds->containsLngLat(new LngLat(38, -123)));
+        $this->assertTrue($bounds->contains(new LngLat(37, -122)));
+        $this->assertTrue($bounds->contains(new LngLat(38, -123)));
 
-        $this->assertFalse($bounds->containsLngLat(new LngLat(-12, -70)));
+        $this->assertFalse($bounds->contains(new LngLat(-12, -70)));
     }
 
-    public function testExtendByLngLatInACircle()
+    public function testExtendInACircle()
     {
         $bounds = new Bounds(new LngLat(0, 0), new LngLat(0, 0));
-        $bounds = $bounds->extendByLngLat(new LngLat(1, 0));
-        $bounds = $bounds->extendByLngLat(new LngLat(0, 1));
-        $bounds = $bounds->extendByLngLat(new LngLat(-1, 0));
-        $bounds = $bounds->extendByLngLat(new LngLat(0, -1));
+        $bounds = $bounds->extend(new LngLat(1, 0));
+        $bounds = $bounds->extend(new LngLat(0, 1));
+        $bounds = $bounds->extend(new LngLat(-1, 0));
+        $bounds = $bounds->extend(new LngLat(0, -1));
         $this->assertBounds($bounds, -1, -1, 1, 1);
     }
 
-    public function testExtendByBounds()
+    public function testUnion()
     {
         $bounds = new Bounds(new LngLat(-122, 37), new LngLat(-122, 37));
 
-        $bounds = $bounds->extendByBounds(new Bounds(new LngLat(123, -38), new LngLat(-123, 38)));
+        $bounds = $bounds->union(new Bounds(new LngLat(123, -38), new LngLat(-123, 38)));
         $this->assertBounds($bounds, 123, -38, -122, 38);
     }
 
@@ -164,7 +155,7 @@ class BoundsTest extends \PHPUnit_Framework_TestCase
     {
         $bounds = new Bounds(new LngLat(179, -45), new LngLat(-179, 45));
 
-        $bounds = $bounds->extendByLngLat(new LngLat(-180, 90));
+        $bounds = $bounds->extend(new LngLat(-180, 90));
 
         $this->assertTrue($bounds->crossesAntimeridian());
         $this->assertEquals(90, $bounds->getSpan()->getLatitude());

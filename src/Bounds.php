@@ -138,7 +138,7 @@ class Bounds implements \ArrayAccess
      * @param  \Geokit\LngLat $latLng
      * @return boolean
      */
-    public function containsLngLat(LngLat $latLng)
+    public function contains(LngLat $latLng)
     {
       // check latitude
       if ($this->westSouth->getLatitude() > $latLng->getLatitude() ||
@@ -154,7 +154,7 @@ class Bounds implements \ArrayAccess
      * @param  LngLat $latLng
      * @return Bounds
      */
-    public function extendByLngLat(LngLat $latLng)
+    public function extend(LngLat $latLng)
     {
         $newSouth = min($this->westSouth->getLatitude(), $latLng->getLatitude());
         $newNorth = max($this->eastNorth->getLatitude(), $latLng->getLatitude());
@@ -182,11 +182,11 @@ class Bounds implements \ArrayAccess
      * @param  Bounds $bounds
      * @return Bounds
      */
-    public function extendByBounds(Bounds $bounds)
+    public function union(Bounds $bounds)
     {
-        $newBounds = $this->extendByLngLat($bounds->getWestSouth());
+        $newBounds = $this->extend($bounds->getWestSouth());
 
-        return $newBounds->extendByLngLat($bounds->getEastNorth());
+        return $newBounds->extend($bounds->getEastNorth());
     }
 
     /**
