@@ -164,7 +164,7 @@ class Distance
         }
 
         if (is_numeric($input)) {
-            return new Distance($input);
+            return new self($input);
         }
 
         if (is_string($input) && preg_match('/(\-?\d+\.?\d*)\s*((kilo)?met[er]+s?|m|km|miles?|mi|feet|foot|ft|nautical(mile)?s?|nm)$/', $input, $match)) {
@@ -174,7 +174,7 @@ class Distance
                 $unit = self::resolveUnitAlias($unit);
             }
 
-            return new Distance((float) $match[1], $unit);
+            return new self((float) $match[1], $unit);
         }
 
         throw new \InvalidArgumentException(sprintf('Cannot normalize Distance from input %s.', json_encode($input)));
