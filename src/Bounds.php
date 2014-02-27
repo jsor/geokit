@@ -29,8 +29,8 @@ class Bounds implements \ArrayAccess
     );
 
     /**
-     * @param \Geokit\LngLat $westSouth
-     * @param \Geokit\LngLat $eastNorth
+     * @param  \Geokit\LngLat  $westSouth
+     * @param  \Geokit\LngLat  $eastNorth
      * @throws \LogicException
      */
     public function __construct(LngLat $westSouth, LngLat $eastNorth)
