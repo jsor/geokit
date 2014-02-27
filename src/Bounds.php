@@ -278,7 +278,7 @@ class Bounds implements \ArrayAccess
             }
         }
 
-        if (null !== $westSouth || null !== $eastNorth) {
+        if (null !== $westSouth && null !== $eastNorth) {
             try {
                 return new self(LngLat::normalize($westSouth), LngLat::normalize($eastNorth));
             } catch (\InvalidArgumentException $e) {
