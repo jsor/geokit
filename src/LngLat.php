@@ -93,30 +93,6 @@ class LngLat implements \ArrayAccess
     }
 
     /**
-     * Returns the approximate sea level great circle (Earth) distance between
-     * this point and the destination point using the Haversine formula and
-     * assuming an Earth radius of Util::EARTH_RADIUS.
-     *
-     * @param  mixed            $dest
-     * @return \Geokit\Distance The distance to the destination point
-     */
-    public function distanceTo($dest)
-    {
-        return Calc::distanceHaversine($this, $dest);
-    }
-
-    /**
-     * Returns the (initial) heading from this point to the destination point in degrees.
-     *
-     * @param  mixed $dest
-     * @return float Initial heading in degrees from North
-     */
-    public function headingTo($dest)
-    {
-        return Calc::heading($this, $dest);
-    }
-
-    /**
      * Takes anything which looks like a coordinate and generates a LngLat
      * object from it.
      *

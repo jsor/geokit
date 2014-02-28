@@ -12,18 +12,20 @@
 namespace Geokit;
 
 /**
- * @covers Geokit\Calc
+ * @covers Geokit\Math
  */
-class CalcTest extends \PHPUnit_Framework_TestCase
+class MathTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider testDistanceHaversineDataProvider
      */
     public function testDistanceHaversine($LngLat1, $LngLat2, $distance)
     {
+        $math = new Math();
+        
         $this->assertEquals(
             sprintf('%F', $distance),
-            sprintf('%F', Calc::distanceHaversine($LngLat1, $LngLat2)->meters())
+            sprintf('%F', $math->distanceHaversine($LngLat1, $LngLat2)->meters())
         );
     }
 
@@ -138,9 +140,11 @@ class CalcTest extends \PHPUnit_Framework_TestCase
      */
     public function testDistanceVincenty($LngLat1, $LngLat2, $distance)
     {
+        $math = new Math();
+
         $this->assertEquals(
             sprintf('%F', $distance),
-            sprintf('%F', Calc::distanceVincenty($LngLat1, $LngLat2)->meters())
+            sprintf('%F', $math->distanceVincenty($LngLat1, $LngLat2)->meters())
         );
     }
 
@@ -250,17 +254,39 @@ class CalcTest extends \PHPUnit_Framework_TestCase
           );
     }
 
+    public function testDistanceHaversineCoIncidentPoints()
+    {
+        $math = new Math();
+
+        $this->assertEquals(
+            sprintf('%F', 0),
+            sprintf('%F', $math->distanceVincenty(new LngLat(90, 90), new LngLat(90, 90))->meters())
+        );
+    }
+
+    public function testDistanceHaversineShouldNotConvergeForHalfTripAroundEquator()
+    {
+        $this->setExpectedException('\RuntimeException', 'Vincenty formula failed to converge.');
+
+        $math = new Math();
+        $math->distanceVincenty(new LngLat(0, 0), new LngLat(180, 0));
+    }
+
     public function testHeading()
     {
-        $this->assertEquals(90,  Calc::heading(array('lat' => 0, 'lng' => 0), array('lat' => 0, 'lng' => 1)));
-        $this->assertEquals(0,   Calc::heading(array('lat' => 0, 'lng' => 0), array('lat' => 1, 'lng' => 0)));
-        $this->assertEquals(270, Calc::heading(array('lat' => 0, 'lng' => 0), array('lat' => 0, 'lng' => -1)));
-        $this->assertEquals(180, Calc::heading(array('lat' => 0, 'lng' => 0), array('lat' => -1, 'lng' => 0)));
+        $math = new Math();
+
+        $this->assertEquals(90,  $math->heading(array('lat' => 0, 'lng' => 0), array('lat' => 0, 'lng' => 1)));
+        $this->assertEquals(0,   $math->heading(array('lat' => 0, 'lng' => 0), array('lat' => 1, 'lng' => 0)));
+        $this->assertEquals(270, $math->heading(array('lat' => 0, 'lng' => 0), array('lat' => 0, 'lng' => -1)));
+        $this->assertEquals(180, $math->heading(array('lat' => 0, 'lng' => 0), array('lat' => -1, 'lng' => 0)));
     }
 
     public function testMidpoint()
     {
-        $midpoint = Calc::midpoint(
+        $math = new Math();
+
+        $midpoint = $math->midpoint(
             array('lat' => 32.918593, 'lng' => -96.958444),
             array('lat' => 32.969527, 'lng' => -96.990159)
         );
@@ -277,7 +303,9 @@ class CalcTest extends \PHPUnit_Framework_TestCase
 
     public function testEndpoint()
     {
-        $endpoint = Calc::endpoint(array('lat' =>32.918593, 'lng' => -96.958444), 332, new Distance(6389.09568));
+        $math = new Math();
+
+        $endpoint = $math->endpoint(array('lat' =>32.918593, 'lng' => -96.958444), 332, new Distance(6389.09568));
 
         $this->assertEquals(
             32.969264985093176,

@@ -11,8 +11,18 @@
 
 namespace Geokit;
 
-class Calc
+class Math
 {
+    private $ellipsoid;
+
+    /**
+     * @param Ellipsoid|null $ellipsoid
+     */
+    public function __construct(Ellipsoid $ellipsoid = null)
+    {
+        $this->ellipsoid = $ellipsoid ? : Ellipsoid::wgs84();
+    }
+
     /**
      * Returns the approximate sea level great circle (Earth) distance between
      * two points using the Haversine formula.
@@ -20,14 +30,12 @@ class Calc
      * @see http://www.movable-type.co.uk/scripts/latlong.html
      * @param  mixed            $from
      * @param  mixed            $to
-     * @param  mixed            $ellipsoid
      * @return \Geokit\Distance
      */
-    public static function distanceHaversine($from, $to, $ellipsoid = null)
+    public function distanceHaversine($from, $to)
     {
         $from = LngLat::normalize($from);
         $to = LngLat::normalize($to);
-        $ellipsoid = Ellipsoid::normalize($ellipsoid);
 
         $lat1 = deg2rad($from->getLatitude());
         $lng1 = deg2rad($from->getLongitude());
@@ -38,12 +46,12 @@ class Calc
         $dLon = $lng2 - $lng1;
 
         $a = sin($dLat / 2) * sin($dLat / 2) +
-             cos($lat1) * cos($lat2) *
-             sin($dLon / 2) * sin($dLon / 2);
+            cos($lat1) * cos($lat2) *
+            sin($dLon / 2) * sin($dLon / 2);
 
         $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
 
-        return new Distance($ellipsoid->getSemiMajorAxis() * $c);
+        return new Distance($this->ellipsoid->getSemiMajorAxis() * $c);
     }
 
     /**
@@ -51,27 +59,26 @@ class Calc
      * Vincenty inverse formula for ellipsoids.
      *
      * @see http://www.movable-type.co.uk/scripts/latlong-vincenty.html
-     * @param  mixed            $from
-     * @param  mixed            $to
-     * @param  mixed            $ellipsoid
+     * @param  mixed             $from
+     * @param  mixed             $to
      * @return \Geokit\Distance
+     * @throws \RuntimeException
      */
-    public static function distanceVincenty($from, $to, $ellipsoid = null)
+    public function distanceVincenty($from, $to)
     {
         $from = LngLat::normalize($from);
         $to = LngLat::normalize($to);
-        $ellipsoid = Ellipsoid::normalize($ellipsoid);
 
         $lat1 = $from->getLatitude();
         $lng1 = $from->getLongitude();
         $lat2 = $to->getLatitude();
         $lng2 = $to->getLongitude();
 
-        $a = $ellipsoid->getSemiMajorAxis();
-        $b = $ellipsoid->getSemiMinorAxis();
-        $f = $ellipsoid->getFlattening();
+        $a = $this->ellipsoid->getSemiMajorAxis();
+        $b = $this->ellipsoid->getSemiMinorAxis();
+        $f = $this->ellipsoid->getFlattening();
 
-        $L  = deg2rad($lng2 - $lng1);
+        $L = deg2rad($lng2 - $lng1);
         $U1 = atan((1 - $f) * tan(deg2rad($lat1)));
         $U2 = atan((1 - $f) * tan(deg2rad($lat2)));
 
@@ -80,41 +87,46 @@ class Calc
         $sinU2 = sin($U2);
         $cosU2 = cos($U2);
 
-        $lambda    = $L;
+        $lambda = $L;
         $iterLimit = 100;
 
         do {
-          $sinLambda = sin($lambda);
-          $cosLambda = cos($lambda);
-          $sinSigma = sqrt(($cosU2 * $sinLambda) * ($cosU2 * $sinLambda) +
-                      ($cosU1 * $sinU2 - $sinU1 * $cosU2 * $cosLambda) *
-                      ($cosU1 * $sinU2 - $sinU1 * $cosU2 * $cosLambda));
+            $sinLambda = sin($lambda);
+            $cosLambda = cos($lambda);
+            $sinSigma = sqrt(($cosU2 * $sinLambda) * ($cosU2 * $sinLambda) +
+                        ($cosU1 * $sinU2 - $sinU1 * $cosU2 * $cosLambda) *
+                        ($cosU1 * $sinU2 - $sinU1 * $cosU2 * $cosLambda));
 
-          if ($sinSigma == 0) {
-              return new Distance(0);  // co-incident points
-          }
+            if ($sinSigma == 0) {
+                return new Distance(0); // co-incident points
+            }
 
-          $cosSigma = $sinU1 * $sinU2 + $cosU1 * $cosU2 * $cosLambda;
-          $sigma = atan2($sinSigma, $cosSigma);
-          $sinAlpha = $cosU1 * $cosU2 * $sinLambda / $sinSigma;
-          $cosSqAlpha = 1 - $sinAlpha * $sinAlpha;
-          $cos2SigmaM = $cosSigma - 2 * $sinU1 * $sinU2 / $cosSqAlpha;
+            $cosSigma = $sinU1 * $sinU2 + $cosU1 * $cosU2 * $cosLambda;
+            $sigma = atan2($sinSigma, $cosSigma);
+            $sinAlpha = $cosU1 * $cosU2 * $sinLambda / $sinSigma;
+            $cosSqAlpha = 1 - $sinAlpha * $sinAlpha;
 
-          $C = $f / 16 * $cosSqAlpha * (4 + $f * (4 - 3 * $cosSqAlpha));
-          $lambdaP = $lambda;
-          $lambda = $L + (1 - $C) * $f * $sinAlpha *
-                    ($sigma + $C * $sinSigma * ($cos2SigmaM + $C * $cosSigma * (-1 + 2 * $cos2SigmaM * $cos2SigmaM)));
+            if (0 != $cosSqAlpha) {
+                $cos2SigmaM = $cosSigma - 2 * $sinU1 * $sinU2 / $cosSqAlpha;
+            } else {
+                $cos2SigmaM = 0.0; // Equatorial line
+            }
+
+            $C = $f / 16 * $cosSqAlpha * (4 + $f * (4 - 3 * $cosSqAlpha));
+            $lambdaP = $lambda;
+            $lambda = $L + (1 - $C) * $f * $sinAlpha *
+                      ($sigma + $C * $sinSigma * ($cos2SigmaM + $C * $cosSigma * (-1 + 2 * $cos2SigmaM * $cos2SigmaM)));
         } while (abs($lambda - $lambdaP) > 1e-12 && --$iterLimit > 0);
 
         if ($iterLimit == 0) {
-            return new \RuntimeException('Vincenty formula failed to converge.');
+            throw new \RuntimeException('Vincenty formula failed to converge.');
         }
 
         $uSq = $cosSqAlpha * ($a * $a - $b * $b) / ($b * $b);
         $A = 1 + $uSq / 16384 * (4096 + $uSq * (-768 + $uSq * (320 - 175 * $uSq)));
         $B = $uSq / 1024 * (256 + $uSq * (-128 + $uSq * (74 - 47 * $uSq)));
         $deltaSigma = $B * $sinSigma * ($cos2SigmaM + $B / 4 * ($cosSigma * (-1 + 2 * $cos2SigmaM * $cos2SigmaM) -
-            $B / 6 * $cos2SigmaM * (-3 + 4 * $sinSigma * $sinSigma) * (-3 + 4 * $cos2SigmaM * $cos2SigmaM)));
+                      $B / 6 * $cos2SigmaM * (-3 + 4 * $sinSigma * $sinSigma) * (-3 + 4 * $cos2SigmaM * $cos2SigmaM)));
         $s = $b * $A * ($sigma - $deltaSigma);
 
         return new Distance($s);
@@ -128,7 +140,7 @@ class Calc
      * @param  mixed $to
      * @return float Initial heading in degrees from North
      */
-    public static function heading($from, $to)
+    public function heading($from, $to)
     {
         $from = LngLat::normalize($from);
         $to = LngLat::normalize($to);
@@ -160,7 +172,7 @@ class Calc
      * @param  mixed          $to
      * @return \Geokit\LngLat
      */
-    public static function midpoint($from, $to)
+    public function midpoint($from, $to)
     {
         $from = LngLat::normalize($from);
         $to = LngLat::normalize($to);
@@ -190,21 +202,19 @@ class Calc
      *
      * @see http://www.movable-type.co.uk/scripts/latlong.html
      * @param  mixed          $start
-     * @param  float          $heading   (in degrees)
-     * @param  mixed          $distance  (in meters)
-     * @param  mixed          $ellipsoid
+     * @param  float          $heading  (in degrees)
+     * @param  mixed          $distance (in meters)
      * @return \Geokit\LngLat
      */
-    public static function endpoint($start, $heading, $distance, $ellipsoid = null)
+    public function endpoint($start, $heading, $distance)
     {
         $start = LngLat::normalize($start);
         $distance = Distance::normalize($distance);
-        $ellipsoid = Ellipsoid::normalize($ellipsoid);
 
         $lat = deg2rad($start->getLatitude());
         $lng = deg2rad($start->getLongitude());
 
-        $angularDistance = $distance->meters() / $ellipsoid->getSemiMajorAxis();
+        $angularDistance = $distance->meters() / $this->ellipsoid->getSemiMajorAxis();
         $heading = deg2rad($heading);
 
         $lat2 = asin(sin($lat) * cos($angularDistance) +

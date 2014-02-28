@@ -124,25 +124,6 @@ class LngLatTest extends \PHPUnit_Framework_TestCase
         setlocale(LC_NUMERIC, $currentLocale);
     }
 
-    public function testDistanceTo()
-    {
-        $LngLat = new LngLat(60.463472083210945, 44.65105198323727);
-
-        $distance = $LngLat->distanceTo(new LngLat(83.73959356918931, -35.21140778437257));
-
-        $this->assertEquals(sprintf('%F', 9195568.382018), sprintf('%F', $distance->meters()));
-    }
-
-    public function testHeading()
-    {
-        $LngLat = new LngLat(0, 0);
-
-        $this->assertEquals(90, $LngLat->headingTo(new LngLat(1, 0)));
-        $this->assertEquals(0,  $LngLat->headingTo(new LngLat(0, 1)));
-        $this->assertEquals(270, $LngLat->headingTo(new LngLat(-1, 0)));
-        $this->assertEquals(180, $LngLat->headingTo(new LngLat(0, -1)));
-    }
-
     public function testNormalizeShouldThrowExceptionIfInvalidDataSupplied()
     {
         $this->setExpectedException('\InvalidArgumentException', 'Cannot normalize LngLat from input null.');
