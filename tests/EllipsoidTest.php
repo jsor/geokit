@@ -107,7 +107,7 @@ class EllipsoidTest extends \PHPUnit_Framework_TestCase
 
     public function testWGS84()
     {
-        $ellipsoid = Ellipsoid::WGS84();
+        $ellipsoid = Ellipsoid::wgs84();
 
         $this->assertSame(6378137.0, $ellipsoid->getSemiMajorAxis());
         $this->assertSame(6356752.3142451793, $ellipsoid->getSemiMinorAxis());
@@ -117,7 +117,7 @@ class EllipsoidTest extends \PHPUnit_Framework_TestCase
 
     public function testNormalizeShouldAcceptEllipsoidArgument()
     {
-        $ellipsoid1 = Ellipsoid::WGS84();
+        $ellipsoid1 = Ellipsoid::wgs84();
         $ellipsoid2 = Ellipsoid::normalize($ellipsoid1);
 
         $this->assertEquals($ellipsoid1, $ellipsoid2);

@@ -141,7 +141,7 @@ class Ellipsoid implements \ArrayAccess
      *
      * @return Ellipsoid
      */
-    public static function WGS84()
+    public static function wgs84()
     {
         return self::createFromSemiMajorAndInvF(
             6378137.0,
@@ -154,7 +154,7 @@ class Ellipsoid implements \ArrayAccess
      *
      * @return Ellipsoid
      */
-    public static function WGS72()
+    public static function wgs72()
     {
         return self::createFromSemiMajorAndInvF(
             6378135.0,
@@ -167,7 +167,7 @@ class Ellipsoid implements \ArrayAccess
      *
      * @return Ellipsoid
      */
-    public static function WGS66()
+    public static function wgs66()
     {
         return self::createFromSemiMajorAndInvF(
             6378145.0,
@@ -180,7 +180,7 @@ class Ellipsoid implements \ArrayAccess
      *
      * @return Ellipsoid
      */
-    public static function GRS80()
+    public static function grs80()
     {
         return self::createFromSemiMajorAndInvF(
             6378137.0,
@@ -193,7 +193,7 @@ class Ellipsoid implements \ArrayAccess
      *
      * @return Ellipsoid
      */
-    public static function ANS()
+    public static function ans()
     {
         return self::createFromSemiMajorAndInvF(
             6378160.0,
@@ -206,7 +206,7 @@ class Ellipsoid implements \ArrayAccess
      *
      * @return Ellipsoid
      */
-    public static function Airy1830()
+    public static function airy1830()
     {
         return self::createFromSemiMajorAndInvF(
             6377563.396,
@@ -219,7 +219,7 @@ class Ellipsoid implements \ArrayAccess
      *
      * @return Ellipsoid
      */
-    public static function Krassovsky1940()
+    public static function krassovsky1940()
     {
         return self::createFromSemiMajorAndInvF(
             6378245.0,
@@ -306,7 +306,7 @@ class Ellipsoid implements \ArrayAccess
      *
      * If $input is an Ellipsoid object, it is just passed through.
      *
-     * If $input is null, the default WGS84 ellipsoid is returned.
+     * If $input is null, the default wgs84 ellipsoid is returned.
      *
      * @param  array|\ArrayAccess|\Geokit\Ellipsoid|null $input
      * @return \Geokit\Ellipsoid
@@ -319,7 +319,7 @@ class Ellipsoid implements \ArrayAccess
         }
 
         if (null === $input) {
-            return self::WGS84();
+            return self::wgs84();
         }
 
         $semiMajorAxis = null;
