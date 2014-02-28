@@ -35,8 +35,8 @@ class LngLat implements \ArrayAccess
      */
     public function __construct($longitude, $latitude)
     {
-        $this->longitude = Calc::normalizeLng((float) $longitude);
-        $this->latitude = Calc::normalizeLat((float) $latitude);
+        $this->longitude = self::normalizeLng((float) $longitude);
+        $this->latitude = self::normalizeLat((float) $latitude);
     }
 
     /**
@@ -182,6 +182,36 @@ class LngLat implements \ArrayAccess
         }
 
         throw new \InvalidArgumentException(sprintf('Cannot normalize LngLat from input %s.', json_encode($input)));
+    }
+
+    /**
+     * Normalizes a latitude to the (-90, 90) range. Latitudes above 90 or
+     * below -90 are capped, not wrapped.
+     *
+     * @param  float $lat The latitude to normalize, in degrees
+     * @return float The latitude, fit within the (-90, 90) range
+     */
+    public static function normalizeLat($lat)
+    {
+        return max(-90, min(90, $lat));
+    }
+
+    /**
+     * Normalizes a longitude to the (-180, 180) range. Longitudes above 180
+     * or below -180 are wrapped.
+     *
+     * @param  float $lng The longitude to normalize, in degrees
+     * @return float The longitude, fit within the (-180, 180) range
+     */
+    public static function normalizeLng($lng)
+    {
+        $mod = fmod($lng, 360);
+
+        if ($mod === 180) {
+            return 180;
+        }
+
+        return $mod < -180 ? $mod + 360 : ($mod > 180 ? $mod - 360 : $mod);
     }
 
     private static function extract($input, $keys)

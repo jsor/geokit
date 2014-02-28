@@ -66,7 +66,7 @@ class Bounds implements \ArrayAccess
     {
         if ($this->crossesAntimeridian()) {
             $span = $this->lngSpan($this->westSouth->getLongitude(), $this->eastNorth->getLongitude());
-            $lng  = Calc::normalizeLng($this->westSouth->getLongitude() + $span / 2);
+            $lng  = $this->westSouth->getLongitude() + $span / 2;
         } else {
             $lng = ($this->westSouth->getLongitude() + $this->eastNorth->getLongitude()) / 2;
         }
