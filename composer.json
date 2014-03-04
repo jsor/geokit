@@ -2,7 +2,7 @@
     "name": "geokit/geokit",
     "description": "Geo-Toolkit for PHP",
     "keywords": ["geo", "geometry"],
-    "homepage": "https://github.com/jsor/Geokit",
+    "homepage": "https://github.com/jsor/geokit",
     "license": "MIT",
     "authors": [
         {
