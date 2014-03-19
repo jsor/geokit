@@ -7,7 +7,7 @@ Geokit is a PHP toolkit to solve geo-related tasks like:
 * Heading, midpoint and endpoint calculations.
 * Rectangular bounds calculations.
 
-[![Build Status](https://secure.travis-ci.org/jsor/Geokit.png)](http://travis-ci.org/jsor/Geokit)
+[![Build Status](https://secure.travis-ci.org/jsor/geokit.png)](http://travis-ci.org/jsor/geokit)
 
 * [Installation](#installation)
 * [Reference](#reference)
