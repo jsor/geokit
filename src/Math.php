@@ -20,7 +20,7 @@ class Math
      */
     public function __construct(Ellipsoid $ellipsoid = null)
     {
-        $this->ellipsoid = $ellipsoid ? : Ellipsoid::wgs84();
+        $this->ellipsoid = $ellipsoid ?: Ellipsoid::wgs84();
     }
 
     /**
