@@ -19,13 +19,13 @@ class MathTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider testDistanceHaversineDataProvider
      */
-    public function testDistanceHaversine($LngLat1, $LngLat2, $distance)
+    public function testDistanceHaversine($LatLng1, $LatLng2, $distance)
     {
         $math = new Math();
 
         $this->assertEquals(
             sprintf('%F', $distance),
-            sprintf('%F', $math->distanceHaversine($LngLat1, $LngLat2)->meters())
+            sprintf('%F', $math->distanceHaversine($LatLng1, $LatLng2)->meters())
         );
     }
 
@@ -138,13 +138,13 @@ class MathTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider testDistanceVincentyDataProvider
      */
-    public function testDistanceVincenty($LngLat1, $LngLat2, $distance)
+    public function testDistanceVincenty($LatLng1, $LatLng2, $distance)
     {
         $math = new Math();
 
         $this->assertEquals(
             sprintf('%F', $distance),
-            sprintf('%F', $math->distanceVincenty($LngLat1, $LngLat2)->meters())
+            sprintf('%F', $math->distanceVincenty($LatLng1, $LatLng2)->meters())
         );
     }
 
@@ -260,7 +260,7 @@ class MathTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             sprintf('%F', 0),
-            sprintf('%F', $math->distanceVincenty(new LngLat(90, 90), new LngLat(90, 90))->meters())
+            sprintf('%F', $math->distanceVincenty(new LatLng(90, 90), new LatLng(90, 90))->meters())
         );
     }
 
@@ -269,7 +269,7 @@ class MathTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('\RuntimeException', 'Vincenty formula failed to converge.');
 
         $math = new Math();
-        $math->distanceVincenty(new LngLat(0, 0), new LngLat(180, 0));
+        $math->distanceVincenty(new LatLng(0, 0), new LatLng(0, 180));
     }
 
     public function testHeading()

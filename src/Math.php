@@ -34,8 +34,8 @@ class Math
      */
     public function distanceHaversine($from, $to)
     {
-        $from = LngLat::normalize($from);
-        $to = LngLat::normalize($to);
+        $from = LatLng::normalize($from);
+        $to = LatLng::normalize($to);
 
         $lat1 = deg2rad($from->getLatitude());
         $lng1 = deg2rad($from->getLongitude());
@@ -66,8 +66,8 @@ class Math
      */
     public function distanceVincenty($from, $to)
     {
-        $from = LngLat::normalize($from);
-        $to = LngLat::normalize($to);
+        $from = LatLng::normalize($from);
+        $to = LatLng::normalize($to);
 
         $lat1 = $from->getLatitude();
         $lng1 = $from->getLongitude();
@@ -142,8 +142,8 @@ class Math
      */
     public function heading($from, $to)
     {
-        $from = LngLat::normalize($from);
-        $to = LngLat::normalize($to);
+        $from = LatLng::normalize($from);
+        $to = LatLng::normalize($to);
 
         $lat1 = $from->getLatitude();
         $lng1 = $from->getLongitude();
@@ -170,12 +170,12 @@ class Math
      * @see http://www.movable-type.co.uk/scripts/latlong.html
      * @param  mixed          $from
      * @param  mixed          $to
-     * @return \Geokit\LngLat
+     * @return \Geokit\LatLng
      */
     public function midpoint($from, $to)
     {
-        $from = LngLat::normalize($from);
-        $to = LngLat::normalize($to);
+        $from = LatLng::normalize($from);
+        $to = LatLng::normalize($to);
 
         $lat1 = $from->getLatitude();
         $lng1 = $from->getLongitude();
@@ -193,7 +193,7 @@ class Math
                 sqrt((cos($lat1) + $Bx) * (cos($lat1) + $Bx) + $By * $By));
         $lon3 = deg2rad($lng1) + atan2($By, cos($lat1) + $Bx);
 
-        return new LngLat(rad2deg($lon3), rad2deg($lat3));
+        return new LatLng(rad2deg($lat3), rad2deg($lon3));
     }
 
     /**
@@ -204,11 +204,11 @@ class Math
      * @param  mixed                                      $start
      * @param  float                                      $heading  (in degrees)
      * @param  string|array|\ArrayAccess|\Geokit\Distance $distance (in meters)
-     * @return \Geokit\LngLat
+     * @return \Geokit\LatLng
      */
     public function endpoint($start, $heading, $distance)
     {
-        $start = LngLat::normalize($start);
+        $start = LatLng::normalize($start);
         $distance = Distance::normalize($distance);
 
         $lat = deg2rad($start->getLatitude());
@@ -222,6 +222,6 @@ class Math
         $lon2 = $lng + atan2(sin($heading) * sin($angularDistance) * cos($lat),
                 cos($angularDistance) - sin($lat) * sin($lat2));
 
-        return new LngLat(rad2deg($lon2), rad2deg($lat2));
+        return new LatLng(rad2deg($lat2), rad2deg($lon2));
     }
 }

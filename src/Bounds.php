@@ -13,96 +13,96 @@ namespace Geokit;
 
 class Bounds implements \ArrayAccess
 {
-    private $westSouth;
-    private $eastNorth;
+    private $southWest;
+    private $northEast;
 
-    private static $westSouthKeys = array(
-        'westsouth',
-        'west_south',
-        'westSouth'
+    private static $southWestKeys = array(
+        'southwest',
+        'south_west',
+        'southWest'
     );
 
-    private static $eastNorthKeys = array(
-        'eastnorth',
-        'east_north',
-        'eastNorth'
+    private static $northEastKeys = array(
+        'northeast',
+        'north_east',
+        'northEast'
     );
 
     /**
-     * @param  \Geokit\LngLat  $westSouth
-     * @param  \Geokit\LngLat  $eastNorth
+     * @param  \Geokit\LatLng  $southWest
+     * @param  \Geokit\LatLng  $northEast
      * @throws \LogicException
      */
-    public function __construct(LngLat $westSouth, LngLat $eastNorth)
+    public function __construct(LatLng $southWest, LatLng $northEast)
     {
-        $this->westSouth = $westSouth;
-        $this->eastNorth = $eastNorth;
+        $this->southWest = $southWest;
+        $this->northEast = $northEast;
 
-        if ($this->westSouth->getLatitude() > $this->eastNorth->getLatitude()) {
-            throw new \LogicException('Bounds west-south coordinate cannot be north of the east-north coordinate');
+        if ($this->southWest->getLatitude() > $this->northEast->getLatitude()) {
+            throw new \LogicException('Bounds south-west coordinate cannot be north of the east-north coordinate');
         }
     }
 
     /**
-     * @return \Geokit\LngLat
+     * @return \Geokit\LatLng
      */
-    public function getWestSouth()
+    public function getSouthWest()
     {
-        return $this->westSouth;
+        return $this->southWest;
     }
 
     /**
-     * @return \Geokit\LngLat
+     * @return \Geokit\LatLng
      */
-    public function getEastNorth()
+    public function getNorthEast()
     {
-        return $this->eastNorth;
+        return $this->northEast;
     }
 
     /**
-     * @return \Geokit\LngLat
+     * @return \Geokit\LatLng
      */
     public function getCenter()
     {
         if ($this->crossesAntimeridian()) {
-            $span = $this->lngSpan($this->westSouth->getLongitude(), $this->eastNorth->getLongitude());
-            $lng  = $this->westSouth->getLongitude() + $span / 2;
+            $span = $this->lngSpan($this->southWest->getLongitude(), $this->northEast->getLongitude());
+            $lng  = $this->southWest->getLongitude() + $span / 2;
         } else {
-            $lng = ($this->westSouth->getLongitude() + $this->eastNorth->getLongitude()) / 2;
+            $lng = ($this->southWest->getLongitude() + $this->northEast->getLongitude()) / 2;
         }
 
-        return new LngLat(
-            $lng,
-            ($this->westSouth->getLatitude() + $this->eastNorth->getLatitude()) / 2
+        return new LatLng(
+            ($this->southWest->getLatitude() + $this->northEast->getLatitude()) / 2,
+            $lng
         );
     }
 
     /**
-     * @return \Geokit\LngLat
+     * @return \Geokit\LatLng
      */
     public function getSpan()
     {
-        return new LngLat(
-            $this->lngSpan($this->westSouth->getLongitude(), $this->eastNorth->getLongitude()),
-            $this->eastNorth->getLatitude() - $this->westSouth->getLatitude()
+        return new LatLng(
+            $this->northEast->getLatitude() - $this->southWest->getLatitude(),
+            $this->lngSpan($this->southWest->getLongitude(), $this->northEast->getLongitude())
         );
     }
 
     public function offsetExists($offset)
     {
-        return in_array($offset, self::$westSouthKeys) ||
-               in_array($offset, self::$eastNorthKeys) ||
+        return in_array($offset, self::$southWestKeys) ||
+               in_array($offset, self::$northEastKeys) ||
                in_array($offset, array('center', 'span'));
     }
 
     public function offsetGet($offset)
     {
-        if (in_array($offset, self::$westSouthKeys)) {
-            return $this->getWestSouth();
+        if (in_array($offset, self::$southWestKeys)) {
+            return $this->getSouthWest();
         }
 
-        if (in_array($offset, self::$eastNorthKeys)) {
-            return $this->getEastNorth();
+        if (in_array($offset, self::$northEastKeys)) {
+            return $this->getNorthEast();
         }
 
         if ('center' === $offset) {
@@ -131,18 +131,18 @@ class Bounds implements \ArrayAccess
      */
     public function crossesAntimeridian()
     {
-        return $this->westSouth->getLongitude() > $this->eastNorth->getLongitude();
+        return $this->southWest->getLongitude() > $this->northEast->getLongitude();
     }
 
     /**
-     * @param  \Geokit\LngLat $latLng
+     * @param  \Geokit\LatLng $latLng
      * @return boolean
      */
-    public function contains(LngLat $latLng)
+    public function contains(LatLng $latLng)
     {
       // check latitude
-      if ($this->westSouth->getLatitude() > $latLng->getLatitude() ||
-          $latLng->getLatitude() > $this->eastNorth->getLatitude()) {
+      if ($this->southWest->getLatitude() > $latLng->getLatitude() ||
+          $latLng->getLatitude() > $this->northEast->getLatitude()) {
           return false;
       }
 
@@ -151,16 +151,16 @@ class Bounds implements \ArrayAccess
     }
 
     /**
-     * @param  LngLat $latLng
+     * @param  LatLng $latLng
      * @return Bounds
      */
-    public function extend(LngLat $latLng)
+    public function extend(LatLng $latLng)
     {
-        $newSouth = min($this->westSouth->getLatitude(), $latLng->getLatitude());
-        $newNorth = max($this->eastNorth->getLatitude(), $latLng->getLatitude());
+        $newSouth = min($this->southWest->getLatitude(), $latLng->getLatitude());
+        $newNorth = max($this->northEast->getLatitude(), $latLng->getLatitude());
 
-        $newWest = $this->westSouth->getLongitude();
-        $newEast = $this->eastNorth->getLongitude();
+        $newWest = $this->southWest->getLongitude();
+        $newEast = $this->northEast->getLongitude();
 
         if (!$this->containsLng($latLng->getLongitude())) {
             // try extending east and try extending west, and use the one that
@@ -175,7 +175,7 @@ class Bounds implements \ArrayAccess
             }
         }
 
-        return new self(new LngLat($newWest, $newSouth), new LngLat($newEast, $newNorth));
+        return new self(new LatLng($newSouth, $newWest), new LatLng($newNorth, $newEast));
     }
 
     /**
@@ -184,9 +184,9 @@ class Bounds implements \ArrayAccess
      */
     public function union(Bounds $bounds)
     {
-        $newBounds = $this->extend($bounds->getWestSouth());
+        $newBounds = $this->extend($bounds->getSouthWest());
 
-        return $newBounds->extend($bounds->getEastNorth());
+        return $newBounds->extend($bounds->getNorthEast());
     }
 
     /**
@@ -198,11 +198,11 @@ class Bounds implements \ArrayAccess
     protected function containsLng($lng)
     {
         if ($this->crossesAntimeridian()) {
-            return $lng <= $this->eastNorth->getLongitude() ||
-                   $lng >= $this->westSouth->getLongitude();
+            return $lng <= $this->northEast->getLongitude() ||
+                   $lng >= $this->southWest->getLongitude();
         } else {
-            return $this->westSouth->getLongitude() <= $lng &&
-                   $lng <= $this->eastNorth->getLongitude();
+            return $this->southWest->getLongitude() <= $lng &&
+                   $lng <= $this->northEast->getLongitude();
         }
     }
 
@@ -228,22 +228,22 @@ class Bounds implements \ArrayAccess
      * If $input is a string, it can be in the format
      * "1.1234, 2.5678, 3.910, 4.1112" or "1.1234 2.5678 3.910 4.1112".
      *
-     * If $input is an array or \ArrayAccess object, it must have a west-south
+     * If $input is an array or \ArrayAccess object, it must have a south-west
      * and east-north entry.
      *
      * Recognized keys are:
      *
-     *  * West-south:
-     *    * westsouth
-     *    * west_south
-     *    * westSouth
+     *  * South-west:
+     *    * southwest
+     *    * south_west
+     *    * southWest
      *
-     *  * East-north:
-     *    * eastnorth
-     *    * east_north
-     *    * eastNorth
+     *  * North-east:
+     *    * northeast
+     *    * north_east
+     *    * northEast
      *
-     * If $input is an indexed array, it assumes west-south at index 0 and
+     * If $input is an indexed array, it assumes south-west at index 0 and
      * east-north at index 1, eg. [[180.0, -45.0], [-180.0, 45.0]].
      *
      * If $input is an Bounds object, it is just passed through.
@@ -258,29 +258,29 @@ class Bounds implements \ArrayAccess
             return $input;
         }
 
-        $westSouth = null;
-        $eastNorth = null;
+        $southWest = null;
+        $northEast = null;
 
         if (is_string($input) && preg_match('/(\-?\d+\.?\d*)[, ] ?(\-?\d+\.?\d*)[, ] ?(\-?\d+\.?\d*)[, ] ?(\-?\d+\.?\d*)$/', $input, $match)) {
-            $westSouth = array('lng' => $match[1], 'lat' => $match[2]);
-            $eastNorth = array('lng' => $match[3], 'lat' => $match[4]);
+            $southWest = array('lng' => $match[1], 'lat' => $match[2]);
+            $northEast = array('lng' => $match[3], 'lat' => $match[4]);
         } elseif (is_array($input) || $input instanceof \ArrayAccess) {
-            $westSouth = self::extract($input, self::$westSouthKeys);
+            $southWest = self::extract($input, self::$southWestKeys);
 
-            if (!$westSouth && isset($input[1])) {
-                $westSouth = $input[0];
+            if (!$southWest && isset($input[1])) {
+                $southWest = $input[0];
             }
 
-            $eastNorth = self::extract($input, self::$eastNorthKeys);
+            $northEast = self::extract($input, self::$northEastKeys);
 
-            if (!$eastNorth && isset($input[0])) {
-                $eastNorth = $input[1];
+            if (!$northEast && isset($input[0])) {
+                $northEast = $input[1];
             }
         }
 
-        if (null !== $westSouth && null !== $eastNorth) {
+        if (null !== $southWest && null !== $northEast) {
             try {
-                return new self(LngLat::normalize($westSouth), LngLat::normalize($eastNorth));
+                return new self(LatLng::normalize($southWest), LatLng::normalize($northEast));
             } catch (\InvalidArgumentException $e) {
                 throw new \InvalidArgumentException(sprintf('Cannot normalize Bounds from input %s.', json_encode($input)), 0, $e);
             }
