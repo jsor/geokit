@@ -52,6 +52,11 @@ class Distance
 
     private $value;
 
+    /**
+     * @param  integer|float             $value
+     * @param  string                    $unit
+     * @throws \InvalidArgumentException
+     */
     public function __construct($value, $unit = self::DEFAULT_UNIT)
     {
         if (!isset(self::$units[$unit])) {

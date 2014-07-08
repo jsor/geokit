@@ -16,6 +16,13 @@ namespace Geokit;
  */
 class BoundsTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @param Bounds  $b
+     * @param integer $w
+     * @param integer $s
+     * @param integer $e
+     * @param integer $n
+     */
     protected function assertBounds(Bounds $b, $w, $s, $e, $n)
     {
         $this->assertEquals($w, $b->getWestSouth()->getLongitude());

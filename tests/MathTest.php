@@ -22,7 +22,7 @@ class MathTest extends \PHPUnit_Framework_TestCase
     public function testDistanceHaversine($LngLat1, $LngLat2, $distance)
     {
         $math = new Math();
-        
+
         $this->assertEquals(
             sprintf('%F', $distance),
             sprintf('%F', $math->distanceHaversine($LngLat1, $LngLat2)->meters())

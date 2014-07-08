@@ -201,9 +201,9 @@ class Math
      * heading and distance, from the given start point.
      *
      * @see http://www.movable-type.co.uk/scripts/latlong.html
-     * @param  mixed          $start
-     * @param  float          $heading  (in degrees)
-     * @param  mixed          $distance (in meters)
+     * @param  mixed                                      $start
+     * @param  float                                      $heading  (in degrees)
+     * @param  string|array|\ArrayAccess|\Geokit\Distance $distance (in meters)
      * @return \Geokit\LngLat
      */
     public function endpoint($start, $heading, $distance)
