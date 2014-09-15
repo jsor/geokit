@@ -14,7 +14,8 @@ before_install:
 install:
   - composer install --dev --prefer-source
 
-script: phpunit -v --coverage-text --coverage-clover ./build/logs/clover.xml
+script:
+  - phpunit -v --coverage-text --coverage-clover ./build/logs/clover.xml
 
 after_script:
   - php vendor/bin/coveralls -v
