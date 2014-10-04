@@ -27,7 +27,7 @@ available versions.
 ```json
 {
     "require": {
-        "geokit/geokit": "0.2.*@dev"
+        "geokit/geokit": "~1.0.0@dev"
     }
 }
 ```
