@@ -14,9 +14,6 @@
     "require": {
         "php": ">=5.3.3"
     },
-    "require-dev": {
-        "satooshi/php-coveralls": "dev-master"
-    },
     "autoload": {
         "psr-4": {
             "Geokit\\": "src/"
