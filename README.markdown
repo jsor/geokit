@@ -12,7 +12,7 @@ Geokit is a PHP toolkit to solve geo-related tasks like:
 
 * [Installation](#installation)
 * [Reference](#reference)
-  * [LngLat](#lnglat)
+  * [LatLng](#latlng)
   * [Bounds](#bounds)
   * [Distance](#distance)
 * [License](#license)
@@ -36,41 +36,41 @@ available versions.
 Reference
 ---------
 
-### LngLat
+### LatLng
 
-A LngLat instance represents a geographical point in longitude/latitude
+A LatLng instance represents a geographical point in latitude/longitude
 coordinates.
 
-* Longitude ranges between -180 and 180 degrees, inclusive. Longitudes above 180
-  or below -180 are wrapped. For example, 480, 840 and 1200 will all be wrapped
-  to 120 degrees.
 * Latitude ranges between -90 and 90 degrees, inclusive. Latitudes above 90 or
   below -90 are capped, not wrapped. For example, 100 will be capped to 90
   degrees.
+* Longitude ranges between -180 and 180 degrees, inclusive. Longitudes above 180
+  or below -180 are wrapped. For example, 480, 840 and 1200 will all be wrapped
+  to 120 degrees.
 
 ```php
-$lngLat = new Geokit\LngLat(1, 2);
+$latLng = new Geokit\LatLng(1, 2);
 
-$longitude = $lngLat->getLongitude();
+$latitude = $latLng->getLatitude();
 // or
-$longitude = $lngLat['longitude'];
+$latitude = $latLng['latitude'];
 
-$latitude = $lngLat->getLatitude();
+$longitude = $latLng->getLongitude();
 // or
-$latitude = $lngLat['latitude'];
+$longitude = $latLng['longitude'];
 ```
 
-Alternatively, you can create a LngLat instance through its static normalize
+Alternatively, you can create a LatLng instance through its static normalize
 method. This method takes anything which looks like a coordinate and generates a
-LngLat object from it.
+LatLng object from it.
 
 ```php
-$lngLat = Geokit\LngLat::normalize('1 2');
-$lngLat = Geokit\LngLat::normalize('1, 2');
-$lngLat = Geokit\LngLat::normalize(array('longitude' => 1, 'latitude' => 2));
-$lngLat = Geokit\LngLat::normalize(array('lng' => 1, 'lat' => 2));
-$lngLat = Geokit\LngLat::normalize(array('lon' => 1, 'lat' => 2));
-$lngLat = Geokit\LngLat::normalize(array(1, 2));
+$latLng = Geokit\LatLng::normalize('1 2');
+$latLng = Geokit\LatLng::normalize('1, 2');
+$latLng = Geokit\LatLng::normalize(array('latitude' => 1, 'longitude' => 2));
+$latLng = Geokit\LatLng::normalize(array('lat' => 1, 'lng' => 2));
+$latLng = Geokit\LatLng::normalize(array('lat' => 1, 'lon' => 2));
+$latLng = Geokit\LatLng::normalize(array(1, 2));
 ```
 
 ### Bounds
@@ -78,30 +78,30 @@ $lngLat = Geokit\LngLat::normalize(array(1, 2));
 A Bounds instance represents a rectangle in geographical coordinates, including
 one that crosses the 180 degrees longitudinal meridian.
 
-It is constructed from its left/bottom (west-south) and right-top (east-north)
+It is constructed from its left/bottom (south-west) and right-top (north-east)
 corner points.
 
 ```php
-$westSouth = new Geokit\LngLat(1, 2);
-$eastNorth = new Geokit\LngLat(1, 2);
+$southWest = new Geokit\LatLng(1, 2);
+$northEast = new Geokit\LatLng(1, 2);
 
-$bounds = new Geokit\Bounds($westSouth, $eastNorth);
+$bounds = new Geokit\Bounds($southWest, $northEast);
 
-$westSouthLngLat = $bounds->getWestSouth();
+$southWestLatLng = $bounds->getSouthWest();
 // or
-$westSouthLngLat = $bounds['west_south'];
+$southWestLatLng = $bounds['south_west'];
 
-$eastNorthLngLat = $bounds->getEastNorth();
+$northEastLatLng = $bounds->getNorthEast();
 // or
-$eastNorthLngLat = $bounds['east_north'];
+$northEastLatLng = $bounds['north_east'];
 
-$centerLngLat = $bounds->getCenter();
+$centerLatLng = $bounds->getCenter();
 // or
-$centerLngLat = $bounds['center'];
+$centerLatLng = $bounds['center'];
 
-$spanLngLat = $bounds->getSpan();
+$spanLatLng = $bounds->getSpan();
 // or
-$spanLngLat = $bounds['span'];
+$spanLatLng = $bounds['span'];
 
 $boolean = $bounds->contains($latLng);
 
@@ -114,14 +114,14 @@ method. This method takes anything which looks like bounds and generates a
 Bounds object from it.
 
 ```php
-$lngLat = Geokit\Bounds::normalize('1 2 3 4');
-$lngLat = Geokit\Bounds::normalize('1 2, 3 4');
-$lngLat = Geokit\Bounds::normalize('1, 2, 3, 4');
-$lngLat = Geokit\Bounds::normalize(array('west_south' => $westSouthLngLat, 'east_north' => $eastNorthLngLat));
-$lngLat = Geokit\Bounds::normalize(array('west_south' => array(1, 2), 'east_north' => array(3, 4)));
-$lngLat = Geokit\Bounds::normalize(array('westsouth' => $westSouthLngLat, 'eastnorth' => $eastNorthLngLat));
-$lngLat = Geokit\Bounds::normalize(array('westSouth' => $westSouthLngLat, 'eastNorth' => $eastNorthLngLat));
-$lngLat = Geokit\Bounds::normalize(array($westSouthLngLat, $eastNorthLngLat));
+$latLng = Geokit\Bounds::normalize('1 2 3 4');
+$latLng = Geokit\Bounds::normalize('1 2, 3 4');
+$latLng = Geokit\Bounds::normalize('1, 2, 3, 4');
+$latLng = Geokit\Bounds::normalize(array('south_west' => $southWestLatLng, 'north_east' => $northEastLatLng));
+$latLng = Geokit\Bounds::normalize(array('south_west' => array(1, 2), 'north_east' => array(3, 4)));
+$latLng = Geokit\Bounds::normalize(array('southwest' => $southWestLatLng, 'northeast' => $northEastLatLng));
+$latLng = Geokit\Bounds::normalize(array('southWest' => $southWestLatLng, 'northEast' => $northEastLatLng));
+$latLng = Geokit\Bounds::normalize(array($southWestLatLng, $northEastLatLng));
 ```
 
 ### Distance

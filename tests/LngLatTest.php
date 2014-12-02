@@ -12,32 +12,32 @@
 namespace Geokit;
 
 /**
- * @covers Geokit\LngLat
+ * @covers Geokit\LatLng
  */
-class LngLatTest extends \PHPUnit_Framework_TestCase
+class LatLngTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstructorShouldAcceptStringsAsArguments()
     {
-        $LngLat = new LngLat('1.1234', '2.5678');
+        $LatLng = new LatLng('2.5678', '1.1234');
 
-        $this->assertSame(1.1234, $LngLat->getLongitude());
-        $this->assertSame(2.5678, $LngLat->getLatitude());
+        $this->assertSame(1.1234, $LatLng->getLongitude());
+        $this->assertSame(2.5678, $LatLng->getLatitude());
     }
 
     public function testConstructorShouldAcceptFloatsAsArguments()
     {
-        $LngLat = new LngLat(1.1234, 2.5678);
+        $LatLng = new LatLng(2.5678, 1.1234);
 
-        $this->assertSame(1.1234, $LngLat->getLongitude());
-        $this->assertSame(2.5678, $LngLat->getLatitude());
+        $this->assertSame(1.1234, $LatLng->getLongitude());
+        $this->assertSame(2.5678, $LatLng->getLatitude());
     }
 
-    public function testConstructorShouldNormalizeLngLat()
+    public function testConstructorShouldNormalizeLatLng()
     {
-        $LngLat = new LngLat(181, 91);
+        $LatLng = new LatLng(91, 181);
 
-        $this->assertEquals(-179, $LngLat->getLongitude());
-        $this->assertEquals(90, $LngLat->getLatitude());
+        $this->assertEquals(-179, $LatLng->getLongitude());
+        $this->assertEquals(90, $LatLng->getLatitude());
     }
 
     public function testConstructorShouldAcceptLocalizedFloatsAsArguments()
@@ -48,10 +48,10 @@ class LngLatTest extends \PHPUnit_Framework_TestCase
         $latitude  = floatval('1.1234');
         $longitude = floatval('2.5678');
 
-        $LngLat = new LngLat($longitude, $latitude);
+        $LatLng = new LatLng($latitude, $longitude);
 
-        $this->assertSame(1.1234, $LngLat->getLatitude());
-        $this->assertSame(2.5678, $LngLat->getLongitude());
+        $this->assertSame(1.1234, $LatLng->getLatitude());
+        $this->assertSame(2.5678, $LatLng->getLongitude());
 
         setlocale(LC_NUMERIC, $currentLocale);
     }
@@ -68,11 +68,11 @@ class LngLatTest extends \PHPUnit_Framework_TestCase
             'x'
         );
 
-        $LngLat = new LngLat(1, 2);
+        $LatLng = new LatLng(2, 1);
 
         foreach ($keys as $key) {
-            $this->assertTrue(isset($LngLat[$key]));
-            $this->assertNotNull($LngLat[$key]);
+            $this->assertTrue(isset($LatLng[$key]));
+            $this->assertNotNull($LatLng[$key]);
         }
     }
 
@@ -80,34 +80,34 @@ class LngLatTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('\InvalidArgumentException', 'Invalid offset "foo".');
 
-        $LngLat = new LngLat(1, 2);
+        $LatLng = new LatLng(2, 1);
 
-        $LngLat['foo'];
+        $LatLng['foo'];
     }
 
     public function testOffsetSetThrowsException()
     {
         $this->setExpectedException('\BadMethodCallException');
 
-        $LngLat = new LngLat(1, 2);
+        $LatLng = new LatLng(2, 1);
 
-        $LngLat['lat'] = 5;
+        $LatLng['lat'] = 5;
     }
 
     public function testOffsetUnsetThrowsException()
     {
         $this->setExpectedException('\BadMethodCallException');
 
-        $LngLat = new LngLat(1, 2);
+        $LatLng = new LatLng(2, 1);
 
-        unset($LngLat['lat']);
+        unset($LatLng['lat']);
     }
 
     public function testToStringShouldReturnLatitudeAndLongitudeAsCommaSeparatedString()
     {
-        $LngLat = new LngLat(1.1234, 2.5678);
+        $LatLng = new LatLng(2.5678, 1.1234);
 
-        $this->assertSame(sprintf('%F,%F', 1.1234, 2.5678), (string) $LngLat);
+        $this->assertSame(sprintf('%F,%F', 2.5678, 1.1234), (string) $LatLng);
     }
 
     public function testToStringShouldReturnLatitudeAndLongitudeAsCommaSeparatedStringWithLocalizedFloats()
@@ -118,77 +118,77 @@ class LngLatTest extends \PHPUnit_Framework_TestCase
         $latitude  = floatval('1.1234');
         $longitude = floatval('2.5678');
 
-        $LngLat = new LngLat($latitude, $longitude);
+        $LatLng = new LatLng($latitude, $longitude);
 
-        $this->assertSame(sprintf('%F,%F', 1.1234, 2.5678), (string) $LngLat);
+        $this->assertSame(sprintf('%F,%F', 1.1234, 2.5678), (string) $LatLng);
         setlocale(LC_NUMERIC, $currentLocale);
     }
 
     public function testNormalizeShouldThrowExceptionIfInvalidDataSupplied()
     {
-        $this->setExpectedException('\InvalidArgumentException', 'Cannot normalize LngLat from input null.');
-        LngLat::normalize(null);
+        $this->setExpectedException('\InvalidArgumentException', 'Cannot normalize LatLng from input null.');
+        LatLng::normalize(null);
     }
 
-    public function testNormalizeShouldAcceptLngLatArgument()
+    public function testNormalizeShouldAcceptLatLngArgument()
     {
-        $LngLat1 = new LngLat(1.1234, 2.5678);
-        $LngLat2 = LngLat::normalize($LngLat1);
+        $LatLng1 = new LatLng(2.5678, 1.1234);
+        $LatLng2 = LatLng::normalize($LatLng1);
 
-        $this->assertEquals($LngLat1, $LngLat2);
+        $this->assertEquals($LatLng1, $LatLng2);
     }
 
     public function testNormalizeShouldAcceptStringArgument()
     {
-        $LngLat = LngLat::normalize('1.1234,2.5678');
+        $LatLng = LatLng::normalize('1.1234,2.5678');
 
-        $this->assertSame(1.1234, $LngLat->getLongitude());
-        $this->assertSame(2.5678, $LngLat->getLatitude());
+        $this->assertSame(1.1234, $LatLng->getLatitude());
+        $this->assertSame(2.5678, $LatLng->getLongitude());
     }
 
     public function testNormalizeShouldAcceptArrayArgument()
     {
-        $LngLat = LngLat::normalize(array('latitude' => 1.1234, 'longitude' => 2.5678));
+        $LatLng = LatLng::normalize(array('latitude' => 1.1234, 'longitude' => 2.5678));
 
-        $this->assertSame(1.1234, $LngLat->getLatitude());
-        $this->assertSame(2.5678, $LngLat->getLongitude());
+        $this->assertSame(1.1234, $LatLng->getLatitude());
+        $this->assertSame(2.5678, $LatLng->getLongitude());
     }
 
     public function testNormalizeShouldAcceptArrayArgumentWithShortKeys()
     {
-        $LngLat = LngLat::normalize(array('lat' => 1.1234, 'lon' => 2.5678));
+        $LatLng = LatLng::normalize(array('lat' => 1.1234, 'lon' => 2.5678));
 
-        $this->assertSame(1.1234, $LngLat->getLatitude());
-        $this->assertSame(2.5678, $LngLat->getLongitude());
+        $this->assertSame(1.1234, $LatLng->getLatitude());
+        $this->assertSame(2.5678, $LatLng->getLongitude());
 
-        $LngLat = LngLat::normalize(array('lat' => 1.1234, 'lng' => 2.5678));
+        $LatLng = LatLng::normalize(array('lat' => 1.1234, 'lng' => 2.5678));
 
-        $this->assertSame(1.1234, $LngLat->getLatitude());
-        $this->assertSame(2.5678, $LngLat->getLongitude());
+        $this->assertSame(1.1234, $LatLng->getLatitude());
+        $this->assertSame(2.5678, $LatLng->getLongitude());
     }
 
     public function testNormalizeShouldAcceptArrayArgumentWithXYKeys()
     {
-        $LngLat = LngLat::normalize(array('y' => 1.1234, 'x' => 2.5678));
+        $LatLng = LatLng::normalize(array('y' => 1.1234, 'x' => 2.5678));
 
-        $this->assertSame(1.1234, $LngLat->getLatitude());
-        $this->assertSame(2.5678, $LngLat->getLongitude());
+        $this->assertSame(1.1234, $LatLng->getLatitude());
+        $this->assertSame(2.5678, $LatLng->getLongitude());
     }
 
     public function testNormalizeShouldAcceptArrayAccessArgument()
     {
-        $LngLat = LngLat::normalize(new \ArrayObject(array('latitude' => 1.1234, 'longitude' => 2.5678)));
+        $LatLng = LatLng::normalize(new \ArrayObject(array('latitude' => 1.1234, 'longitude' => 2.5678)));
 
-        $this->assertSame(1.1234, $LngLat->getLatitude());
-        $this->assertSame(2.5678, $LngLat->getLongitude());
+        $this->assertSame(1.1234, $LatLng->getLatitude());
+        $this->assertSame(2.5678, $LatLng->getLongitude());
     }
 
     public function testNormalizeShouldAcceptIndexedArrayArgument()
     {
-        $LngLat = LngLat::normalize(array(2.5678, 1.1234));
+        $LatLng = LatLng::normalize(array(2.5678, 1.1234));
 
-        $this->assertSame(1.1234, $LngLat->getLatitude());
-        $this->assertSame(2.5678, $LngLat->getLongitude());
+        $this->assertSame(2.5678, $LatLng->getLatitude());
+        $this->assertSame(1.1234, $LatLng->getLongitude());
     }
 
     /**
@@ -196,7 +196,7 @@ class LngLatTest extends \PHPUnit_Framework_TestCase
      */
     public function testNormalizeLat($a, $b)
     {
-        $this->assertEquals(LngLat::normalizeLat($a), $b);
+        $this->assertEquals(LatLng::normalizeLat($a), $b);
     }
 
     public function testNormalizeLatDataProvider()
@@ -215,7 +215,7 @@ class LngLatTest extends \PHPUnit_Framework_TestCase
      */
     public function testNormalizeLng($a, $b)
     {
-        $this->assertEquals(LngLat::normalizeLng($a), $b);
+        $this->assertEquals(LatLng::normalizeLng($a), $b);
     }
 
     public function testNormalizeLngDataProvider()
