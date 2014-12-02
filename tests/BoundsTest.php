@@ -23,12 +23,12 @@ class BoundsTest extends \PHPUnit_Framework_TestCase
      * @param integer $e
      * @param integer $n
      */
-    protected function assertBounds(Bounds $b, $w, $s, $e, $n)
+    protected function assertBounds(Bounds $b, $s, $w, $n, $e)
     {
-        $this->assertEquals($w, $b->getSouthWest()->getLongitude());
         $this->assertEquals($s, $b->getSouthWest()->getLatitude());
-        $this->assertEquals($e, $b->getNorthEast()->getLongitude());
+        $this->assertEquals($w, $b->getSouthWest()->getLongitude());
         $this->assertEquals($n, $b->getNorthEast()->getLatitude());
+        $this->assertEquals($e, $b->getNorthEast()->getLongitude());
     }
 
     public function testConstructorShouldAcceptLatLngsAsFirstAndSecondArgument()
@@ -146,7 +146,7 @@ class BoundsTest extends \PHPUnit_Framework_TestCase
         $bounds = new Bounds(new LatLng(37, -122), new LatLng(37, -122));
 
         $bounds = $bounds->union(new Bounds(new LatLng(-38, 123), new LatLng(38, -123)));
-        $this->assertBounds($bounds, 123, -38, -122, 38);
+        $this->assertBounds($bounds, -38, 123, 38, -122);
     }
 
     public function testCrossesAntimeridian()
@@ -179,11 +179,11 @@ class BoundsTest extends \PHPUnit_Framework_TestCase
 
     public function testNormalizeShouldAcceptStringArgument()
     {
-        $bounds = Bounds::normalize('179 -45 -179 45');
-        $this->assertBounds($bounds, 179, -45, -179, 45);
+        $bounds = Bounds::normalize('-45 179 45 -179');
+        $this->assertBounds($bounds, -45, 179, 45, -179);
 
-        $bounds = Bounds::normalize('179, -45, -179, 45');
-        $this->assertBounds($bounds, 179, -45, -179, 45);
+        $bounds = Bounds::normalize('-45, 179, 45, -179');
+        $this->assertBounds($bounds, -45, 179, 45, -179);
     }
 
     /**
@@ -192,7 +192,7 @@ class BoundsTest extends \PHPUnit_Framework_TestCase
     public function testNormalizeShouldAcceptArrayArgument($array)
     {
         $bounds = Bounds::normalize($array);
-        $this->assertBounds($bounds, 179, -45, -179, 45);
+        $this->assertBounds($bounds, -45, 179, 45, -179);
     }
 
     public function testNormalizeShouldAcceptArrayArgumentDataProvider()

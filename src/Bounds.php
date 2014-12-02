@@ -262,18 +262,18 @@ class Bounds implements \ArrayAccess
         $northEast = null;
 
         if (is_string($input) && preg_match('/(\-?\d+\.?\d*)[, ] ?(\-?\d+\.?\d*)[, ] ?(\-?\d+\.?\d*)[, ] ?(\-?\d+\.?\d*)$/', $input, $match)) {
-            $southWest = array('lng' => $match[1], 'lat' => $match[2]);
-            $northEast = array('lng' => $match[3], 'lat' => $match[4]);
+            $southWest = array('lat' => $match[1], 'lng' => $match[2]);
+            $northEast = array('lat' => $match[3], 'lng' => $match[4]);
         } elseif (is_array($input) || $input instanceof \ArrayAccess) {
             $southWest = self::extract($input, self::$southWestKeys);
 
-            if (!$southWest && isset($input[1])) {
+            if (!$southWest && isset($input[0])) {
                 $southWest = $input[0];
             }
 
             $northEast = self::extract($input, self::$northEastKeys);
 
-            if (!$northEast && isset($input[0])) {
+            if (!$northEast && isset($input[1])) {
                 $northEast = $input[1];
             }
         }
