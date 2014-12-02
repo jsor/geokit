@@ -244,7 +244,7 @@ class Bounds implements \ArrayAccess
      *    * northEast
      *
      * If $input is an indexed array, it assumes south-west at index 0 and
-     * east-north at index 1, eg. [[180.0, -45.0], [-180.0, 45.0]].
+     * north-east at index 1, eg. [[-45.0, 180.0], [45.0, -180.0]].
      *
      * If $input is an Bounds object, it is just passed through.
      *
