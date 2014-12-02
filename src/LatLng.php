@@ -118,8 +118,8 @@ class LatLng implements \ArrayAccess
      *    * lat
      *    * y
      *
-     * If $input is an indexed array, it assumes the longitude at index 0
-     * and the latitude at index 1, eg. [180.0, 90.0].
+     * If $input is an indexed array, it assumes the latitude at index 0
+     * and the longitude at index 1, eg. [90.0, 180.0].
      *
      * If $input is an LatLng object, it is just passed through.
      *
