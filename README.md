@@ -157,7 +157,7 @@ $distance = Geokit\Distance::normalize('234nm');
 License
 -------
 
-Geokit is released under the [MIT License](https://github.com/jsor/Geokit/blob/master/LICENSE).
+Geokit is released under the [MIT License](https://github.com/jsor/geokit/blob/master/LICENSE).
 
 Credits
 -------
