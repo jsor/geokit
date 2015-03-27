@@ -96,7 +96,7 @@ class DistanceTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider testNormalizeShouldAcceptStringArgumentDataProvider
+     * @dataProvider normalizeShouldAcceptStringArgumentDataProvider
      */
     public function testNormalizeShouldAcceptStringArgument($value, $unit)
     {
@@ -104,7 +104,7 @@ class DistanceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1000, Distance::normalize(sprintf('%.15F %s', $value, $unit))->meters(), 'With space');
     }
 
-    public function testNormalizeShouldAcceptStringArgumentDataProvider()
+    public function normalizeShouldAcceptStringArgumentDataProvider()
     {
         return array(
             array(

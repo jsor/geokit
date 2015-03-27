@@ -125,7 +125,7 @@ class EllipsoidTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider testNormalizeShouldAcceptArrayArgumentDataProvider
+     * @dataProvider normalizeShouldAcceptArrayArgumentDataProvider
      */
     public function testNormalizeShouldAcceptArrayArgument($array)
     {
@@ -137,7 +137,7 @@ class EllipsoidTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(298.257223563, $ellipsoid->getInverseFlattening());
     }
 
-    public function testNormalizeShouldAcceptArrayArgumentDataProvider()
+    public function normalizeShouldAcceptArrayArgumentDataProvider()
     {
         $semiMajorAxisKeys = array(
             'semi_major_axis',

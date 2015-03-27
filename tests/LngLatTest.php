@@ -183,14 +183,14 @@ class LatLngTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider testNormalizeLatDataProvider
+     * @dataProvider normalizeLatDataProvider
      */
     public function testNormalizeLat($a, $b)
     {
         $this->assertEquals(LatLng::normalizeLat($a), $b);
     }
 
-    public function testNormalizeLatDataProvider()
+    public function normalizeLatDataProvider()
     {
         return array(
             array(-95, -90),

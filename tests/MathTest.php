@@ -8,7 +8,7 @@ namespace Geokit;
 class MathTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @dataProvider testDistanceHaversineDataProvider
+     * @dataProvider distanceHaversineDataProvider
      */
     public function testDistanceHaversine($LatLng1, $LatLng2, $distance)
     {
@@ -20,7 +20,7 @@ class MathTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public static function testDistanceHaversineDataProvider()
+    public static function distanceHaversineDataProvider()
     {
         return array(
             array(
@@ -127,7 +127,7 @@ class MathTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider testDistanceVincentyDataProvider
+     * @dataProvider distanceVincentyDataProvider
      */
     public function testDistanceVincenty($LatLng1, $LatLng2, $distance)
     {
@@ -139,7 +139,7 @@ class MathTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public static function testDistanceVincentyDataProvider()
+    public static function distanceVincentyDataProvider()
     {
         return array(
             array(

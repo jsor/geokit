@@ -178,7 +178,7 @@ class BoundsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider testNormalizeShouldAcceptArrayArgumentDataProvider
+     * @dataProvider normalizeShouldAcceptArrayArgumentDataProvider
      */
     public function testNormalizeShouldAcceptArrayArgument($array)
     {
@@ -186,7 +186,7 @@ class BoundsTest extends \PHPUnit_Framework_TestCase
         $this->assertBounds($bounds, -45, 179, 45, -179);
     }
 
-    public function testNormalizeShouldAcceptArrayArgumentDataProvider()
+    public function normalizeShouldAcceptArrayArgumentDataProvider()
     {
         $southWestKeys = array(
             'southwest',
