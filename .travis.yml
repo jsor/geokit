@@ -12,7 +12,7 @@ before_install:
   - composer self-update
 
 install:
-  - composer install --dev --prefer-source
+  - composer install --prefer-source
   - composer require satooshi/php-coveralls:dev-master
 
 script:
