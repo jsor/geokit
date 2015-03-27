@@ -25,12 +25,8 @@ Install [through composer](http://getcomposer.org). Check the
 [packagist page](https://packagist.org/packages/geokit/geokit) for all
 available versions.
 
-```json
-{
-    "require": {
-        "geokit/geokit": "~1.0.0@dev"
-    }
-}
+```bash
+composer require geokit/geokit
 ```
 
 Reference
