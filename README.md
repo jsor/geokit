@@ -110,14 +110,14 @@ method. This method takes anything which looks like bounds and generates a
 Bounds object from it.
 
 ```php
-$latLng = Geokit\Bounds::normalize('1 2 3 4');
-$latLng = Geokit\Bounds::normalize('1 2, 3 4');
-$latLng = Geokit\Bounds::normalize('1, 2, 3, 4');
-$latLng = Geokit\Bounds::normalize(array('south_west' => $southWestLatLng, 'north_east' => $northEastLatLng));
-$latLng = Geokit\Bounds::normalize(array('south_west' => array(1, 2), 'north_east' => array(3, 4)));
-$latLng = Geokit\Bounds::normalize(array('southwest' => $southWestLatLng, 'northeast' => $northEastLatLng));
-$latLng = Geokit\Bounds::normalize(array('southWest' => $southWestLatLng, 'northEast' => $northEastLatLng));
-$latLng = Geokit\Bounds::normalize(array($southWestLatLng, $northEastLatLng));
+$bounds = Geokit\Bounds::normalize('1 2 3 4');
+$bounds = Geokit\Bounds::normalize('1 2, 3 4');
+$bounds = Geokit\Bounds::normalize('1, 2, 3, 4');
+$bounds = Geokit\Bounds::normalize(array('south_west' => $southWestLatLng, 'north_east' => $northEastLatLng));
+$bounds = Geokit\Bounds::normalize(array('south_west' => array(1, 2), 'north_east' => array(3, 4)));
+$bounds = Geokit\Bounds::normalize(array('southwest' => $southWestLatLng, 'northeast' => $northEastLatLng));
+$bounds = Geokit\Bounds::normalize(array('southWest' => $southWestLatLng, 'northEast' => $northEastLatLng));
+$bounds = Geokit\Bounds::normalize(array($southWestLatLng, $northEastLatLng));
 ```
 
 ### Distance
