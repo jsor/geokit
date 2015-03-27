@@ -1,7 +1,7 @@
 {
     "name": "geokit/geokit",
     "description": "Geo-Toolkit for PHP",
-    "keywords": ["geo", "geometry"],
+    "keywords": ["geo", "geometry", "geography"],
     "homepage": "https://github.com/jsor/geokit",
     "license": "MIT",
     "authors": [
