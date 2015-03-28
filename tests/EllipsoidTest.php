@@ -58,7 +58,7 @@ class EllipsoidTest extends \PHPUnit_Framework_TestCase
             'inv_f',
             'inverseFlattening',
             'inverseF',
-            'invF'
+            'invF',
         );
 
         $ellipsoid = new Ellipsoid(1, 2, 3, 4);
@@ -159,7 +159,7 @@ class EllipsoidTest extends \PHPUnit_Framework_TestCase
             'inv_f',
             'inverseFlattening',
             'inverseF',
-            'invF'
+            'invF',
         );
 
         $data = array();
@@ -169,8 +169,8 @@ class EllipsoidTest extends \PHPUnit_Framework_TestCase
                 $data[] = array(
                     array(
                         $semiMajorAxisKey => 6378137.0,
-                        $semiMinorAxisKey => 6356752.3142451793
-                    )
+                        $semiMinorAxisKey => 6356752.3142451793,
+                    ),
                 );
             }
 
@@ -178,8 +178,8 @@ class EllipsoidTest extends \PHPUnit_Framework_TestCase
                 $data[] = array(
                     array(
                         $semiMajorAxisKey => 6378137.0,
-                        $inverseFlatteningKey => 298.257223563
-                    )
+                        $inverseFlatteningKey => 298.257223563,
+                    ),
                 );
             }
         }
@@ -187,8 +187,8 @@ class EllipsoidTest extends \PHPUnit_Framework_TestCase
         $data[] = array(
             array(
                 6378137.0,
-                298.257223563
-            )
+                298.257223563,
+            ),
         );
 
         return $data;

@@ -3,7 +3,7 @@
 namespace Geokit;
 
 /**
- * Inspired by scalaz-geo's Ellipsoid (https://github.com/scalaz/scalaz-geo)
+ * Inspired by scalaz-geo's Ellipsoid (https://github.com/scalaz/scalaz-geo).
  *
  * @see http://en.wikipedia.org/wiki/Earth_ellipsoid
  */
@@ -18,19 +18,19 @@ class Ellipsoid implements \ArrayAccess
         'semi_major_axis',
         'semi_major',
         'semiMajorAxis',
-        'semiMajor'
+        'semiMajor',
     );
 
     private static $semiMinorAxisKeys = array(
         'semi_minor_axis',
         'semi_minor',
         'semiMinorAxis',
-        'semiMinor'
+        'semiMinor',
     );
 
     private static $flatteningKeys = array(
         'flattening',
-        'f'
+        'f',
     );
 
     private static $inverseFlatteningKeys = array(
@@ -39,7 +39,7 @@ class Ellipsoid implements \ArrayAccess
         'inv_f',
         'inverseFlattening',
         'inverseF',
-        'invF'
+        'invF',
     );
 
     /**
@@ -50,10 +50,10 @@ class Ellipsoid implements \ArrayAccess
      */
     public function __construct($semiMajorAxis, $semiMinorAxis, $flattening, $inverseFlattening)
     {
-        $this->semiMajorAxis = (float)$semiMajorAxis;
-        $this->semiMinorAxis = (float)$semiMinorAxis;
-        $this->flattening = (float)$flattening;
-        $this->inverseFlattening = (float)$inverseFlattening;
+        $this->semiMajorAxis = (float) $semiMajorAxis;
+        $this->semiMinorAxis = (float) $semiMinorAxis;
+        $this->flattening = (float) $flattening;
+        $this->inverseFlattening = (float) $inverseFlattening;
     }
 
     /**
@@ -128,7 +128,7 @@ class Ellipsoid implements \ArrayAccess
     }
 
     /**
-     * World Geodetic System 1984
+     * World Geodetic System 1984.
      *
      * @return Ellipsoid
      */
@@ -141,7 +141,7 @@ class Ellipsoid implements \ArrayAccess
     }
 
     /**
-     * World Geodetic System 1972
+     * World Geodetic System 1972.
      *
      * @return Ellipsoid
      */
@@ -154,7 +154,7 @@ class Ellipsoid implements \ArrayAccess
     }
 
     /**
-     * World Geodetic System 1966
+     * World Geodetic System 1966.
      *
      * @return Ellipsoid
      */
@@ -167,7 +167,7 @@ class Ellipsoid implements \ArrayAccess
     }
 
     /**
-     * Geodetic Reference System 1980
+     * Geodetic Reference System 1980.
      *
      * @return Ellipsoid
      */
@@ -180,7 +180,7 @@ class Ellipsoid implements \ArrayAccess
     }
 
     /**
-     * Australian National Spheroid
+     * Australian National Spheroid.
      *
      * @return Ellipsoid
      */
@@ -193,7 +193,7 @@ class Ellipsoid implements \ArrayAccess
     }
 
     /**
-     * Airy 1830
+     * Airy 1830.
      *
      * @return Ellipsoid
      */
@@ -206,7 +206,7 @@ class Ellipsoid implements \ArrayAccess
     }
 
     /**
-     * Krassovsky 1940
+     * Krassovsky 1940.
      *
      * @return Ellipsoid
      */
@@ -218,16 +218,17 @@ class Ellipsoid implements \ArrayAccess
         );
     }
 
-
     /**
-     * @param  float $semiMajorAxis
-     * @param  float $inverseFlattening
+     * @param float $semiMajorAxis
+     * @param float $inverseFlattening
+     *
      * @return Ellipsoid
+     *
      * @throws \InvalidArgumentException
      */
     public static function createFromSemiMajorAndInvF($semiMajorAxis, $inverseFlattening)
     {
-        if ((float)$inverseFlattening <= 0) {
+        if ((float) $inverseFlattening <= 0) {
             throw new \InvalidArgumentException('The inverse flattening must be > 0.');
         }
 
@@ -242,9 +243,11 @@ class Ellipsoid implements \ArrayAccess
     }
 
     /**
-     * @param  float $semiMajorAxis
-     * @param  float $semiMinorAxis
+     * @param float $semiMajorAxis
+     * @param float $semiMinorAxis
+     *
      * @return Ellipsoid
+     *
      * @throws \InvalidArgumentException
      */
     public static function createFromSemiMajorAndSemiMinor($semiMajorAxis, $semiMinorAxis)
@@ -299,8 +302,10 @@ class Ellipsoid implements \ArrayAccess
      *
      * If $input is null, the default wgs84 ellipsoid is returned.
      *
-     * @param  array|\ArrayAccess|\Geokit\Ellipsoid|null $input
+     * @param array|\ArrayAccess|\Geokit\Ellipsoid|null $input
+     *
      * @return \Geokit\Ellipsoid
+     *
      * @throws \InvalidArgumentException
      */
     public static function normalize($input)
@@ -354,6 +359,6 @@ class Ellipsoid implements \ArrayAccess
             return $input[$key];
         }
 
-        return null;
+        return;
     }
 }

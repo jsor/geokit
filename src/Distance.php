@@ -3,7 +3,7 @@
 namespace Geokit;
 
 /**
- * Inspired by GeoPy's distance class (https://github.com/geopy/geopy)
+ * Inspired by GeoPy's distance class (https://github.com/geopy/geopy).
  */
 class Distance
 {
@@ -44,8 +44,9 @@ class Distance
     private $value;
 
     /**
-     * @param  integer|float $value
-     * @param  string $unit
+     * @param int|float $value
+     * @param string    $unit
+     *
      * @throws \InvalidArgumentException
      */
     public function __construct($value, $unit = self::DEFAULT_UNIT)
@@ -149,8 +150,10 @@ class Distance
      *
      * If $input is a Distance object, it is just passed through.
      *
-     * @param  string|array|\ArrayAccess|\Geokit\Distance $input
+     * @param string|array|\ArrayAccess|\Geokit\Distance $input
+     *
      * @return \Geokit\Distance
+     *
      * @throws \InvalidArgumentException
      */
     public static function normalize($input)
@@ -170,15 +173,17 @@ class Distance
                 $unit = self::resolveUnitAlias($unit);
             }
 
-            return new self((float)$match[1], $unit);
+            return new self((float) $match[1], $unit);
         }
 
         throw new \InvalidArgumentException(sprintf('Cannot normalize Distance from input %s.', json_encode($input)));
     }
 
     /**
-     * @param  string $alias
+     * @param string $alias
+     *
      * @return string
+     *
      * @throws \InvalidArgumentException
      */
     public static function resolveUnitAlias($alias)

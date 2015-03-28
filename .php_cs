@@ -6,7 +6,7 @@ $finder = Symfony\CS\Finder\DefaultFinder::create()
 ;
 
 return Symfony\CS\Config\Config::create()
-    ->level(Symfony\CS\FixerInterface::PSR2_LEVEL)
+    ->level(Symfony\CS\FixerInterface::SYMFONY_LEVEL)
     ->fixers(array(
         'concat_with_spaces',
         'ordered_use',

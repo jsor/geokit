@@ -109,83 +109,83 @@ class DistanceTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 1000,
-                'm'
+                'm',
             ),
             array(
                 1000,
-                'meter'
+                'meter',
             ),
             array(
                 1000,
-                'meters'
+                'meters',
             ),
             array(
                 1000,
-                'metre'
+                'metre',
             ),
             array(
                 1000,
-                'metres'
+                'metres',
             ),
             array(
                 1,
-                'km'
+                'km',
             ),
             array(
                 1,
-                'kilometer'
+                'kilometer',
             ),
             array(
                 1,
-                'kilometers'
+                'kilometers',
             ),
             array(
                 1,
-                'kilometre'
+                'kilometre',
             ),
             array(
                 1,
-                'kilometres'
+                'kilometres',
             ),
             array(
                 0.62137119223733,
-                'mi'
+                'mi',
             ),
             array(
                 0.62137119223733,
-                'mile'
+                'mile',
             ),
             array(
                 0.62137119223733,
-                'miles'
+                'miles',
             ),
             array(
                 3280.83989501312336,
-                'ft'
+                'ft',
             ),
             array(
                 3280.83989501312336,
-                'foot'
+                'foot',
             ),
             array(
                 3280.83989501312336,
-                'feet'
+                'feet',
             ),
             array(
                 0.53995680345572,
-                'nm'
+                'nm',
             ),
             array(
                 0.53995680345572,
-                'nautical'
+                'nautical',
             ),
             array(
                 0.53995680345572,
-                'nauticalmile'
+                'nauticalmile',
             ),
             array(
                 0.53995680345572,
-                'nauticalmiles'
+                'nauticalmiles',
             ),
         );
     }
