@@ -8,7 +8,7 @@ namespace Geokit;
 class BoundsTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @param Bounds  $b
+     * @param Bounds $b
      * @param integer $w
      * @param integer $s
      * @param integer $e

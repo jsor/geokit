@@ -44,8 +44,8 @@ class Distance
     private $value;
 
     /**
-     * @param  integer|float             $value
-     * @param  string                    $unit
+     * @param  integer|float $value
+     * @param  string $unit
      * @throws \InvalidArgumentException
      */
     public function __construct($value, $unit = self::DEFAULT_UNIT)
@@ -170,14 +170,14 @@ class Distance
                 $unit = self::resolveUnitAlias($unit);
             }
 
-            return new self((float) $match[1], $unit);
+            return new self((float)$match[1], $unit);
         }
 
         throw new \InvalidArgumentException(sprintf('Cannot normalize Distance from input %s.', json_encode($input)));
     }
 
     /**
-     * @param  string                    $alias
+     * @param  string $alias
      * @return string
      * @throws \InvalidArgumentException
      */

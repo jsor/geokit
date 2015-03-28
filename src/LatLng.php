@@ -26,8 +26,8 @@ class LatLng implements \ArrayAccess
      */
     public function __construct($latitude, $longitude)
     {
-        $this->latitude = self::normalizeLat((float) $latitude);
-        $this->longitude = self::normalizeLng((float) $longitude);
+        $this->latitude = self::normalizeLat((float)$latitude);
+        $this->longitude = self::normalizeLng((float)$longitude);
     }
 
     /**
@@ -49,7 +49,7 @@ class LatLng implements \ArrayAccess
     public function offsetExists($offset)
     {
         return in_array($offset, self::$latitudeKeys) ||
-               in_array($offset, self::$longitudeKeys);
+        in_array($offset, self::$longitudeKeys);
     }
 
     public function offsetGet($offset)

@@ -20,8 +20,8 @@ class Bounds implements \ArrayAccess
     );
 
     /**
-     * @param  \Geokit\LatLng  $southWest
-     * @param  \Geokit\LatLng  $northEast
+     * @param  \Geokit\LatLng $southWest
+     * @param  \Geokit\LatLng $northEast
      * @throws \LogicException
      */
     public function __construct(LatLng $southWest, LatLng $northEast)
@@ -57,7 +57,7 @@ class Bounds implements \ArrayAccess
     {
         if ($this->crossesAntimeridian()) {
             $span = $this->lngSpan($this->southWest->getLongitude(), $this->northEast->getLongitude());
-            $lng  = $this->southWest->getLongitude() + $span / 2;
+            $lng = $this->southWest->getLongitude() + $span / 2;
         } else {
             $lng = ($this->southWest->getLongitude() + $this->northEast->getLongitude()) / 2;
         }
@@ -82,8 +82,8 @@ class Bounds implements \ArrayAccess
     public function offsetExists($offset)
     {
         return in_array($offset, self::$southWestKeys) ||
-               in_array($offset, self::$northEastKeys) ||
-               in_array($offset, array('center', 'span'));
+        in_array($offset, self::$northEastKeys) ||
+        in_array($offset, array('center', 'span'));
     }
 
     public function offsetGet($offset)
@@ -131,14 +131,15 @@ class Bounds implements \ArrayAccess
      */
     public function contains(LatLng $latLng)
     {
-      // check latitude
-      if ($this->southWest->getLatitude() > $latLng->getLatitude() ||
-          $latLng->getLatitude() > $this->northEast->getLatitude()) {
-          return false;
-      }
+        // check latitude
+        if ($this->southWest->getLatitude() > $latLng->getLatitude() ||
+            $latLng->getLatitude() > $this->northEast->getLatitude()
+        ) {
+            return false;
+        }
 
-      // check longitude
-      return $this->containsLng($latLng->getLongitude());
+        // check longitude
+        return $this->containsLng($latLng->getLongitude());
     }
 
     /**
@@ -183,17 +184,17 @@ class Bounds implements \ArrayAccess
     /**
      * Returns whether or not the given line of longitude is inside the bounds.
      *
-     * @param  float   $lng
+     * @param  float $lng
      * @return boolean
      */
     protected function containsLng($lng)
     {
         if ($this->crossesAntimeridian()) {
             return $lng <= $this->northEast->getLongitude() ||
-                   $lng >= $this->southWest->getLongitude();
+            $lng >= $this->southWest->getLongitude();
         } else {
             return $this->southWest->getLongitude() <= $lng &&
-                   $lng <= $this->northEast->getLongitude();
+            $lng <= $this->northEast->getLongitude();
         }
     }
 

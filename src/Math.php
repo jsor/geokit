@@ -19,8 +19,8 @@ class Math
      * two points using the Haversine formula.
      *
      * @see http://www.movable-type.co.uk/scripts/latlong.html
-     * @param  mixed            $from
-     * @param  mixed            $to
+     * @param  mixed $from
+     * @param  mixed $to
      * @return \Geokit\Distance
      */
     public function distanceHaversine($from, $to)
@@ -50,8 +50,8 @@ class Math
      * Vincenty inverse formula for ellipsoids.
      *
      * @see http://www.movable-type.co.uk/scripts/latlong-vincenty.html
-     * @param  mixed             $from
-     * @param  mixed             $to
+     * @param  mixed $from
+     * @param  mixed $to
      * @return \Geokit\Distance
      * @throws \RuntimeException
      */
@@ -85,8 +85,8 @@ class Math
             $sinLambda = sin($lambda);
             $cosLambda = cos($lambda);
             $sinSigma = sqrt(($cosU2 * $sinLambda) * ($cosU2 * $sinLambda) +
-                        ($cosU1 * $sinU2 - $sinU1 * $cosU2 * $cosLambda) *
-                        ($cosU1 * $sinU2 - $sinU1 * $cosU2 * $cosLambda));
+                ($cosU1 * $sinU2 - $sinU1 * $cosU2 * $cosLambda) *
+                ($cosU1 * $sinU2 - $sinU1 * $cosU2 * $cosLambda));
 
             if ($sinSigma == 0) {
                 return new Distance(0); // co-incident points
@@ -106,7 +106,7 @@ class Math
             $C = $f / 16 * $cosSqAlpha * (4 + $f * (4 - 3 * $cosSqAlpha));
             $lambdaP = $lambda;
             $lambda = $L + (1 - $C) * $f * $sinAlpha *
-                      ($sigma + $C * $sinSigma * ($cos2SigmaM + $C * $cosSigma * (-1 + 2 * $cos2SigmaM * $cos2SigmaM)));
+                ($sigma + $C * $sinSigma * ($cos2SigmaM + $C * $cosSigma * (-1 + 2 * $cos2SigmaM * $cos2SigmaM)));
         } while (abs($lambda - $lambdaP) > 1e-12 && --$iterLimit > 0);
 
         if ($iterLimit == 0) {
@@ -117,7 +117,7 @@ class Math
         $A = 1 + $uSq / 16384 * (4096 + $uSq * (-768 + $uSq * (320 - 175 * $uSq)));
         $B = $uSq / 1024 * (256 + $uSq * (-128 + $uSq * (74 - 47 * $uSq)));
         $deltaSigma = $B * $sinSigma * ($cos2SigmaM + $B / 4 * ($cosSigma * (-1 + 2 * $cos2SigmaM * $cos2SigmaM) -
-                      $B / 6 * $cos2SigmaM * (-3 + 4 * $sinSigma * $sinSigma) * (-3 + 4 * $cos2SigmaM * $cos2SigmaM)));
+                    $B / 6 * $cos2SigmaM * (-3 + 4 * $sinSigma * $sinSigma) * (-3 + 4 * $cos2SigmaM * $cos2SigmaM)));
         $s = $b * $A * ($sigma - $deltaSigma);
 
         return new Distance($s);
@@ -147,7 +147,7 @@ class Math
 
         $y = sin($dLon) * cos($lat2);
         $x = cos($lat1) * sin($lat2) -
-             sin($lat1) * cos($lat2) * cos($dLon);
+            sin($lat1) * cos($lat2) * cos($dLon);
 
         $heading = atan2($y, $x);
 
@@ -159,8 +159,8 @@ class Math
      * points.
      *
      * @see http://www.movable-type.co.uk/scripts/latlong.html
-     * @param  mixed          $from
-     * @param  mixed          $to
+     * @param  mixed $from
+     * @param  mixed $to
      * @return \Geokit\LatLng
      */
     public function midpoint($from, $to)
@@ -181,7 +181,7 @@ class Math
         $By = cos($lat2) * sin($dLon);
 
         $lat3 = atan2(sin($lat1) + sin($lat2),
-                sqrt((cos($lat1) + $Bx) * (cos($lat1) + $Bx) + $By * $By));
+            sqrt((cos($lat1) + $Bx) * (cos($lat1) + $Bx) + $By * $By));
         $lon3 = deg2rad($lng1) + atan2($By, cos($lat1) + $Bx);
 
         return new LatLng(rad2deg($lat3), rad2deg($lon3));
@@ -192,8 +192,8 @@ class Math
      * heading and distance, from the given start point.
      *
      * @see http://www.movable-type.co.uk/scripts/latlong.html
-     * @param  mixed                                      $start
-     * @param  float                                      $heading  (in degrees)
+     * @param  mixed $start
+     * @param  float $heading (in degrees)
      * @param  string|array|\ArrayAccess|\Geokit\Distance $distance (in meters)
      * @return \Geokit\LatLng
      */
@@ -209,7 +209,7 @@ class Math
         $heading = deg2rad($heading);
 
         $lat2 = asin(sin($lat) * cos($angularDistance) +
-                cos($lat) * sin($angularDistance) * cos($heading));
+            cos($lat) * sin($angularDistance) * cos($heading));
         $lon2 = $lng + atan2(sin($heading) * sin($angularDistance) * cos($lat),
                 cos($angularDistance) - sin($lat) * sin($lat2));
 

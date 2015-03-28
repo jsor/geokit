@@ -50,10 +50,10 @@ class Ellipsoid implements \ArrayAccess
      */
     public function __construct($semiMajorAxis, $semiMinorAxis, $flattening, $inverseFlattening)
     {
-        $this->semiMajorAxis = (float) $semiMajorAxis;
-        $this->semiMinorAxis = (float) $semiMinorAxis;
-        $this->flattening = (float) $flattening;
-        $this->inverseFlattening = (float) $inverseFlattening;
+        $this->semiMajorAxis = (float)$semiMajorAxis;
+        $this->semiMinorAxis = (float)$semiMinorAxis;
+        $this->flattening = (float)$flattening;
+        $this->inverseFlattening = (float)$inverseFlattening;
     }
 
     /**
@@ -91,9 +91,9 @@ class Ellipsoid implements \ArrayAccess
     public function offsetExists($offset)
     {
         return in_array($offset, self::$semiMajorAxisKeys) ||
-               in_array($offset, self::$semiMinorAxisKeys) ||
-               in_array($offset, self::$flatteningKeys) ||
-               in_array($offset, self::$inverseFlatteningKeys);
+        in_array($offset, self::$semiMinorAxisKeys) ||
+        in_array($offset, self::$flatteningKeys) ||
+        in_array($offset, self::$inverseFlatteningKeys);
     }
 
     public function offsetGet($offset)
@@ -220,14 +220,14 @@ class Ellipsoid implements \ArrayAccess
 
 
     /**
-     * @param  float                     $semiMajorAxis
-     * @param  float                     $inverseFlattening
+     * @param  float $semiMajorAxis
+     * @param  float $inverseFlattening
      * @return Ellipsoid
      * @throws \InvalidArgumentException
      */
     public static function createFromSemiMajorAndInvF($semiMajorAxis, $inverseFlattening)
     {
-        if ((float) $inverseFlattening <= 0) {
+        if ((float)$inverseFlattening <= 0) {
             throw new \InvalidArgumentException('The inverse flattening must be > 0.');
         }
 
@@ -242,8 +242,8 @@ class Ellipsoid implements \ArrayAccess
     }
 
     /**
-     * @param  float                     $semiMajorAxis
-     * @param  float                     $semiMinorAxis
+     * @param  float $semiMajorAxis
+     * @param  float $semiMinorAxis
      * @return Ellipsoid
      * @throws \InvalidArgumentException
      */

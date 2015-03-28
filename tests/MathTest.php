@@ -123,7 +123,7 @@ class MathTest extends \PHPUnit_Framework_TestCase
                 array('lat' => 54.71282500773668, 'lng' => -123.0979248136282),
                 2940927.117636
             )
-          );
+        );
     }
 
     /**
@@ -242,7 +242,7 @@ class MathTest extends \PHPUnit_Framework_TestCase
                 array('lat' => 54.71282500773668, 'lng' => -123.0979248136282),
                 2947504.722066
             )
-          );
+        );
     }
 
     public function testDistanceHaversineCoIncidentPoints()
@@ -267,8 +267,8 @@ class MathTest extends \PHPUnit_Framework_TestCase
     {
         $math = new Math();
 
-        $this->assertEquals(90,  $math->heading(array('lat' => 0, 'lng' => 0), array('lat' => 0, 'lng' => 1)));
-        $this->assertEquals(0,   $math->heading(array('lat' => 0, 'lng' => 0), array('lat' => 1, 'lng' => 0)));
+        $this->assertEquals(90, $math->heading(array('lat' => 0, 'lng' => 0), array('lat' => 0, 'lng' => 1)));
+        $this->assertEquals(0, $math->heading(array('lat' => 0, 'lng' => 0), array('lat' => 1, 'lng' => 0)));
         $this->assertEquals(270, $math->heading(array('lat' => 0, 'lng' => 0), array('lat' => 0, 'lng' => -1)));
         $this->assertEquals(180, $math->heading(array('lat' => 0, 'lng' => 0), array('lat' => -1, 'lng' => 0)));
     }
@@ -296,7 +296,7 @@ class MathTest extends \PHPUnit_Framework_TestCase
     {
         $math = new Math();
 
-        $endpoint = $math->endpoint(array('lat' =>32.918593, 'lng' => -96.958444), 332, new Distance(6389.09568));
+        $endpoint = $math->endpoint(array('lat' => 32.918593, 'lng' => -96.958444), 332, new Distance(6389.09568));
 
         $this->assertEquals(
             32.969264985093176,
