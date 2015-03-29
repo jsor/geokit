@@ -19,10 +19,8 @@ class Math
      * two points using the Haversine formula.
      *
      * @see http://www.movable-type.co.uk/scripts/latlong.html
-     *
-     * @param mixed $from
-     * @param mixed $to
-     *
+     * @param  mixed            $from
+     * @param  mixed            $to
      * @return \Geokit\Distance
      */
     public function distanceHaversine($from, $to)
@@ -52,12 +50,9 @@ class Math
      * Vincenty inverse formula for ellipsoids.
      *
      * @see http://www.movable-type.co.uk/scripts/latlong-vincenty.html
-     *
-     * @param mixed $from
-     * @param mixed $to
-     *
+     * @param  mixed             $from
+     * @param  mixed             $to
      * @return \Geokit\Distance
-     *
      * @throws \RuntimeException
      */
     public function distanceVincenty($from, $to)
@@ -132,9 +127,8 @@ class Math
      * Returns the (initial) heading from the first point to the second point
      * in degrees.
      *
-     * @param mixed $from
-     * @param mixed $to
-     *
+     * @param  mixed $from
+     * @param  mixed $to
      * @return float Initial heading in degrees from North
      */
     public function heading($from, $to)
@@ -165,10 +159,8 @@ class Math
      * points.
      *
      * @see http://www.movable-type.co.uk/scripts/latlong.html
-     *
-     * @param mixed $from
-     * @param mixed $to
-     *
+     * @param  mixed          $from
+     * @param  mixed          $to
      * @return \Geokit\LatLng
      */
     public function midpoint($from, $to)
@@ -200,11 +192,9 @@ class Math
      * heading and distance, from the given start point.
      *
      * @see http://www.movable-type.co.uk/scripts/latlong.html
-     *
-     * @param mixed                                      $start
-     * @param float                                      $heading  (in degrees)
-     * @param string|array|\ArrayAccess|\Geokit\Distance $distance (in meters)
-     *
+     * @param  mixed                                      $start
+     * @param  float                                      $heading  (in degrees)
+     * @param  string|array|\ArrayAccess|\Geokit\Distance $distance (in meters)
      * @return \Geokit\LatLng
      */
     public function endpoint($start, $heading, $distance)

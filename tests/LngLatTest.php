@@ -56,7 +56,7 @@ class LngLatTest extends \PHPUnit_Framework_TestCase
             'longitude',
             'lng',
             'lon',
-            'x',
+            'x'
         );
 
         $LatLng = new LatLng(2, 1);
@@ -98,7 +98,7 @@ class LngLatTest extends \PHPUnit_Framework_TestCase
     {
         $LatLng = new LatLng(2.5678, 1.1234);
 
-        $this->assertSame(sprintf('%F,%F', 2.5678, 1.1234), (string) $LatLng);
+        $this->assertSame(sprintf('%F,%F', 2.5678, 1.1234), (string)$LatLng);
     }
 
     public function testToStringShouldReturnLatitudeAndLongitudeAsCommaSeparatedStringWithLocalizedFloats()
@@ -111,7 +111,7 @@ class LngLatTest extends \PHPUnit_Framework_TestCase
 
         $LatLng = new LatLng($latitude, $longitude);
 
-        $this->assertSame(sprintf('%F,%F', 1.1234, 2.5678), (string) $LatLng);
+        $this->assertSame(sprintf('%F,%F', 1.1234, 2.5678), (string)$LatLng);
         setlocale(LC_NUMERIC, $currentLocale);
     }
 
@@ -197,7 +197,7 @@ class LngLatTest extends \PHPUnit_Framework_TestCase
             array(-90, -90),
             array(5, 5),
             array(90, 90),
-            array(180, 90),
+            array(180, 90)
         );
     }
 
@@ -221,7 +221,7 @@ class LngLatTest extends \PHPUnit_Framework_TestCase
             array(215, -145),
             array(360, 0),
             array(395, 35),
-            array(540, 180),
+            array(540, 180)
         );
     }
 }

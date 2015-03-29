@@ -10,19 +10,18 @@ class Bounds implements \ArrayAccess
     private static $southWestKeys = array(
         'southwest',
         'south_west',
-        'southWest',
+        'southWest'
     );
 
     private static $northEastKeys = array(
         'northeast',
         'north_east',
-        'northEast',
+        'northEast'
     );
 
     /**
-     * @param \Geokit\LatLng $southWest
-     * @param \Geokit\LatLng $northEast
-     *
+     * @param  \Geokit\LatLng  $southWest
+     * @param  \Geokit\LatLng  $northEast
      * @throws \LogicException
      */
     public function __construct(LatLng $southWest, LatLng $northEast)
@@ -119,7 +118,7 @@ class Bounds implements \ArrayAccess
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function crossesAntimeridian()
     {
@@ -127,9 +126,8 @@ class Bounds implements \ArrayAccess
     }
 
     /**
-     * @param \Geokit\LatLng $latLng
-     *
-     * @return bool
+     * @param  \Geokit\LatLng $latLng
+     * @return boolean
      */
     public function contains(LatLng $latLng)
     {
@@ -145,8 +143,7 @@ class Bounds implements \ArrayAccess
     }
 
     /**
-     * @param LatLng $latLng
-     *
+     * @param  LatLng $latLng
      * @return Bounds
      */
     public function extend(LatLng $latLng)
@@ -174,8 +171,7 @@ class Bounds implements \ArrayAccess
     }
 
     /**
-     * @param Bounds $bounds
-     *
+     * @param  Bounds $bounds
      * @return Bounds
      */
     public function union(Bounds $bounds)
@@ -188,9 +184,8 @@ class Bounds implements \ArrayAccess
     /**
      * Returns whether or not the given line of longitude is inside the bounds.
      *
-     * @param float $lng
-     *
-     * @return bool
+     * @param  float   $lng
+     * @return boolean
      */
     protected function containsLng($lng)
     {
@@ -206,9 +201,8 @@ class Bounds implements \ArrayAccess
     /**
      * Gets the longitudinal span of the given west and east coordinates.
      *
-     * @param float $west
-     * @param float $east
-     *
+     * @param  float $west
+     * @param  float $east
      * @return float
      */
     protected function lngSpan($west, $east)
@@ -246,10 +240,8 @@ class Bounds implements \ArrayAccess
      *
      * If $input is an Bounds object, it is just passed through.
      *
-     * @param string|array|\ArrayAccess|\Geokit\Bounds $input
-     *
+     * @param  string|array|\ArrayAccess|\Geokit\Bounds $input
      * @return \Geokit\Bounds
-     *
      * @throws \InvalidArgumentException
      */
     public static function normalize($input)
@@ -299,6 +291,6 @@ class Bounds implements \ArrayAccess
             return $input[$key];
         }
 
-        return;
+        return null;
     }
 }

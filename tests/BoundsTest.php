@@ -8,11 +8,11 @@ namespace Geokit;
 class BoundsTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @param Bounds $b
-     * @param int    $w
-     * @param int    $s
-     * @param int    $e
-     * @param int    $n
+     * @param Bounds  $b
+     * @param integer $w
+     * @param integer $s
+     * @param integer $e
+     * @param integer $n
      */
     protected function assertBounds(Bounds $b, $s, $w, $n, $e)
     {
@@ -74,7 +74,7 @@ class BoundsTest extends \PHPUnit_Framework_TestCase
             'northEast',
 
             'center',
-            'span',
+            'span'
         );
 
         $bounds = new Bounds(new LatLng(2.5678, 1.1234), new LatLng(4.5678, 3.1234));
@@ -207,8 +207,8 @@ class BoundsTest extends \PHPUnit_Framework_TestCase
                 $data[] = array(
                     array(
                         $southWestKey => array(-45, 179),
-                        $northEastKey => array(45, -179),
-                    ),
+                        $northEastKey => array(45, -179)
+                    )
                 );
             }
         }
@@ -216,8 +216,8 @@ class BoundsTest extends \PHPUnit_Framework_TestCase
         $data[] = array(
             array(
                 array(-45, 179),
-                array(45, -179),
-            ),
+                array(45, -179)
+            )
         );
 
         return $data;

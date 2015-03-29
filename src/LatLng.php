@@ -11,13 +11,13 @@ class LatLng implements \ArrayAccess
         'longitude',
         'lng',
         'lon',
-        'x',
+        'x'
     );
 
     private static $latitudeKeys = array(
         'latitude',
         'lat',
-        'y',
+        'y'
     );
 
     /**
@@ -26,8 +26,8 @@ class LatLng implements \ArrayAccess
      */
     public function __construct($latitude, $longitude)
     {
-        $this->latitude = self::normalizeLat((float) $latitude);
-        $this->longitude = self::normalizeLng((float) $longitude);
+        $this->latitude = self::normalizeLat((float)$latitude);
+        $this->longitude = self::normalizeLng((float)$longitude);
     }
 
     /**
@@ -114,10 +114,8 @@ class LatLng implements \ArrayAccess
      *
      * If $input is an LatLng object, it is just passed through.
      *
-     * @param string|array|\ArrayAccess|\Geokit\LatLng $input
-     *
+     * @param  string|array|\ArrayAccess|\Geokit\LatLng $input
      * @return \Geokit\LatLng
-     *
      * @throws \InvalidArgumentException
      */
     public static function normalize($input)
@@ -157,8 +155,7 @@ class LatLng implements \ArrayAccess
      * Normalizes a latitude to the (-90, 90) range. Latitudes above 90 or
      * below -90 are capped, not wrapped.
      *
-     * @param float $lat The latitude to normalize, in degrees
-     *
+     * @param  float $lat The latitude to normalize, in degrees
      * @return float The latitude, fit within the (-90, 90) range
      */
     public static function normalizeLat($lat)
@@ -170,8 +167,7 @@ class LatLng implements \ArrayAccess
      * Normalizes a longitude to the (-180, 180) range. Longitudes above 180
      * or below -180 are wrapped.
      *
-     * @param float $lng The longitude to normalize, in degrees
-     *
+     * @param  float $lng The longitude to normalize, in degrees
      * @return float The longitude, fit within the (-180, 180) range
      */
     public static function normalizeLng($lng)
@@ -195,6 +191,6 @@ class LatLng implements \ArrayAccess
             return $input[$key];
         }
 
-        return;
+        return null;
     }
 }
