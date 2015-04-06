@@ -27,3 +27,8 @@ matrix:
     - php: 7.0
     - php: hhvm
   fast_finish: true
+
+cache:
+  directories:
+    - vendor
+    - $HOME/.composer/cache
