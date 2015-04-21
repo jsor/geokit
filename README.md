@@ -21,7 +21,7 @@ Geokit is a PHP toolkit to solve geo-related tasks like:
 Installation
 ------------
 
-Install the latest version with [composer](http://getcomposer.org):
+Install the latest version with [composer](http://getcomposer.org).
 
 ```bash
 composer require geokit/geokit
