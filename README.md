@@ -21,13 +21,14 @@ Geokit is a PHP toolkit to solve geo-related tasks like:
 Installation
 ------------
 
-Install [through composer](http://getcomposer.org). Check the
-[packagist page](https://packagist.org/packages/geokit/geokit) for all
-available versions.
+Install the latest version with [composer](http://getcomposer.org):
 
 ```bash
 composer require geokit/geokit
 ```
+
+Check the [packagist page](https://packagist.org/packages/geokit/geokit) for all
+available versions.
 
 Reference
 ---------
