@@ -317,18 +317,13 @@ class Ellipsoid implements \ArrayAccess
         $inverseFlattening = null;
 
         if (is_array($input) || $input instanceof \ArrayAccess) {
-            $semiMajorAxis = Utils::extractFromInput($input, self::$semiMajorAxisKeys);
-
-            if (!$semiMajorAxis && isset($input[0])) {
+            if (Utils::isNumericInputArray($input)) {
                 $semiMajorAxis = $input[0];
-            }
-
-            $semiMinorAxis = Utils::extractFromInput($input, self::$semiMinorAxisKeys);
-
-            $inverseFlattening = Utils::extractFromInput($input, self::$inverseFlatteningKeys);
-
-            if (!$inverseFlattening && isset($input[1])) {
                 $inverseFlattening = $input[1];
+            } else {
+                $semiMajorAxis = Utils::extractFromInput($input, self::$semiMajorAxisKeys);
+                $semiMinorAxis = Utils::extractFromInput($input, self::$semiMinorAxisKeys);
+                $inverseFlattening = Utils::extractFromInput($input, self::$inverseFlatteningKeys);
             }
         }
 

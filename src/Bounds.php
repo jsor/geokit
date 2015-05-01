@@ -257,16 +257,12 @@ class Bounds implements \ArrayAccess
             $southWest = array('lat' => $match[1], 'lng' => $match[2]);
             $northEast = array('lat' => $match[3], 'lng' => $match[4]);
         } elseif (is_array($input) || $input instanceof \ArrayAccess) {
-            $southWest = Utils::extractFromInput($input, self::$southWestKeys);
-
-            if (!$southWest && isset($input[0])) {
+            if (Utils::isNumericInputArray($input)) {
                 $southWest = $input[0];
-            }
-
-            $northEast = Utils::extractFromInput($input, self::$northEastKeys);
-
-            if (!$northEast && isset($input[1])) {
                 $northEast = $input[1];
+            } else {
+                $southWest = Utils::extractFromInput($input, self::$southWestKeys);
+                $northEast = Utils::extractFromInput($input, self::$northEastKeys);
             }
         }
 

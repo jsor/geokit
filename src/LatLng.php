@@ -131,16 +131,12 @@ class LatLng implements \ArrayAccess
             $lat = $match[1];
             $lng = $match[2];
         } elseif (is_array($input) || $input instanceof \ArrayAccess) {
-            $lat = Utils::extractFromInput($input, self::$latitudeKeys);
-
-            if (!$lat && isset($input[0])) {
+            if (Utils::isNumericInputArray($input)) {
                 $lat = $input[0];
-            }
-
-            $lng = Utils::extractFromInput($input, self::$longitudeKeys);
-
-            if (!$lng && isset($input[1])) {
                 $lng = $input[1];
+            } else {
+                $lat = Utils::extractFromInput($input, self::$latitudeKeys);
+                $lng = Utils::extractFromInput($input, self::$longitudeKeys);
             }
         }
 
