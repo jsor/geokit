@@ -257,13 +257,13 @@ class Bounds implements \ArrayAccess
             $southWest = array('lat' => $match[1], 'lng' => $match[2]);
             $northEast = array('lat' => $match[3], 'lng' => $match[4]);
         } elseif (is_array($input) || $input instanceof \ArrayAccess) {
-            $southWest = self::extract($input, self::$southWestKeys);
+            $southWest = Utils::extractFromInput($input, self::$southWestKeys);
 
             if (!$southWest && isset($input[0])) {
                 $southWest = $input[0];
             }
 
-            $northEast = self::extract($input, self::$northEastKeys);
+            $northEast = Utils::extractFromInput($input, self::$northEastKeys);
 
             if (!$northEast && isset($input[1])) {
                 $northEast = $input[1];
@@ -279,18 +279,5 @@ class Bounds implements \ArrayAccess
         }
 
         throw new \InvalidArgumentException(sprintf('Cannot normalize Bounds from input %s.', json_encode($input)));
-    }
-
-    private static function extract($input, $keys)
-    {
-        foreach ($keys as $key) {
-            if (!isset($input[$key])) {
-                continue;
-            }
-
-            return $input[$key];
-        }
-
-        return null;
     }
 }

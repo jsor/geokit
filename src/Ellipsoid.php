@@ -317,15 +317,15 @@ class Ellipsoid implements \ArrayAccess
         $inverseFlattening = null;
 
         if (is_array($input) || $input instanceof \ArrayAccess) {
-            $semiMajorAxis = self::extract($input, self::$semiMajorAxisKeys);
+            $semiMajorAxis = Utils::extractFromInput($input, self::$semiMajorAxisKeys);
 
             if (!$semiMajorAxis && isset($input[0])) {
                 $semiMajorAxis = $input[0];
             }
 
-            $semiMinorAxis = self::extract($input, self::$semiMinorAxisKeys);
+            $semiMinorAxis = Utils::extractFromInput($input, self::$semiMinorAxisKeys);
 
-            $inverseFlattening = self::extract($input, self::$inverseFlatteningKeys);
+            $inverseFlattening = Utils::extractFromInput($input, self::$inverseFlatteningKeys);
 
             if (!$inverseFlattening && isset($input[1])) {
                 $inverseFlattening = $input[1];
@@ -341,18 +341,5 @@ class Ellipsoid implements \ArrayAccess
         }
 
         throw new \InvalidArgumentException(sprintf('Cannot normalize Ellipsoid from input %s.', json_encode($input)));
-    }
-
-    private static function extract($input, $keys)
-    {
-        foreach ($keys as $key) {
-            if (!isset($input[$key])) {
-                continue;
-            }
-
-            return $input[$key];
-        }
-
-        return null;
     }
 }

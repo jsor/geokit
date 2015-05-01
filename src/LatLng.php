@@ -131,13 +131,13 @@ class LatLng implements \ArrayAccess
             $lat = $match[1];
             $lng = $match[2];
         } elseif (is_array($input) || $input instanceof \ArrayAccess) {
-            $lat = self::extract($input, self::$latitudeKeys);
+            $lat = Utils::extractFromInput($input, self::$latitudeKeys);
 
             if (!$lat && isset($input[0])) {
                 $lat = $input[0];
             }
 
-            $lng = self::extract($input, self::$longitudeKeys);
+            $lng = Utils::extractFromInput($input, self::$longitudeKeys);
 
             if (!$lng && isset($input[1])) {
                 $lng = $input[1];
@@ -179,18 +179,5 @@ class LatLng implements \ArrayAccess
         }
 
         return $mod < -180 ? $mod + 360 : ($mod > 180 ? $mod - 360 : $mod);
-    }
-
-    private static function extract($input, $keys)
-    {
-        foreach ($keys as $key) {
-            if (!isset($input[$key])) {
-                continue;
-            }
-
-            return $input[$key];
-        }
-
-        return null;
     }
 }
