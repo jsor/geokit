@@ -170,10 +170,14 @@ class LatLng implements \ArrayAccess
     {
         $mod = fmod($lng, 360);
 
-        if ($mod === 180) {
-            return 180;
+        if ($mod < -180) {
+            return $mod + 360;
         }
 
-        return $mod < -180 ? $mod + 360 : ($mod > 180 ? $mod - 360 : $mod);
+        if ($mod > 180) {
+            return $mod - 360;
+        }
+
+        return $mod;
     }
 }
