@@ -17,12 +17,12 @@ install:
   - travis_retry composer require satooshi/php-coveralls:dev-master --prefer-source
 
 script:
-  - phpunit -v --coverage-text --coverage-clover build/coverage.clover
+  - phpunit -v --coverage-text --coverage-clover=build/logs/clover.xml
 
 after_script:
   - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then php vendor/bin/coveralls -v; fi
   - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then wget https://scrutinizer-ci.com/ocular.phar; fi
-  - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then php ocular.phar code-coverage:upload --format=php-clover build/coverage.clover; fi
+  - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml; fi
 
 matrix:
   allow_failures:
