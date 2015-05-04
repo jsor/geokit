@@ -2,9 +2,6 @@
 
 namespace Geokit;
 
-/**
- * @covers Geokit\Bounds
- */
 class BoundsTest extends \PHPUnit_Framework_TestCase
 {
     /**

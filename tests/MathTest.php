@@ -2,9 +2,6 @@
 
 namespace Geokit;
 
-/**
- * @covers Geokit\Math
- */
 class MathTest extends \PHPUnit_Framework_TestCase
 {
     /**

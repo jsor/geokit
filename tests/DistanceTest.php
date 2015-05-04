@@ -2,9 +2,6 @@
 
 namespace Geokit;
 
-/**
- * @covers Geokit\Distance
- */
 class DistanceTest extends \PHPUnit_Framework_TestCase
 {
     public function testShouldConvertToMeters()

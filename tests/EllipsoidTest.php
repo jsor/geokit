@@ -2,9 +2,6 @@
 
 namespace Geokit;
 
-/**
- * @covers Geokit\Ellipsoid
- */
 class EllipsoidTest extends \PHPUnit_Framework_TestCase
 {
     public function testCreateFromSemiMajorInverseF()

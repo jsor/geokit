@@ -2,9 +2,6 @@
 
 namespace Geokit;
 
-/**
- * @covers Geokit\LatLng
- */
 class LngLatTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstructorShouldAcceptStringsAsArguments()
