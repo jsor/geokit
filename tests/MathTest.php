@@ -304,4 +304,31 @@ class MathTest extends \PHPUnit_Framework_TestCase
             $endpoint->getLongitude()
         );
     }
+
+    public function testExpandBounds()
+    {
+        $math = new Math();
+
+        $bounds = $math->expandBounds(
+            '-45 179 45 -179',
+            100
+        );
+
+        $this->assertEquals(
+            -45.000898315284132,
+            $bounds->getSouthWest()->getLatitude()
+        );
+        $this->assertEquals(
+            178.99872959034192,
+            $bounds->getSouthWest()->getLongitude()
+        );
+        $this->assertEquals(
+            45.000898315284132,
+            $bounds->getNorthEast()->getLatitude()
+        );
+        $this->assertEquals(
+            -178.99872959034192,
+            $bounds->getNorthEast()->getLongitude()
+        );
+    }
 }

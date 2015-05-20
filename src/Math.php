@@ -215,4 +215,55 @@ class Math
 
         return new LatLng(rad2deg($lat2), rad2deg($lon2));
     }
+
+    /**
+     * @param  mixed $bounds
+     * @param  mixed $distance (in meters)
+     * @return \Geokit\Bounds
+     */
+    public function expandBounds($bounds, $distance)
+    {
+        $bounds = Bounds::normalize($bounds);
+        $distanceInMeters = Distance::normalize($distance)->meters();
+
+        $latNE = $bounds->getNorthEast()->getLatitude();
+        $lngNE = $bounds->getNorthEast()->getLongitude();
+
+        $latSW = $bounds->getSouthWest()->getLatitude();
+        $lngSW = $bounds->getSouthWest()->getLongitude();
+
+        $latlngNE = new LatLng(
+            $this->latDistance($latNE, -$distanceInMeters),
+            $this->lngDistance($latNE, $lngNE, -$distanceInMeters)
+        );
+
+        $latlngSW = new LatLng(
+            $this->latDistance($latSW, $distanceInMeters),
+            $this->lngDistance($latSW, $lngSW, $distanceInMeters)
+        );
+
+        return new Bounds($latlngSW, $latlngNE);
+    }
+
+    private function lngDistance($lat1, $lng1, $distanceInMeters)
+    {
+        $radius = $this->ellipsoid->getSemiMajorAxis();
+
+        $lat1 = deg2rad($lat1);
+        $lng1 = deg2rad($lng1);
+
+        $lng2 = ($radius * $lng1 * cos($lat1) - $distanceInMeters) / ($radius * cos($lat1));
+
+        return LatLng::normalizeLng(rad2deg($lng2));
+    }
+
+    private function latDistance($lat1, $distanceInMeters)
+    {
+        $radius = $this->ellipsoid->getSemiMajorAxis();
+
+        $lat1 = deg2rad($lat1);
+        $lat2 = ($radius * $lat1 - $distanceInMeters) / $radius;
+
+        return LatLng::normalizeLat(rad2deg($lat2));
+    }
 }
