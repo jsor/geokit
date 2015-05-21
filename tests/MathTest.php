@@ -361,7 +361,7 @@ class MathTest extends \PHPUnit_Framework_TestCase
 
     public function testExpandThrowsForInvalidInput()
     {
-        $this->setExpectedException('\InvalidArgumentException', 'Cannot normalize Bounds from input "foo".');
+        $this->setExpectedException('\InvalidArgumentException', 'Cannot cast to Bounds from input "foo".');
 
         $math = new Math();
 

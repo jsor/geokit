@@ -223,32 +223,33 @@ class Math
      */
     public function expand($latLngOrBounds, $distance)
     {
-        try {
-            $bounds = Bounds::normalize($latLngOrBounds);
+        return $this->transformBounds(
+            $latLngOrBounds,
+            Distance::normalize($distance)->meters()
+        );
+    }
 
-            $latSW = $bounds->getSouthWest()->getLatitude();
-            $lngSW = $bounds->getSouthWest()->getLongitude();
-            $latNE = $bounds->getNorthEast()->getLatitude();
-            $lngNE = $bounds->getNorthEast()->getLongitude();
-        } catch (\InvalidArgumentException $e) {
-            try {
-                $latLng = LatLng::normalize($latLngOrBounds);
+    /**
+     * @param  mixed  $latLngOrBounds
+     * @param  mixed  $distance (in meters)
+     * @return Bounds
+     */
+    public function shrink($latLngOrBounds, $distance)
+    {
+        return $this->transformBounds(
+            $latLngOrBounds,
+            -Distance::normalize($distance)->meters()
+        );
+    }
 
-                $latSW = $latLng->getLatitude();
-                $lngSW = $latLng->getLongitude();
-                $latNE = $latLng->getLatitude();
-                $lngNE = $latLng->getLongitude();
-            } catch (\InvalidArgumentException $e) {
-                throw new \InvalidArgumentException(
-                    sprintf(
-                        'Cannot normalize Bounds from input %s.',
-                        json_encode($latLngOrBounds)
-                    )
-                );
-            }
-        }
+    private function transformBounds($input, $distanceInMeters)
+    {
+        $bounds = Utils::castToBounds($input);
 
-        $distanceInMeters = Distance::normalize($distance)->meters();
+        $latSW = $bounds->getSouthWest()->getLatitude();
+        $lngSW = $bounds->getSouthWest()->getLongitude();
+        $latNE = $bounds->getNorthEast()->getLatitude();
+        $lngNE = $bounds->getNorthEast()->getLongitude();
 
         $latlngSW = new LatLng(
             $this->latDistance($latSW, $distanceInMeters),
