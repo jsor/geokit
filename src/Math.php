@@ -220,7 +220,7 @@ class Math
 
     /**
      * @param  mixed  $latLngOrBounds
-     * @param  mixed  $distance (in meters)
+     * @param  mixed  $distance       (in meters)
      * @return Bounds
      */
     public function expand($latLngOrBounds, $distance)
@@ -233,7 +233,7 @@ class Math
 
     /**
      * @param  mixed  $latLngOrBounds
-     * @param  mixed  $distance (in meters)
+     * @param  mixed  $distance       (in meters)
      * @return Bounds
      */
     public function shrink($latLngOrBounds, $distance)
