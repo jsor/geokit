@@ -12,10 +12,13 @@ Geokit is a PHP toolkit to solve geo-related tasks like:
 
 * [Installation](#installation)
 * [Reference](#reference)
-  * [Math](#math)
-  * [LatLng](#latlng)
-  * [Bounds](#bounds)
-  * [Distance](#distance)
+    * [Math](#math)
+        * [Distance calculations](#distance-calculations)
+        * [Transformations](#transformations)
+        * [Other calculations](#other-calculations)
+    * [LatLng](#latlng)
+    * [Bounds](#bounds)
+    * [Distance](#distance)
 * [License](#license)
 * [Credits](#credits)
 
