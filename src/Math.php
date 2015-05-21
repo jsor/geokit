@@ -217,29 +217,47 @@ class Math
     }
 
     /**
-     * @param  mixed  $bounds
+     * @param  mixed  $latLngOrBounds
      * @param  mixed  $distance (in meters)
      * @return Bounds
      */
-    public function expandBounds($bounds, $distance)
+    public function expand($latLngOrBounds, $distance)
     {
-        $bounds = Bounds::normalize($bounds);
+        try {
+            $bounds = Bounds::normalize($latLngOrBounds);
+
+            $latSW = $bounds->getSouthWest()->getLatitude();
+            $lngSW = $bounds->getSouthWest()->getLongitude();
+            $latNE = $bounds->getNorthEast()->getLatitude();
+            $lngNE = $bounds->getNorthEast()->getLongitude();
+        } catch (\InvalidArgumentException $e) {
+            try {
+                $latLng = LatLng::normalize($latLngOrBounds);
+
+                $latSW = $latLng->getLatitude();
+                $lngSW = $latLng->getLongitude();
+                $latNE = $latLng->getLatitude();
+                $lngNE = $latLng->getLongitude();
+            } catch (\InvalidArgumentException $e) {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'Cannot normalize Bounds from input %s.',
+                        json_encode($latLngOrBounds)
+                    )
+                );
+            }
+        }
+
         $distanceInMeters = Distance::normalize($distance)->meters();
-
-        $latNE = $bounds->getNorthEast()->getLatitude();
-        $lngNE = $bounds->getNorthEast()->getLongitude();
-
-        $latSW = $bounds->getSouthWest()->getLatitude();
-        $lngSW = $bounds->getSouthWest()->getLongitude();
-
-        $latlngNE = new LatLng(
-            $this->latDistance($latNE, -$distanceInMeters),
-            $this->lngDistance($latNE, $lngNE, -$distanceInMeters)
-        );
 
         $latlngSW = new LatLng(
             $this->latDistance($latSW, $distanceInMeters),
             $this->lngDistance($latSW, $lngSW, $distanceInMeters)
+        );
+
+        $latlngNE = new LatLng(
+            $this->latDistance($latNE, -$distanceInMeters),
+            $this->lngDistance($latNE, $lngNE, -$distanceInMeters)
         );
 
         return new Bounds($latlngSW, $latlngNE);

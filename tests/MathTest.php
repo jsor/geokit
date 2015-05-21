@@ -305,13 +305,40 @@ class MathTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testExpandBounds()
+    public function testExpandWithLatLng()
     {
         $math = new Math();
 
-        $bounds = $math->expandBounds(
+        $bounds = $math->expand(
+            '49.50042565 8.50207515',
+            '100 meters'
+        );
+
+        $this->assertEquals(
+            49.499527334715879,
+            $bounds->getSouthWest()->getLatitude()
+        );
+        $this->assertEquals(
+            8.5006919399029339,
+            $bounds->getSouthWest()->getLongitude()
+        );
+        $this->assertEquals(
+            49.501323965284122,
+            $bounds->getNorthEast()->getLatitude()
+        );
+        $this->assertEquals(
+            8.5034583600970635,
+            $bounds->getNorthEast()->getLongitude()
+        );
+    }
+
+    public function testExpandWithBounds()
+    {
+        $math = new Math();
+
+        $bounds = $math->expand(
             '-45 179 45 -179',
-            100
+            '100 meters'
         );
 
         $this->assertEquals(
@@ -329,6 +356,18 @@ class MathTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             -178.99872959034192,
             $bounds->getNorthEast()->getLongitude()
+        );
+    }
+
+    public function testExpandThrowsForInvalidInput()
+    {
+        $this->setExpectedException('\InvalidArgumentException', 'Cannot normalize Bounds from input "foo".');
+
+        $math = new Math();
+
+        $math->expand(
+            'foo',
+            '100 meters'
         );
     }
 }
