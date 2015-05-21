@@ -371,6 +371,33 @@ class MathTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testShrinkExpandWithLatLng()
+    {
+        $math = new Math();
+
+        $bounds = $math->shrink(
+            '49.50042565 8.50207515',
+            '100 meters'
+        );
+
+        $this->assertEquals(
+            49.50042565,
+            $bounds->getSouthWest()->getLatitude()
+        );
+        $this->assertEquals(
+            8.50207515,
+            $bounds->getSouthWest()->getLongitude()
+        );
+        $this->assertEquals(
+            49.50042565,
+            $bounds->getNorthEast()->getLatitude()
+        );
+        $this->assertEquals(
+            8.50207515,
+            $bounds->getNorthEast()->getLongitude()
+        );
+    }
+
     public function testShrinkWithBounds()
     {
         $math = new Math();

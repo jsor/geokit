@@ -263,6 +263,13 @@ class Math
             $this->lngDistance($latNE, $lngNE, -$distanceInMeters)
         );
 
+        // Check if we're shrinking too much
+        if ($latlngSW->getLatitude() > $latlngNE->getLatitude()) {
+            $center = $bounds->getCenter();
+
+            return new Bounds($center, $center);
+        }
+
         return new Bounds($latlngSW, $latlngNE);
     }
 
