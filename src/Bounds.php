@@ -30,7 +30,7 @@ class Bounds implements \ArrayAccess
         $this->northEast = $northEast;
 
         if ($this->southWest->getLatitude() > $this->northEast->getLatitude()) {
-            throw new \LogicException('Bounds south-west coordinate cannot be north of the east-north coordinate');
+            throw new \LogicException('Bounds south-west coordinate cannot be north of the north-east coordinate');
         }
     }
 
