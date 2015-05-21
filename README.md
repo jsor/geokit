@@ -39,7 +39,7 @@ Reference
 A Math instance can be used to perform geographic calculations on LatLng and
 Bounds instances. Since such calculations depend on an
 [Earth Ellipsoid](http://en.wikipedia.org/wiki/Earth_ellipsoid), you can pass an
-instance of `Geokit\Ellipsoid` to its constructor. If no ellipsoid instance is
+instance of `Geokit\Ellipsoid` to its constructor. If no Ellipsoid instance is
 provided, it uses the default
 [WGS 86 Ellipsoid](http://en.wikipedia.org/wiki/World_Geodetic_System).
 
