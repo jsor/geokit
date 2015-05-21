@@ -12,6 +12,7 @@ Geokit is a PHP toolkit to solve geo-related tasks like:
 
 * [Installation](#installation)
 * [Reference](#reference)
+  * [Math](#math)
   * [LatLng](#latlng)
   * [Bounds](#bounds)
   * [Distance](#distance)
@@ -33,6 +34,61 @@ available versions.
 Reference
 ---------
 
+### Math
+
+A Math instance can be used to perform geographic calculations on LatLng and
+Bounds instances. Since such calculations depend on an
+[Earth Ellipsoid](http://en.wikipedia.org/wiki/Earth_ellipsoid), you can pass an
+instance of `Geokit\Ellipsoid` to its constructor. If no ellipsoid instance is
+provided, it uses the default
+[WGS 86 Ellipsoid](http://en.wikipedia.org/wiki/World_Geodetic_System).
+
+```php
+$math = new Geokit\Math();
+$mathAiry = new Geokit\Math(Geokit\Ellipsoid::airy1830());
+```
+
+#### Distance calculations
+
+A math instance provides two methods to calculate the distance between 2 points
+on the Earth's surface:
+
+* `distanceHaversine($from, $to)`: Calculates the approximate sea level great
+   circle (Earth) distance between two points using the Haversine formula.
+* `distanceVincenty($from, $to)`: Calculates the geodetic distance between two
+   points using the Vincenty inverse formula for ellipsoids.
+
+```php
+$distance1 = $math->distanceHaversine($from, $to);
+$distance2 = $math->distanceVincenty($from, $to);
+```
+
+Both methods return a [Distance](#distance) instance.
+
+#### Transformations
+
+With the `expand` and `shrink` methods, you can expand/shrink a given Bounds or
+LatLng instance by a distance.
+
+```php
+$expandedBounds1 = $math->expand(['lat' => 49.50042565 'lng' => 8.50207515], '10km');
+$expandedBounds1 = $math->expand(Geokit\Bounds::normalize('-45 179 45 -179'), '10km');
+
+$shrinkedBounds = $math->shrink($expandedBounds1, '10km');
+```
+
+#### Other calculations
+
+Other useful methods are:
+
+* `heading($from, $to)`: Calculates the (initial) heading from the first point
+   to the second point in degrees.
+* `midpoint($from, $to)`: Calculates an intermediate point on the geodesic
+   between the two given points.
+* `endpoint($start, $heading, $distance)`: Calculates the destination point
+   along a geodesic, given an initial heading and distance, from the given start
+   point.
+   
 ### LatLng
 
 A LatLng instance represents a geographical point in latitude/longitude
@@ -75,7 +131,7 @@ $latLng = Geokit\LatLng::normalize(array(1, 2));
 A Bounds instance represents a rectangle in geographical coordinates, including
 one that crosses the 180 degrees longitudinal meridian.
 
-It is constructed from its left/bottom (south-west) and right-top (north-east)
+It is constructed from its left-bottom (south-west) and right-top (north-east)
 corner points.
 
 ```php

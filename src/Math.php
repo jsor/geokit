@@ -15,9 +15,10 @@ class Math
     }
 
     /**
-     * Returns the approximate sea level great circle (Earth) distance between
-     * two points using the Haversine formula.
+     * Calculates the approximate sea level great circle (Earth) distance
+     * between two points using the Haversine formula.
      *
+     * @see http://en.wikipedia.org/wiki/Haversine_formula
      * @see http://www.movable-type.co.uk/scripts/latlong.html
      * @param  mixed    $from
      * @param  mixed    $to
@@ -49,6 +50,7 @@ class Math
      * Calculates the geodetic distance between two points using the
      * Vincenty inverse formula for ellipsoids.
      *
+     * @see http://en.wikipedia.org/wiki/Vincenty%27s_formulae
      * @see http://www.movable-type.co.uk/scripts/latlong-vincenty.html
      * @param  mixed             $from
      * @param  mixed             $to
@@ -124,7 +126,7 @@ class Math
     }
 
     /**
-     * Returns the (initial) heading from the first point to the second point
+     * Calculates the (initial) heading from the first point to the second point
      * in degrees.
      *
      * @param  mixed $from
