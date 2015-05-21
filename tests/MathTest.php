@@ -370,4 +370,43 @@ class MathTest extends \PHPUnit_Framework_TestCase
             '100 meters'
         );
     }
+
+    public function testShrinkWithBounds()
+    {
+        $math = new Math();
+
+        $bounds = $math->shrink(
+            '-45.000898315284132 178.99872959034192 45.000898315284132 -178.99872959034192',
+            '100 meters'
+        );
+
+        $this->assertEquals(
+            -45,
+            $bounds->getSouthWest()->getLatitude()
+        );
+        $this->assertEquals(
+            179.0000000199187,
+            $bounds->getSouthWest()->getLongitude()
+        );
+        $this->assertEquals(
+            45,
+            $bounds->getNorthEast()->getLatitude()
+        );
+        $this->assertEquals(
+            -179.0000000199187,
+            $bounds->getNorthEast()->getLongitude()
+        );
+    }
+
+    public function testShrinkThrowsForInvalidInput()
+    {
+        $this->setExpectedException('\InvalidArgumentException', 'Cannot cast to Bounds from input "foo".');
+
+        $math = new Math();
+
+        $math->shrink(
+            'foo',
+            '100 meters'
+        );
+    }
 }
