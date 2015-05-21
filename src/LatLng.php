@@ -48,8 +48,13 @@ class LatLng implements \ArrayAccess
 
     public function offsetExists($offset)
     {
-        return in_array($offset, self::$latitudeKeys) ||
-        in_array($offset, self::$longitudeKeys);
+        return in_array(
+            $offset,
+            array_merge(
+                self::$latitudeKeys,
+                self::$longitudeKeys
+            )
+        );
     }
 
     public function offsetGet($offset)

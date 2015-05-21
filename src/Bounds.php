@@ -81,9 +81,14 @@ class Bounds implements \ArrayAccess
 
     public function offsetExists($offset)
     {
-        return in_array($offset, self::$southWestKeys) ||
-        in_array($offset, self::$northEastKeys) ||
-        in_array($offset, array('center', 'span'));
+        return in_array(
+            $offset,
+            array_merge(
+                self::$southWestKeys,
+                self::$northEastKeys,
+                array('center', 'span')
+            )
+        );
     }
 
     public function offsetGet($offset)

@@ -90,10 +90,15 @@ class Ellipsoid implements \ArrayAccess
 
     public function offsetExists($offset)
     {
-        return in_array($offset, self::$semiMajorAxisKeys) ||
-        in_array($offset, self::$semiMinorAxisKeys) ||
-        in_array($offset, self::$flatteningKeys) ||
-        in_array($offset, self::$inverseFlatteningKeys);
+        return in_array(
+            $offset,
+            array_merge(
+                self::$semiMajorAxisKeys,
+                self::$semiMinorAxisKeys,
+                self::$flatteningKeys,
+                self::$inverseFlatteningKeys
+            )
+        );
     }
 
     public function offsetGet($offset)
