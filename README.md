@@ -75,9 +75,9 @@ LatLng instance by a distance.
 
 ```php
 $expandedBounds1 = $math->expand(['lat' => 49.50042565 'lng' => 8.50207515], '10km');
-$expandedBounds1 = $math->expand(Geokit\Bounds::normalize('-45 179 45 -179'), '10km');
+$expandedBounds2 = $math->expand(Geokit\Bounds::normalize('-45 179 45 -179'), '10km');
 
-$shrinkedBounds = $math->shrink($expandedBounds1, '10km');
+$shrinkedBounds = $math->shrink($expandedBounds2, '10km');
 ```
 
 #### Other calculations
