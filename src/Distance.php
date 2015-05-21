@@ -149,8 +149,8 @@ class Distance
      *
      * If $input is a Distance object, it is just passed through.
      *
-     * @param  string|array|\ArrayAccess|\Geokit\Distance $input
-     * @return \Geokit\Distance
+     * @param  mixed                     $input
+     * @return Distance
      * @throws \InvalidArgumentException
      */
     public static function normalize($input)

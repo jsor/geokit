@@ -19,9 +19,9 @@ class Math
      * two points using the Haversine formula.
      *
      * @see http://www.movable-type.co.uk/scripts/latlong.html
-     * @param  mixed            $from
-     * @param  mixed            $to
-     * @return \Geokit\Distance
+     * @param  mixed    $from
+     * @param  mixed    $to
+     * @return Distance
      */
     public function distanceHaversine($from, $to)
     {
@@ -52,7 +52,7 @@ class Math
      * @see http://www.movable-type.co.uk/scripts/latlong-vincenty.html
      * @param  mixed             $from
      * @param  mixed             $to
-     * @return \Geokit\Distance
+     * @return Distance
      * @throws \RuntimeException
      */
     public function distanceVincenty($from, $to)
@@ -159,9 +159,9 @@ class Math
      * points.
      *
      * @see http://www.movable-type.co.uk/scripts/latlong.html
-     * @param  mixed          $from
-     * @param  mixed          $to
-     * @return \Geokit\LatLng
+     * @param  mixed  $from
+     * @param  mixed  $to
+     * @return LatLng
      */
     public function midpoint($from, $to)
     {
@@ -192,10 +192,10 @@ class Math
      * heading and distance, from the given start point.
      *
      * @see http://www.movable-type.co.uk/scripts/latlong.html
-     * @param  mixed                                      $start
-     * @param  float                                      $heading  (in degrees)
-     * @param  string|array|\ArrayAccess|\Geokit\Distance $distance (in meters)
-     * @return \Geokit\LatLng
+     * @param  mixed  $start
+     * @param  float  $heading  (in degrees)
+     * @param  mixed  $distance (in meters)
+     * @return LatLng
      */
     public function endpoint($start, $heading, $distance)
     {
@@ -217,9 +217,9 @@ class Math
     }
 
     /**
-     * @param  mixed $bounds
-     * @param  mixed $distance (in meters)
-     * @return \Geokit\Bounds
+     * @param  mixed  $bounds
+     * @param  mixed  $distance (in meters)
+     * @return Bounds
      */
     public function expandBounds($bounds, $distance)
     {

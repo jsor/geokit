@@ -303,8 +303,8 @@ class Ellipsoid implements \ArrayAccess
      *
      * If $input is null, the default wgs84 ellipsoid is returned.
      *
-     * @param  array|\ArrayAccess|\Geokit\Ellipsoid|null $input
-     * @return \Geokit\Ellipsoid
+     * @param  mixed                     $input
+     * @return Ellipsoid
      * @throws \InvalidArgumentException
      */
     public static function normalize($input)

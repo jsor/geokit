@@ -119,8 +119,8 @@ class LatLng implements \ArrayAccess
      *
      * If $input is an LatLng object, it is just passed through.
      *
-     * @param  string|array|\ArrayAccess|\Geokit\LatLng $input
-     * @return \Geokit\LatLng
+     * @param  mixed                     $input
+     * @return LatLng
      * @throws \InvalidArgumentException
      */
     public static function normalize($input)

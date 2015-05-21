@@ -20,8 +20,8 @@ class Bounds implements \ArrayAccess
     );
 
     /**
-     * @param  \Geokit\LatLng  $southWest
-     * @param  \Geokit\LatLng  $northEast
+     * @param  LatLng          $southWest
+     * @param  LatLng          $northEast
      * @throws \LogicException
      */
     public function __construct(LatLng $southWest, LatLng $northEast)
@@ -35,7 +35,7 @@ class Bounds implements \ArrayAccess
     }
 
     /**
-     * @return \Geokit\LatLng
+     * @return LatLng
      */
     public function getSouthWest()
     {
@@ -43,7 +43,7 @@ class Bounds implements \ArrayAccess
     }
 
     /**
-     * @return \Geokit\LatLng
+     * @return LatLng
      */
     public function getNorthEast()
     {
@@ -51,7 +51,7 @@ class Bounds implements \ArrayAccess
     }
 
     /**
-     * @return \Geokit\LatLng
+     * @return LatLng
      */
     public function getCenter()
     {
@@ -69,7 +69,7 @@ class Bounds implements \ArrayAccess
     }
 
     /**
-     * @return \Geokit\LatLng
+     * @return LatLng
      */
     public function getSpan()
     {
@@ -131,7 +131,7 @@ class Bounds implements \ArrayAccess
     }
 
     /**
-     * @param  \Geokit\LatLng $latLng
+     * @param  LatLng  $latLng
      * @return boolean
      */
     public function contains(LatLng $latLng)
@@ -245,8 +245,8 @@ class Bounds implements \ArrayAccess
      *
      * If $input is an Bounds object, it is just passed through.
      *
-     * @param  string|array|\ArrayAccess|\Geokit\Bounds $input
-     * @return \Geokit\Bounds
+     * @param  mixed                     $input
+     * @return Bounds
      * @throws \InvalidArgumentException
      */
     public static function normalize($input)
