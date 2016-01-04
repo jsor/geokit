@@ -135,6 +135,9 @@ class LatLng implements \ArrayAccess
         if (is_string($input) && preg_match('/(\-?\d+\.?\d*)[, ] ?(\-?\d+\.?\d*)$/', $input, $match)) {
             $lat = $match[1];
             $lng = $match[2];
+        } elseif (is_object($input) && method_exists($input, 'getLatitude') && method_exists($input, 'getLongitude')) {
+            $lat = $input->getLatitude();
+            $lng = $input->getLongitude();
         } elseif (is_array($input) || $input instanceof \ArrayAccess) {
             if (Utils::isNumericInputArray($input)) {
                 $lat = $input[0];
