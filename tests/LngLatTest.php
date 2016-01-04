@@ -2,6 +2,8 @@
 
 namespace Geokit;
 
+use Geokit\Fixtures\ThirdPartyLatLng;
+
 class LngLatTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstructorShouldAcceptStringsAsArguments()
@@ -174,6 +176,16 @@ class LngLatTest extends \PHPUnit_Framework_TestCase
     public function testNormalizeShouldAcceptIndexedArrayArgument()
     {
         $LatLng = LatLng::normalize(array(2.5678, 1.1234));
+
+        $this->assertSame(2.5678, $LatLng->getLatitude());
+        $this->assertSame(1.1234, $LatLng->getLongitude());
+    }
+
+    public function testNormalizeShouldAcceptObjectWithLatLngGetters()
+    {
+        $thirdPartyLatLng = new ThirdPartyLatLng(2.5678, 1.1234);
+
+        $LatLng = LatLng::normalize($thirdPartyLatLng);
 
         $this->assertSame(2.5678, $LatLng->getLatitude());
         $this->assertSame(1.1234, $LatLng->getLongitude());
