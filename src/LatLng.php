@@ -92,8 +92,8 @@ class LatLng implements \ArrayAccess
      * Takes anything which looks like a coordinate and generates a LatLng
      * object from it.
      *
-     * $input can be either a string, an array, an \ArrayAccess object or a
-     * LatLng object.
+     * $input can be either a string, an object with getLatitude/getLongitude
+     * getter methods, an array, an \ArrayAccess object or a LatLng object.
      *
      * If $input is a string, it can be in the format "1.1234, 2.5678" or
      * "1.1234 2.5678".
