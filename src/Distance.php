@@ -170,7 +170,7 @@ class Distance
                 $unit = self::resolveUnitAlias($unit);
             }
 
-            return new self((float)$match[1], $unit);
+            return new self((float) $match[1], $unit);
         }
 
         throw new \InvalidArgumentException(sprintf('Cannot normalize Distance from input %s.', json_encode($input)));

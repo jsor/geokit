@@ -26,8 +26,8 @@ class LatLng implements \ArrayAccess
      */
     public function __construct($latitude, $longitude)
     {
-        $this->latitude = self::normalizeLat((float)$latitude);
-        $this->longitude = self::normalizeLng((float)$longitude);
+        $this->latitude = self::normalizeLat((float) $latitude);
+        $this->longitude = self::normalizeLng((float) $longitude);
     }
 
     /**

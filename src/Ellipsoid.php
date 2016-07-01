@@ -50,10 +50,10 @@ class Ellipsoid implements \ArrayAccess
      */
     public function __construct($semiMajorAxis, $semiMinorAxis, $flattening, $inverseFlattening)
     {
-        $this->semiMajorAxis = (float)$semiMajorAxis;
-        $this->semiMinorAxis = (float)$semiMinorAxis;
-        $this->flattening = (float)$flattening;
-        $this->inverseFlattening = (float)$inverseFlattening;
+        $this->semiMajorAxis = (float) $semiMajorAxis;
+        $this->semiMinorAxis = (float) $semiMinorAxis;
+        $this->flattening = (float) $flattening;
+        $this->inverseFlattening = (float) $inverseFlattening;
     }
 
     /**
@@ -232,7 +232,7 @@ class Ellipsoid implements \ArrayAccess
      */
     public static function createFromSemiMajorAndInvF($semiMajorAxis, $inverseFlattening)
     {
-        if ((float)$inverseFlattening <= 0) {
+        if ((float) $inverseFlattening <= 0) {
             throw new \InvalidArgumentException('The inverse flattening must be > 0.');
         }
 
