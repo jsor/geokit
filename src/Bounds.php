@@ -87,17 +87,18 @@ class Bounds implements \ArrayAccess
                 self::$southWestKeys,
                 self::$northEastKeys,
                 array('center', 'span')
-            )
+            ),
+            true
         );
     }
 
     public function offsetGet($offset)
     {
-        if (in_array($offset, self::$southWestKeys)) {
+        if (in_array($offset, self::$southWestKeys, true)) {
             return $this->getSouthWest();
         }
 
-        if (in_array($offset, self::$northEastKeys)) {
+        if (in_array($offset, self::$northEastKeys, true)) {
             return $this->getNorthEast();
         }
 

@@ -97,25 +97,26 @@ class Ellipsoid implements \ArrayAccess
                 self::$semiMinorAxisKeys,
                 self::$flatteningKeys,
                 self::$inverseFlatteningKeys
-            )
+            ),
+            true
         );
     }
 
     public function offsetGet($offset)
     {
-        if (in_array($offset, self::$semiMajorAxisKeys)) {
+        if (in_array($offset, self::$semiMajorAxisKeys, true)) {
             return $this->getSemiMajorAxis();
         }
 
-        if (in_array($offset, self::$semiMinorAxisKeys)) {
+        if (in_array($offset, self::$semiMinorAxisKeys, true)) {
             return $this->getSemiMinorAxis();
         }
 
-        if (in_array($offset, self::$flatteningKeys)) {
+        if (in_array($offset, self::$flatteningKeys, true)) {
             return $this->getFlattening();
         }
 
-        if (in_array($offset, self::$inverseFlatteningKeys)) {
+        if (in_array($offset, self::$inverseFlatteningKeys, true)) {
             return $this->getInverseFlattening();
         }
 

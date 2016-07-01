@@ -53,17 +53,18 @@ class LatLng implements \ArrayAccess
             array_merge(
                 self::$latitudeKeys,
                 self::$longitudeKeys
-            )
+            ),
+            true
         );
     }
 
     public function offsetGet($offset)
     {
-        if (in_array($offset, self::$latitudeKeys)) {
+        if (in_array($offset, self::$latitudeKeys, true)) {
             return $this->getLatitude();
         }
 
-        if (in_array($offset, self::$longitudeKeys)) {
+        if (in_array($offset, self::$longitudeKeys, true)) {
             return $this->getLongitude();
         }
 
