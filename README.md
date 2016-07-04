@@ -16,9 +16,9 @@ Geokit is a PHP toolkit to solve geo-related tasks like:
         * [Distance calculations](#distance-calculations)
         * [Transformations](#transformations)
         * [Other calculations](#other-calculations)
+    * [Distance](#distance)
     * [LatLng](#latlng)
     * [Bounds](#bounds)
-    * [Distance](#distance)
 * [License](#license)
 * [Credits](#credits)
 
@@ -91,7 +91,37 @@ Other useful methods are:
 * `endpoint($start, $heading, $distance)`: Calculates the destination point
    along a geodesic, given an initial heading and distance, from the given start
    point.
-   
+
+### Distance
+
+A Distance instance allows for a convenient representation of a distance unit of
+measure.
+
+```php
+$distance = new Geokit\Distance(1000);
+// or
+$distance = new Geokit\Distance(1, Geokit\Distance::UNIT_KILOMETERS);
+
+$meters = $distance->meters();
+$kilometers = $distance->kilometers();
+$miles = $distance->miles();
+$feet = $distance->feet();
+$nauticalMiles = $distance->nautical();
+```
+
+Alternatively, you can create a Distance instance through its static normalize
+method. This method takes anything which looks like distance and generates a
+Distance object from it.
+
+```php
+$distance = Geokit\Distance::normalize(1000); // Defaults to meters
+$distance = Geokit\Distance::normalize('1000m');
+$distance = Geokit\Distance::normalize('1km');
+$distance = Geokit\Distance::normalize('100 miles');
+$distance = Geokit\Distance::normalize('1 foot');
+$distance = Geokit\Distance::normalize('234nm');
+```
+
 ### LatLng
 
 A LatLng instance represents a geographical point in latitude/longitude
@@ -178,36 +208,6 @@ $bounds = Geokit\Bounds::normalize(array('south_west' => array(1, 2), 'north_eas
 $bounds = Geokit\Bounds::normalize(array('southwest' => $southWestLatLng, 'northeast' => $northEastLatLng));
 $bounds = Geokit\Bounds::normalize(array('southWest' => $southWestLatLng, 'northEast' => $northEastLatLng));
 $bounds = Geokit\Bounds::normalize(array($southWestLatLng, $northEastLatLng));
-```
-
-### Distance
-
-A Distance instance allows for a convenient representation of a distance unit of
-measure.
-
-```php
-$distance = new Geokit\Distance(1000);
-// or
-$distance = new Geokit\Distance(1, Geokit\Distance::UNIT_KILOMETERS);
-
-$meters = $distance->meters();
-$kilometers = $distance->kilometers();
-$miles = $distance->miles();
-$feet = $distance->feet();
-$nauticalMiles = $distance->nautical();
-```
-
-Alternatively, you can create a Distance instance through its static normalize
-method. This method takes anything which looks like distance and generates a
-Distance object from it.
-
-```php
-$distance = Geokit\Distance::normalize(1000); // Defaults to meters
-$distance = Geokit\Distance::normalize('1000m');
-$distance = Geokit\Distance::normalize('1km');
-$distance = Geokit\Distance::normalize('100 miles');
-$distance = Geokit\Distance::normalize('1 foot');
-$distance = Geokit\Distance::normalize('234nm');
 ```
 
 License
