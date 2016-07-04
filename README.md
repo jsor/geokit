@@ -19,6 +19,7 @@ Geokit is a PHP toolkit to solve geo-related tasks like:
     * [Distance](#distance)
     * [LatLng](#latlng)
     * [Bounds](#bounds)
+    * [Polygon](#polygon)
 * [License](#license)
 * [Credits](#credits)
 
@@ -208,6 +209,36 @@ $bounds = Geokit\Bounds::normalize(array('south_west' => array(1, 2), 'north_eas
 $bounds = Geokit\Bounds::normalize(array('southwest' => $southWestLatLng, 'northeast' => $northEastLatLng));
 $bounds = Geokit\Bounds::normalize(array('southWest' => $southWestLatLng, 'northEast' => $northEastLatLng));
 $bounds = Geokit\Bounds::normalize(array($southWestLatLng, $northEastLatLng));
+```
+
+### Polygon
+
+A Polygon instance represents a two-dimensional shape of connected line segments
+and may either be closed (the first and last point are the same) or open.
+
+```php
+$polygon = new Geokit\Polygon([
+    new Geokit\LatLng(0, 0),
+    new Geokit\LatLng(0, 1),
+    new Geokit\LatLng(1, 1)
+]);
+
+$latLng1 = $polygon[0];
+$latLng2 = $polygon[1];
+$latLng3 = $polygon[2];
+
+$closedPolygon = $polygon->close();
+
+$latLng4 = $closedPolygon[3]; // LatLng(0, 0)
+
+/** @var Geokit\LatLng $latLng */
+foreach ($polygon as $latLng) {
+}
+
+$polygon->contains(LatLng(0.5, 0.5)); // true
+
+/** @var Geokit\Bounds $bounds */
+$bounds = $polygon->toBounds();
 ```
 
 License
