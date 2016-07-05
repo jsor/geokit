@@ -10,7 +10,7 @@ class PolygonTest extends \PHPUnit_Framework_TestCase
             new LatLng(0, 0),
             array('latitude' => 0, 'longitude' => 1),
             '1, 1',
-            array(1, 0)
+            'key' => array(1, 0)
         );
 
         $polygon = new Polygon($points);
@@ -18,7 +18,7 @@ class PolygonTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($points[0], $polygon[0]);
         $this->assertEquals(0, $polygon[1]->getLatitude());
         $this->assertEquals(1, $polygon[2]->getLatitude());
-        $this->assertEquals(1, $polygon[3]->getLatitude());
+        $this->assertEquals(1, $polygon['key']->getLatitude());
     }
 
     public function testConstructorThrowsExceptionForInvalidLatLng()
@@ -224,6 +224,17 @@ class PolygonTest extends \PHPUnit_Framework_TestCase
                 array('lng' => 0.5, 'lat' => 0.5),
                 false
             ),
+
+            // Assoc polygon
+            array(
+                array(
+                    'polygon1' => array('lng' => 1, 'lat' => 1),
+                    'polygon2' => array('lng' => 3, 'lat' => 2),
+                    'polygon3' => array('lng' => 2, 'lat' => 3)
+                ),
+                array('lng' => 1.5, 'lat' => 1.5),
+                true
+            ),
         );
     }
 
@@ -255,7 +266,7 @@ class PolygonTest extends \PHPUnit_Framework_TestCase
         $polygon->toBounds();
     }
 
-    public function testArrayAccess()
+    public function testArrayAccessNumeric()
     {
         $points = array(
             new LatLng(0, 0)
@@ -266,6 +277,19 @@ class PolygonTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isset($polygon[0]));
         $this->assertNotNull($polygon[0]);
         $this->assertEquals($points[0], $polygon[0]);
+    }
+
+    public function testArrayAccessAssoc()
+    {
+        $points = array(
+            'key' => new LatLng(0, 0)
+        );
+
+        $polygon = new Polygon($points);
+
+        $this->assertTrue(isset($polygon['key']));
+        $this->assertNotNull($polygon['key']);
+        $this->assertEquals($points['key'], $polygon['key']);
     }
 
     public function testOffsetGetThrowsExceptionForInvalidKey()

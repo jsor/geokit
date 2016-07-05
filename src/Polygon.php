@@ -37,7 +37,7 @@ class Polygon implements \Countable, \ArrayAccess, \IteratorAggregate
         $points = $this->points;
 
         if (!$this->isClosed()) {
-            $points[] = clone $this->points[0];
+            $points[] = clone reset($this->points);
         }
 
         return new self($points);
@@ -59,7 +59,7 @@ class Polygon implements \Countable, \ArrayAccess, \IteratorAggregate
         $x = $latLng->getLongitude();
         $y = $latLng->getLatitude();
 
-        $p = $points[count($points) - 1];
+        $p = end($points);
 
         $x0 = $p->getLongitude();
         $y0 = $p->getLatitude();
