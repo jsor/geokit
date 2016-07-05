@@ -15,7 +15,7 @@ class Polygon implements \Countable, \ArrayAccess, \IteratorAggregate
 
     public function isClosed()
     {
-        if (!$this->points) {
+        if (0 === count($this->points)) {
             return false;
         }
 
@@ -30,7 +30,7 @@ class Polygon implements \Countable, \ArrayAccess, \IteratorAggregate
 
     public function close()
     {
-        if (!$this->points) {
+        if (0 === count($this->points)) {
             return new self();
         }
 
@@ -50,7 +50,7 @@ class Polygon implements \Countable, \ArrayAccess, \IteratorAggregate
      */
     public function contains(LatLng $latLng)
     {
-        if (!$this->points) {
+        if (0 === count($this->points)) {
             return false;
         }
 
@@ -86,7 +86,7 @@ class Polygon implements \Countable, \ArrayAccess, \IteratorAggregate
 
     public function toBounds()
     {
-        if (!$this->points) {
+        if (0 === count($this->points)) {
             throw new \LogicException('Cannot create Bounds from empty Polygon.');
         }
 
