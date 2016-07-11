@@ -128,12 +128,12 @@ class Polygon implements \Countable, \ArrayAccess, \IteratorAggregate
 
     public function offsetUnset($offset)
     {
-        throw new \BadMethodCallException('Polyline is immutable.');
+        throw new \BadMethodCallException('Polygon is immutable.');
     }
 
     public function offsetSet($offset, $value)
     {
-        throw new \BadMethodCallException('Polyline is immutable.');
+        throw new \BadMethodCallException('Polygon is immutable.');
     }
 
     public function getIterator()
