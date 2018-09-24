@@ -2,7 +2,7 @@
 
 namespace Geokit;
 
-class PolygonTest extends \PHPUnit_Framework_TestCase
+class PolygonTest extends TestCase
 {
     public function testConstructorShouldAcceptArrayOfLatLngs()
     {
@@ -347,6 +347,7 @@ class PolygonTest extends \PHPUnit_Framework_TestCase
         $polygon = new Polygon($points);
 
         foreach ($polygon as $point) {
+            $this->assertInstanceOf('Geokit\LatLng', $point);
             return;
         }
 

@@ -2,7 +2,7 @@
 
 namespace Geokit;
 
-class EllipsoidTest extends \PHPUnit_Framework_TestCase
+class EllipsoidTest extends TestCase
 {
     public function testCreateFromSemiMajorInverseF()
     {

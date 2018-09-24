@@ -4,7 +4,7 @@ namespace Geokit;
 
 use Geokit\Fixtures\ThirdPartyLatLng;
 
-class LngLatTest extends \PHPUnit_Framework_TestCase
+class LngLatTest extends TestCase
 {
     public function testConstructorShouldAcceptStringsAsArguments()
     {
@@ -211,14 +211,14 @@ class LngLatTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider testNormalizeLngDataProvider
+     * @dataProvider normalizeLngDataProvider
      */
     public function testNormalizeLng($a, $b)
     {
         $this->assertEquals(LatLng::normalizeLng($a), $b);
     }
 
-    public function testNormalizeLngDataProvider()
+    public function normalizeLngDataProvider()
     {
         return array(
             array(-545, 175),

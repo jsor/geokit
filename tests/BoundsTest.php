@@ -2,7 +2,7 @@
 
 namespace Geokit;
 
-class BoundsTest extends \PHPUnit_Framework_TestCase
+class BoundsTest extends TestCase
 {
     /**
      * @param Bounds  $b

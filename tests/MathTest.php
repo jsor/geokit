@@ -2,7 +2,7 @@
 
 namespace Geokit;
 
-class MathTest extends \PHPUnit_Framework_TestCase
+class MathTest extends TestCase
 {
     /**
      * @dataProvider distanceHaversineDataProvider
