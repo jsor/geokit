@@ -244,7 +244,7 @@ $bounds = $polygon->toBounds();
 License
 -------
 
-Copyright (c) 2011-2016 Jan Sorgalla. Released under the [MIT License](https://github.com/jsor/geokit/blob/master/LICENSE).
+Copyright (c) 2011-2018 Jan Sorgalla. Released under the [MIT License](https://github.com/jsor/geokit/blob/master/LICENSE).
 
 Credits
 -------
