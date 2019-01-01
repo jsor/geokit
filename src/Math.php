@@ -244,6 +244,32 @@ class Math
         );
     }
 
+    /**
+     * Creates a psudo-circle Polygon, given a center point, radius,
+     * and optionally a number of points in the circle.
+     *
+     * @param  mixed   $center
+     * @param  float   $radius   (in meters)
+     * @param  integer $numSteps (number of psudo-circle polygon vertices)
+     * @return Polygon
+     */
+    public function pointBuffer($center, $radius, $numSteps=36)
+    {
+        $center = LatLng::normalize($center);
+        $radius = Distance::normalize($radius);
+        $stepDegrees = 360 / $numSteps;
+
+        $lat = deg2rad($center->getLatitude());
+        $lng = deg2rad($center->getLongitude());
+
+        $points = [];
+        for ($step=0; $step<=$numSteps; $step++) {
+          $points[] = $this->endpoint($center, $step*$stepDegrees, $radius);
+        }
+
+        return new Polygon($points);
+    }
+
     private function transformBounds($input, $distanceInMeters)
     {
         $bounds = Utils::castToBounds($input);
