@@ -23,11 +23,11 @@ class BoundsTest extends TestCase
     {
         $bounds = new Bounds(new LatLng(2.5678, 1.1234), new LatLng(4.5678, 3.1234));
 
-        $this->assertTrue($bounds->getSouthWest() instanceof LatLng);
+        $this->assertInstanceOf('\Geokit\LatLng', $bounds->getSouthWest());
         $this->assertEquals(1.1234, $bounds->getSouthWest()->getLongitude());
         $this->assertEquals(2.5678, $bounds->getSouthWest()->getLatitude());
 
-        $this->assertTrue($bounds->getNorthEast() instanceof LatLng);
+        $this->assertInstanceOf('\Geokit\LatLng', $bounds->getNorthEast());
         $this->assertEquals(3.1234, $bounds->getNorthEast()->getLongitude());
         $this->assertEquals(4.5678, $bounds->getNorthEast()->getLatitude());
     }
@@ -77,7 +77,7 @@ class BoundsTest extends TestCase
         $bounds = new Bounds(new LatLng(2.5678, 1.1234), new LatLng(4.5678, 3.1234));
 
         foreach ($keys as $key) {
-            $this->assertTrue(isset($bounds[$key]));
+            $this->assertArrayHasKey($key, $bounds);
             $this->assertNotNull($bounds[$key]);
         }
     }
@@ -236,5 +236,36 @@ class BoundsTest extends TestCase
     {
         $this->setExpectedException('\InvalidArgumentException', 'Cannot normalize Bounds from input {}.');
         Bounds::normalize(new \stdClass());
+    }
+
+    /**
+     * @dataProvider offsetExistsDataProvider
+     */
+    public function testOffsetExists($existedKey)
+    {
+        $bounds = new Bounds(new LatLng(-45, 179), new LatLng(45, -179));
+
+        $this->assertTrue($bounds->offsetExists($existedKey));
+    }
+
+    public function offsetExistsDataProvider()
+    {
+        return array(
+            array('southwest'),
+            array('south_west'),
+            array('southWest'),
+            array('northeast'),
+            array('north_east'),
+            array('northEast'),
+            array('center'),
+            array('span')
+        );
+    }
+
+    public function testOffsetExistsOnNonExistedKeys()
+    {
+        $bounds = new Bounds(new LatLng(-45, 179), new LatLng(45, -179));
+
+        $this->assertFalse($bounds->offsetExists('non_existed_key'));
     }
 }

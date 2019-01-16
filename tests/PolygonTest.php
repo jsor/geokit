@@ -274,7 +274,7 @@ class PolygonTest extends TestCase
 
         $polygon = new Polygon($points);
 
-        $this->assertTrue(isset($polygon[0]));
+        $this->assertNotEmpty($polygon[0]);
         $this->assertNotNull($polygon[0]);
         $this->assertEquals($points[0], $polygon[0]);
     }
@@ -287,7 +287,7 @@ class PolygonTest extends TestCase
 
         $polygon = new Polygon($points);
 
-        $this->assertTrue(isset($polygon['key']));
+        $this->assertNotEmpty($polygon['key']);
         $this->assertNotNull($polygon['key']);
         $this->assertEquals($points['key'], $polygon['key']);
     }

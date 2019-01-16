@@ -61,7 +61,7 @@ class EllipsoidTest extends TestCase
         $ellipsoid = new Ellipsoid(1, 2, 3, 4);
 
         foreach ($keys as $key) {
-            $this->assertTrue(isset($ellipsoid[$key]));
+            $this->assertNotEmpty($ellipsoid[$key]);
             $this->assertNotNull($ellipsoid[$key]);
         }
     }
@@ -277,5 +277,44 @@ class EllipsoidTest extends TestCase
         $this->assertSame(6356863.0187730473, $ellipsoid->getSemiMinorAxis());
         $this->assertSame(0.003352329869259135, $ellipsoid->getFlattening());
         $this->assertSame(298.3, $ellipsoid->getInverseFlattening());
+    }
+
+    /**
+     * @dataProvider offsetExistsDataProvider
+     */
+    public function testOffsetExists($existedKey)
+    {
+        $ellipsoid = new Ellipsoid(1, 2, 3, 4);
+
+        $this->assertTrue($ellipsoid->offsetExists($existedKey));
+    }
+
+    public function offsetExistsDataProvider()
+    {
+        return array(
+            array('semi_major_axis'),
+            array('semi_major'),
+            array('semiMajorAxis'),
+            array('semiMajor'),
+            array('semi_minor_axis'),
+            array('semi_minor'),
+            array('semiMinorAxis'),
+            array('semiMinor'),
+            array('flattening'),
+            array('f'),
+            array('inverse_flattening'),
+            array('inverse_f'),
+            array('inv_f'),
+            array('inverseFlattening'),
+            array('inverseF'),
+            array('invF')
+        );
+    }
+
+    public function testOffsetExistsOnNonExistedKeys()
+    {
+        $ellipsoid = new Ellipsoid(1, 2, 3, 4);
+
+        $this->assertFalse($ellipsoid->offsetExists('non_existed_key'));
     }
 }
