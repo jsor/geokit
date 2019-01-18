@@ -254,7 +254,7 @@ class MathTest extends TestCase
 
     public function testDistanceHaversineShouldNotConvergeForHalfTripAroundEquator()
     {
-        $this->setExpectedException('\RuntimeException', 'Vincenty formula failed to converge.');
+        $this->expectException('\RuntimeException', 'Vincenty formula failed to converge.');
 
         $math = new Math();
         $math->distanceVincenty(new LatLng(0, 0), new LatLng(0, 180));
@@ -361,7 +361,8 @@ class MathTest extends TestCase
 
     public function testExpandThrowsForInvalidInput()
     {
-        $this->setExpectedException('\InvalidArgumentException', 'Cannot cast to Bounds from input "foo".');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Cannot cast to Bounds from input "foo".');
 
         $math = new Math();
 
@@ -427,7 +428,8 @@ class MathTest extends TestCase
 
     public function testShrinkThrowsForInvalidInput()
     {
-        $this->setExpectedException('\InvalidArgumentException', 'Cannot cast to Bounds from input "foo".');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Cannot cast to Bounds from input "foo".');
 
         $math = new Math();
 

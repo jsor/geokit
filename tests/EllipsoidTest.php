@@ -14,7 +14,7 @@ class EllipsoidTest extends TestCase
 
     public function testCreateFromSemiMajorInverseFThrowsExceptionForInvFlatteongLTEZero()
     {
-        $this->setExpectedException('\InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
 
         Ellipsoid::createFromSemiMajorAndInvF(0, 0);
     }
@@ -68,7 +68,8 @@ class EllipsoidTest extends TestCase
 
     public function testOffsetGetThrowsExceptionForInvalidKey()
     {
-        $this->setExpectedException('\InvalidArgumentException', 'Invalid offset "foo".');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid offset "foo".');
 
         $ellipsoid = new Ellipsoid(1, 2, 3, 4);
 
@@ -77,7 +78,7 @@ class EllipsoidTest extends TestCase
 
     public function testOffsetSetThrowsException()
     {
-        $this->setExpectedException('\BadMethodCallException');
+        $this->expectException(\BadMethodCallException::class);
 
         $ellipsoid = new Ellipsoid(1, 2, 3, 4);
 
@@ -86,7 +87,7 @@ class EllipsoidTest extends TestCase
 
     public function testOffsetUnsetThrowsException()
     {
-        $this->setExpectedException('\BadMethodCallException');
+        $this->expectException(\BadMethodCallException::class);
 
         $ellipsoid = new Ellipsoid(1, 2, 3, 4);
 
@@ -193,19 +194,22 @@ class EllipsoidTest extends TestCase
 
     public function testNormalizeShouldThrowExceptionForInvalidArrayInput()
     {
-        $this->setExpectedException('\InvalidArgumentException', 'Cannot normalize Ellipsoid from input ["foo",""].');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Cannot normalize Ellipsoid from input ["foo",""].');
         Ellipsoid::normalize(array('foo', ''));
     }
 
     public function testNormalizeShouldThrowExceptionForInvalidStringInput()
     {
-        $this->setExpectedException('\InvalidArgumentException', 'Cannot normalize Ellipsoid from input "foo".');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Cannot normalize Ellipsoid from input "foo".');
         Ellipsoid::normalize('foo');
     }
 
     public function testNormalizeShouldThrowExceptionForInvalidObjectInput()
     {
-        $this->setExpectedException('\InvalidArgumentException', 'Cannot normalize Ellipsoid from input {}.');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Cannot normalize Ellipsoid from input {}.');
         Ellipsoid::normalize(new \stdClass());
     }
 

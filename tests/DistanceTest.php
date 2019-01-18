@@ -66,7 +66,7 @@ class DistanceTest extends TestCase
 
     public function testShouldThrowExceptionForInvalidUnit()
     {
-        $this->setExpectedException('\InvalidArgumentException');
+        $this->expectException('\InvalidArgumentException');
         new Distance(1000, 'foo');
     }
 
@@ -189,13 +189,13 @@ class DistanceTest extends TestCase
 
     public function testNormalizeShouldThrowExceptionForInvalidInput()
     {
-        $this->setExpectedException('\InvalidArgumentException');
+        $this->expectException('\InvalidArgumentException');
         Distance::normalize('1000foo');
     }
 
     public function testResolveUnitAliasShouldThrowExceptionForInvalidAlias()
     {
-        $this->setExpectedException('\InvalidArgumentException');
+        $this->expectException('\InvalidArgumentException');
         Distance::resolveUnitAlias('foo');
     }
 }

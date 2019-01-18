@@ -23,7 +23,8 @@ class PolygonTest extends TestCase
 
     public function testConstructorThrowsExceptionForInvalidLatLng()
     {
-        $this->setExpectedException('\InvalidArgumentException', 'Cannot normalize LatLng from input "foo".');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Cannot normalize LatLng from input "foo".');
 
         new Polygon(array('foo'));
     }
@@ -259,7 +260,8 @@ class PolygonTest extends TestCase
 
     public function testToBoundsThrowsExceptionForEmptyPolygon()
     {
-        $this->setExpectedException('\LogicException', 'Cannot create Bounds from empty Polygon.');
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('Cannot create Bounds from empty Polygon.');
 
         $polygon = new Polygon();
 
@@ -294,7 +296,8 @@ class PolygonTest extends TestCase
 
     public function testOffsetGetThrowsExceptionForInvalidKey()
     {
-        $this->setExpectedException('\InvalidArgumentException', 'Invalid offset 0.');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid offset 0.');
 
         $polygon = new Polygon();
 
@@ -303,7 +306,7 @@ class PolygonTest extends TestCase
 
     public function testOffsetSetThrowsException()
     {
-        $this->setExpectedException('\BadMethodCallException');
+        $this->expectException(\BadMethodCallException::class);
 
         $points = array(
             new LatLng(0, 0)
@@ -316,7 +319,7 @@ class PolygonTest extends TestCase
 
     public function testOffsetUnsetThrowsException()
     {
-        $this->setExpectedException('\BadMethodCallException');
+        $this->expectException(\BadMethodCallException::class);
 
         $points = array(
             new LatLng(0, 0)

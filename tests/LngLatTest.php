@@ -68,7 +68,8 @@ class LngLatTest extends TestCase
 
     public function testOffsetGetThrowsExceptionForInvalidKey()
     {
-        $this->setExpectedException('\InvalidArgumentException', 'Invalid offset "foo".');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid offset "foo".');
 
         $LatLng = new LatLng(2, 1);
 
@@ -77,7 +78,7 @@ class LngLatTest extends TestCase
 
     public function testOffsetSetThrowsException()
     {
-        $this->setExpectedException('\BadMethodCallException');
+        $this->expectException(\BadMethodCallException::class);
 
         $LatLng = new LatLng(2, 1);
 
@@ -86,7 +87,7 @@ class LngLatTest extends TestCase
 
     public function testOffsetUnsetThrowsException()
     {
-        $this->setExpectedException('\BadMethodCallException');
+        $this->expectException(\BadMethodCallException::class);
 
         $LatLng = new LatLng(2, 1);
 
@@ -116,7 +117,8 @@ class LngLatTest extends TestCase
 
     public function testNormalizeShouldThrowExceptionIfInvalidDataSupplied()
     {
-        $this->setExpectedException('\InvalidArgumentException', 'Cannot normalize LatLng from input null.');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Cannot normalize LatLng from input null.');
         LatLng::normalize(null);
     }
 

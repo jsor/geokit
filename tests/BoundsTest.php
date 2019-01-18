@@ -34,7 +34,7 @@ class BoundsTest extends TestCase
 
     public function testConstructorShouldThrowExceptionForInvalidSouthCoordinate()
     {
-        $this->setExpectedException('\LogicException');
+        $this->expectException(\LogicException::class);
         new Bounds(new LatLng(1, 90), new LatLng(0, 90));
     }
 
@@ -84,7 +84,8 @@ class BoundsTest extends TestCase
 
     public function testOffsetGetThrowsExceptionForInvalidKey()
     {
-        $this->setExpectedException('\InvalidArgumentException', 'Invalid offset "foo".');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid offset "foo".');
 
         $bounds = new Bounds(new LatLng(2.5678, 1.1234), new LatLng(4.5678, 3.1234));
 
@@ -93,7 +94,7 @@ class BoundsTest extends TestCase
 
     public function testOffsetSetThrowsException()
     {
-        $this->setExpectedException('\BadMethodCallException');
+        $this->expectException(\BadMethodCallException::class);
 
         $bounds = new Bounds(new LatLng(2.5678, 1.1234), new LatLng(4.5678, 3.1234));
 
@@ -102,7 +103,7 @@ class BoundsTest extends TestCase
 
     public function testOffsetUnsetThrowsException()
     {
-        $this->setExpectedException('\BadMethodCallException');
+        $this->expectException(\BadMethodCallException::class);
 
         $bounds = new Bounds(new LatLng(2.5678, 1.1234), new LatLng(4.5678, 3.1234));
 
@@ -222,19 +223,22 @@ class BoundsTest extends TestCase
 
     public function testNormalizeShouldThrowExceptionForInvalidArrayInput()
     {
-        $this->setExpectedException('\InvalidArgumentException', 'Cannot normalize Bounds from input ["foo",""].');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Cannot normalize Bounds from input ["foo",""].');
         Bounds::normalize(array('foo', ''));
     }
 
     public function testNormalizeShouldThrowExceptionForInvalidStringInput()
     {
-        $this->setExpectedException('\InvalidArgumentException', 'Cannot normalize Bounds from input "foo".');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Cannot normalize Bounds from input "foo".');
         Bounds::normalize('foo');
     }
 
     public function testNormalizeShouldThrowExceptionForInvalidObjectInput()
     {
-        $this->setExpectedException('\InvalidArgumentException', 'Cannot normalize Bounds from input {}.');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Cannot normalize Bounds from input {}.');
         Bounds::normalize(new \stdClass());
     }
 
