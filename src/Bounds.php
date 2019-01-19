@@ -9,18 +9,6 @@ final class Bounds
     private $southWest;
     private $northEast;
 
-    private static $southWestKeys = [
-        'southwest',
-        'south_west',
-        'southWest'
-    ];
-
-    private static $northEastKeys = [
-        'northeast',
-        'north_east',
-        'northEast'
-    ];
-
     public function __construct(LatLng $southWest, LatLng $northEast)
     {
         $this->southWest = $southWest;
@@ -136,69 +124,5 @@ final class Bounds
     private function lngSpan(float $west, float $east): float
     {
         return ($west > $east) ? ($east + 360 - $west) : ($east - $west);
-    }
-
-    /**
-     * Takes anything which looks like bounds and generates a Bounds object
-     * from it.
-     *
-     * $input can be either a string, an array, an \ArrayAccess object or a
-     * Bounds object.
-     *
-     * If $input is a string, it can be in the format
-     * "1.1234, 2.5678, 3.910, 4.1112" or "1.1234 2.5678 3.910 4.1112".
-     *
-     * If $input is an array or \ArrayAccess object, it must have a south-west
-     * and east-north entry.
-     *
-     * Recognized keys are:
-     *
-     *  * South-west:
-     *    * southwest
-     *    * south_west
-     *    * southWest
-     *
-     *  * North-east:
-     *    * northeast
-     *    * north_east
-     *    * northEast
-     *
-     * If $input is an indexed array, it assumes south-west at index 0 and
-     * north-east at index 1, eg. [[-45.0, 180.0], [45.0, -180.0]].
-     *
-     * If $input is an Bounds object, it is just passed through.
-     *
-     * @param mixed $input
-     */
-    public static function normalize($input): self
-    {
-        if ($input instanceof self) {
-            return $input;
-        }
-
-        $southWest = null;
-        $northEast = null;
-
-        if (is_string($input) && preg_match('/(\-?\d+\.?\d*)[, ] ?(\-?\d+\.?\d*)[, ] ?(\-?\d+\.?\d*)[, ] ?(\-?\d+\.?\d*)$/', $input, $match)) {
-            $southWest = ['lat' => $match[1], 'lng' => $match[2]];
-            $northEast = ['lat' => $match[3], 'lng' => $match[4]];
-        } elseif (is_array($input) || $input instanceof \ArrayAccess) {
-            if (Utils::isNumericInputArray($input)) {
-                [$southWest, $northEast] = $input;
-            } else {
-                $southWest = Utils::extractFromInput($input, self::$southWestKeys);
-                $northEast = Utils::extractFromInput($input, self::$northEastKeys);
-            }
-        }
-
-        if (null !== $southWest && null !== $northEast) {
-            try {
-                return new self(LatLng::normalize($southWest), LatLng::normalize($northEast));
-            } catch (\InvalidArgumentException $e) {
-                throw new \InvalidArgumentException(sprintf('Cannot normalize Bounds from input %s.', json_encode($input)), 0, $e);
-            }
-        }
-
-        throw new \InvalidArgumentException(sprintf('Cannot normalize Bounds from input %s.', json_encode($input)));
     }
 }

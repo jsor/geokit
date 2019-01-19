@@ -121,19 +121,6 @@ $distance = Geokit\Distance::fromString('1 foot');
 $distance = Geokit\Distance::fromString('234nm');
 ```
 
-Alternatively, you can create a Distance instance through its static normalize
-method. This method takes anything which looks like distance and generates a
-Distance object from it.
-
-```php
-$distance = Geokit\Distance::normalize(1000); // Defaults to meters
-$distance = Geokit\Distance::normalize('1000m');
-$distance = Geokit\Distance::normalize('1km');
-$distance = Geokit\Distance::normalize('100 miles');
-$distance = Geokit\Distance::normalize('1 foot');
-$distance = Geokit\Distance::normalize('234nm');
-```
-
 ### LatLng
 
 A LatLng instance represents a geographical point in latitude/longitude
@@ -151,19 +138,6 @@ $latLng = new Geokit\LatLng(1, 2);
 
 $latitude = $latLng->getLatitude();
 $longitude = $latLng->getLongitude();
-```
-
-Alternatively, you can create a LatLng instance through its static normalize
-method. This method takes anything which looks like a coordinate and generates a
-LatLng object from it.
-
-```php
-$latLng = Geokit\LatLng::normalize('1 2');
-$latLng = Geokit\LatLng::normalize('1, 2');
-$latLng = Geokit\LatLng::normalize(array('latitude' => 1, 'longitude' => 2));
-$latLng = Geokit\LatLng::normalize(array('lat' => 1, 'lng' => 2));
-$latLng = Geokit\LatLng::normalize(array('lat' => 1, 'lon' => 2));
-$latLng = Geokit\LatLng::normalize(array(1, 2));
 ```
 
 ### Bounds
@@ -191,21 +165,6 @@ $boolean = $bounds->contains($latLng);
 
 $newBounds = $bounds->extend($latLng);
 $newBounds = $bounds->union($otherBounds);
-```
-
-Alternatively, you can create a Bounds instance through its static normalize
-method. This method takes anything which looks like bounds and generates a
-Bounds object from it.
-
-```php
-$bounds = Geokit\Bounds::normalize('1 2 3 4');
-$bounds = Geokit\Bounds::normalize('1 2, 3 4');
-$bounds = Geokit\Bounds::normalize('1, 2, 3, 4');
-$bounds = Geokit\Bounds::normalize(array('south_west' => $southWestLatLng, 'north_east' => $northEastLatLng));
-$bounds = Geokit\Bounds::normalize(array('south_west' => array(1, 2), 'north_east' => array(3, 4)));
-$bounds = Geokit\Bounds::normalize(array('southwest' => $southWestLatLng, 'northeast' => $northEastLatLng));
-$bounds = Geokit\Bounds::normalize(array('southWest' => $southWestLatLng, 'northEast' => $northEastLatLng));
-$bounds = Geokit\Bounds::normalize(array($southWestLatLng, $northEastLatLng));
 ```
 
 ### Polygon

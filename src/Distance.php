@@ -128,43 +128,6 @@ final class Distance
         return $this->nautical();
     }
 
-    /**
-     * Takes anything which looks like a distance and generates a Distance
-     * object from it.
-     *
-     * $input can be either a string, a float/integer or a Distance object.
-     *
-     * If $input is a string, it can be a number followed by a unit, eg. "100m".
-     *
-     * If $input is a float/integer, it uses the default unit (meters).
-     *
-     * If $input is a Distance object, it is just passed through.
-     *
-     * @param mixed $input
-     */
-    public static function normalize($input): self
-    {
-        if ($input instanceof self) {
-            return $input;
-        }
-
-        if (is_numeric($input)) {
-            return new self((float) $input);
-        }
-
-        if (is_string($input) && preg_match('/(\-?\d+\.?\d*)\s*((kilo)?met[er]+s?|m|km|miles?|mi|feet|foot|ft|nautical(mile)?s?|nm)$/', $input, $match)) {
-            $unit = $match[2];
-
-            if (!isset(self::$units[$unit])) {
-                $unit = self::resolveUnitAlias($unit);
-            }
-
-            return new self((float) $match[1], $unit);
-        }
-
-        throw new \InvalidArgumentException(sprintf('Cannot normalize Distance from input %s.', json_encode($input)));
-    }
-
     private static function resolveUnitAlias(string $alias): string
     {
         if (isset(self::$aliases[$alias])) {

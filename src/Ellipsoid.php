@@ -16,34 +16,6 @@ final class Ellipsoid
     private $flattening;
     private $inverseFlattening;
 
-    private static $semiMajorAxisKeys = array(
-        'semi_major_axis',
-        'semi_major',
-        'semiMajorAxis',
-        'semiMajor'
-    );
-
-    private static $semiMinorAxisKeys = array(
-        'semi_minor_axis',
-        'semi_minor',
-        'semiMinorAxis',
-        'semiMinor'
-    );
-
-    private static $flatteningKeys = array(
-        'flattening',
-        'f'
-    );
-
-    private static $inverseFlatteningKeys = array(
-        'inverse_flattening',
-        'inverse_f',
-        'inv_f',
-        'inverseFlattening',
-        'inverseF',
-        'invF'
-    );
-
     /**
      * @param float $semiMajorAxis
      * @param float $semiMinorAxis
@@ -192,82 +164,5 @@ final class Ellipsoid
             $flattening,
             1 / $flattening
         );
-    }
-
-    /**
-     * Takes anything which looks like an ellipsoid and generates an Ellipsoid
-     * object from it.
-     *
-     * $input can be either an array, an \ArrayAccess object, an Ellipsoid
-     * object or null.
-     *
-     * If $input is an array or \ArrayAccess object, it must have either a
-     * semi-major axis and inverse flattening entry or an semi-majox axis and
-     * semi-minor axis entry.
-     *
-     * Recognized keys are:
-     *
-     *  * Semi-majox axis:
-     *    * semi_major_axis
-     *    * semi_major
-     *    * semiMajorAxis
-     *    * semiMajor
-     *
-     *  * Semi-minor axis:
-     *    * semi_minor_axis
-     *    * semi_minor
-     *    * semiMinorAxis
-     *    * semiMinor
-     *
-     *  * Inverse flattening:
-     *    * inverse_flattening
-     *    * inverse_f
-     *    * inv_f
-     *    * inverseFlattening
-     *    * inverseF
-     *    * invF
-     *
-     * If $input is an indexed array, it assumes the semi-majox axis at index 0
-     * and the inverse flattening at index 1, eg. [6378137.0, 298.257223563].
-     *
-     * If $input is an Ellipsoid object, it is just passed through.
-     *
-     * If $input is null, the default wgs84 ellipsoid is returned.
-     *
-     * @param mixed $input
-     */
-    public static function normalize($input): self
-    {
-        if ($input instanceof self) {
-            return $input;
-        }
-
-        if (null === $input) {
-            return self::wgs84();
-        }
-
-        $semiMajorAxis = null;
-        $semiMinorAxis = null;
-        $inverseFlattening = null;
-
-        if (is_array($input) || $input instanceof \ArrayAccess) {
-            if (Utils::isNumericInputArray($input)) {
-                [$semiMajorAxis, $inverseFlattening] = $input;
-            } else {
-                $semiMajorAxis = Utils::extractFromInput($input, self::$semiMajorAxisKeys);
-                $semiMinorAxis = Utils::extractFromInput($input, self::$semiMinorAxisKeys);
-                $inverseFlattening = Utils::extractFromInput($input, self::$inverseFlatteningKeys);
-            }
-        }
-
-        if (is_numeric($semiMajorAxis) && is_numeric($inverseFlattening)) {
-            return self::createFromSemiMajorAndInvF($semiMajorAxis, $inverseFlattening);
-        }
-
-        if (is_numeric($semiMajorAxis) && is_numeric($semiMinorAxis)) {
-            return self::createFromSemiMajorAndSemiMinor($semiMajorAxis, $semiMinorAxis);
-        }
-
-        throw new \InvalidArgumentException(sprintf('Cannot normalize Ellipsoid from input %s.', json_encode($input)));
     }
 }

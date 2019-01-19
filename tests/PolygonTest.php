@@ -105,7 +105,7 @@ class PolygonTest extends TestCase
     {
         $polygon = new Polygon($polygon);
 
-        $this->assertEquals($expected, $polygon->contains(LatLng::normalize($point)));
+        $this->assertEquals($expected, $polygon->contains($point));
     }
 
     public function containsDataProvider()
