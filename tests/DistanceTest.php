@@ -297,10 +297,4 @@ class DistanceTest extends TestCase
         $this->expectException('\InvalidArgumentException');
         Distance::normalize('1000foo');
     }
-
-    public function testResolveUnitAliasShouldThrowExceptionForInvalidAlias()
-    {
-        $this->expectException('\InvalidArgumentException');
-        Distance::resolveUnitAlias('foo');
-    }
 }

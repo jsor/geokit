@@ -165,7 +165,7 @@ final class Distance
         throw new \InvalidArgumentException(sprintf('Cannot normalize Distance from input %s.', json_encode($input)));
     }
 
-    public static function resolveUnitAlias(string $alias): string
+    private static function resolveUnitAlias(string $alias): string
     {
         if (isset(self::$aliases[$alias])) {
             return self::$aliases[$alias];
