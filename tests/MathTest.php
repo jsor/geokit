@@ -361,4 +361,34 @@ class MathTest extends TestCase
             $bounds->getNorthEast()->getLongitude()
         );
     }
+
+    public function testShrinkBoundsTooMuch()
+    {
+        $math = new Math();
+
+        $bounds = $math->shrinkBounds(
+            new Bounds(
+                new LatLng(1, 1),
+                new LatLng(1, 1)
+            ),
+            new Distance(100)
+        );
+
+        $this->assertEquals(
+            1,
+            $bounds->getSouthWest()->getLatitude()
+        );
+        $this->assertEquals(
+            1,
+            $bounds->getSouthWest()->getLongitude()
+        );
+        $this->assertEquals(
+            1,
+            $bounds->getNorthEast()->getLatitude()
+        );
+        $this->assertEquals(
+            1,
+            $bounds->getNorthEast()->getLongitude()
+        );
+    }
 }
