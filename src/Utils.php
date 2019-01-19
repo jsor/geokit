@@ -1,29 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Geokit;
 
 abstract class Utils
 {
     /**
-     * Normalizes a latitude to the (-90, 90) range. Latitudes above 90 or
-     * below -90 are capped, not wrapped.
-     *
-     * @param  float $lat The latitude to normalize, in degrees
-     * @return float The latitude, fit within the (-90, 90) range
+     * Normalizes a latitude in degrees to the (-90, 90) range.
+     * Latitudes above 90 or below -90 are capped, not wrapped.
      */
-    public static function normalizeLat($lat)
+    public static function normalizeLat(float $lat): float
     {
         return max(-90, min(90, $lat));
     }
 
     /**
-     * Normalizes a longitude to the (-180, 180) range. Longitudes above 180
-     * or below -180 are wrapped.
-     *
-     * @param  float $lng The longitude to normalize, in degrees
-     * @return float The longitude, fit within the (-180, 180) range
+     * Normalizes a longitude in degrees to the (-180, 180) range.
+     * Longitudes above 180 or below -180 are wrapped.
      */
-    public static function normalizeLng($lng)
+    public static function normalizeLng(float $lng): float
     {
         $mod = fmod($lng, 360);
 
@@ -38,7 +34,7 @@ abstract class Utils
         return $mod;
     }
 
-    public static function castToBounds($input)
+    public static function castToBounds($input): Bounds
     {
         try {
             return Bounds::normalize($input);
@@ -60,9 +56,9 @@ abstract class Utils
         );
     }
 
-    public static function isNumericInputArray($input)
+    public static function isNumericInputArray($input): bool
     {
-        return isset($input[0]) && isset($input[1]);
+        return isset($input[0], $input[1]);
     }
 
     public static function extractFromInput($input, array $keys)

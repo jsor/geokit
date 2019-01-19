@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Geokit;
 
 /**
@@ -48,47 +50,40 @@ final class Ellipsoid implements \ArrayAccess
      * @param float $flattening
      * @param float $inverseFlattening
      */
-    public function __construct($semiMajorAxis, $semiMinorAxis, $flattening, $inverseFlattening)
+    public function __construct(
+        float $semiMajorAxis,
+        float $semiMinorAxis,
+        float $flattening,
+        float $inverseFlattening
+    )
     {
-        $this->semiMajorAxis = (float) $semiMajorAxis;
-        $this->semiMinorAxis = (float) $semiMinorAxis;
-        $this->flattening = (float) $flattening;
-        $this->inverseFlattening = (float) $inverseFlattening;
+        $this->semiMajorAxis = $semiMajorAxis;
+        $this->semiMinorAxis = $semiMinorAxis;
+        $this->flattening = $flattening;
+        $this->inverseFlattening = $inverseFlattening;
     }
 
-    /**
-     * @return float
-     */
-    public function getSemiMajorAxis()
+    public function getSemiMajorAxis(): float
     {
         return $this->semiMajorAxis;
     }
 
-    /**
-     * @return float
-     */
-    public function getSemiMinorAxis()
+    public function getSemiMinorAxis(): float
     {
         return $this->semiMinorAxis;
     }
 
-    /**
-     * @return float
-     */
-    public function getFlattening()
+    public function getFlattening(): float
     {
         return $this->flattening;
     }
 
-    /**
-     * @return float
-     */
-    public function getInverseFlattening()
+    public function getInverseFlattening(): float
     {
         return $this->inverseFlattening;
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return in_array(
             $offset,
@@ -123,22 +118,20 @@ final class Ellipsoid implements \ArrayAccess
         throw new \InvalidArgumentException(sprintf('Invalid offset %s.', json_encode($offset)));
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         throw new \BadMethodCallException('Ellipsoid is immutable.');
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         throw new \BadMethodCallException('Ellipsoid is immutable.');
     }
 
     /**
      * World Geodetic System 1984
-     *
-     * @return Ellipsoid
      */
-    public static function wgs84()
+    public static function wgs84(): self
     {
         return self::createFromSemiMajorAndInvF(
             6378137.0,
@@ -148,10 +141,8 @@ final class Ellipsoid implements \ArrayAccess
 
     /**
      * World Geodetic System 1972
-     *
-     * @return Ellipsoid
      */
-    public static function wgs72()
+    public static function wgs72(): self
     {
         return self::createFromSemiMajorAndInvF(
             6378135.0,
@@ -161,10 +152,8 @@ final class Ellipsoid implements \ArrayAccess
 
     /**
      * World Geodetic System 1966
-     *
-     * @return Ellipsoid
      */
-    public static function wgs66()
+    public static function wgs66(): self
     {
         return self::createFromSemiMajorAndInvF(
             6378145.0,
@@ -174,10 +163,8 @@ final class Ellipsoid implements \ArrayAccess
 
     /**
      * Geodetic Reference System 1980
-     *
-     * @return Ellipsoid
      */
-    public static function grs80()
+    public static function grs80(): self
     {
         return self::createFromSemiMajorAndInvF(
             6378137.0,
@@ -187,10 +174,8 @@ final class Ellipsoid implements \ArrayAccess
 
     /**
      * Australian National Spheroid
-     *
-     * @return Ellipsoid
      */
-    public static function ans()
+    public static function ans(): self
     {
         return self::createFromSemiMajorAndInvF(
             6378160.0,
@@ -200,10 +185,8 @@ final class Ellipsoid implements \ArrayAccess
 
     /**
      * Airy 1830
-     *
-     * @return Ellipsoid
      */
-    public static function airy1830()
+    public static function airy1830(): self
     {
         return self::createFromSemiMajorAndInvF(
             6377563.396,
@@ -213,10 +196,8 @@ final class Ellipsoid implements \ArrayAccess
 
     /**
      * Krassovsky 1940
-     *
-     * @return Ellipsoid
      */
-    public static function krassovsky1940()
+    public static function krassovsky1940(): self
     {
         return self::createFromSemiMajorAndInvF(
             6378245.0,
@@ -224,15 +205,12 @@ final class Ellipsoid implements \ArrayAccess
         );
     }
 
-    /**
-     * @param  float                     $semiMajorAxis
-     * @param  float                     $inverseFlattening
-     * @return Ellipsoid
-     * @throws \InvalidArgumentException
-     */
-    public static function createFromSemiMajorAndInvF($semiMajorAxis, $inverseFlattening)
+    public static function createFromSemiMajorAndInvF(
+        float $semiMajorAxis,
+        float $inverseFlattening
+    ): self
     {
-        if ((float) $inverseFlattening <= 0) {
+        if ($inverseFlattening <= 0) {
             throw new \InvalidArgumentException('The inverse flattening must be > 0.');
         }
 
@@ -246,13 +224,10 @@ final class Ellipsoid implements \ArrayAccess
         );
     }
 
-    /**
-     * @param  float                     $semiMajorAxis
-     * @param  float                     $semiMinorAxis
-     * @return Ellipsoid
-     * @throws \InvalidArgumentException
-     */
-    public static function createFromSemiMajorAndSemiMinor($semiMajorAxis, $semiMinorAxis)
+    public static function createFromSemiMajorAndSemiMinor(
+        float $semiMajorAxis,
+        float $semiMinorAxis
+    ): self
     {
         $flattening = ($semiMajorAxis - $semiMinorAxis) / $semiMajorAxis;
 
@@ -304,11 +279,9 @@ final class Ellipsoid implements \ArrayAccess
      *
      * If $input is null, the default wgs84 ellipsoid is returned.
      *
-     * @param  mixed                     $input
-     * @return Ellipsoid
-     * @throws \InvalidArgumentException
+     * @param mixed $input
      */
-    public static function normalize($input)
+    public static function normalize($input): self
     {
         if ($input instanceof self) {
             return $input;
@@ -324,8 +297,7 @@ final class Ellipsoid implements \ArrayAccess
 
         if (is_array($input) || $input instanceof \ArrayAccess) {
             if (Utils::isNumericInputArray($input)) {
-                $semiMajorAxis = $input[0];
-                $inverseFlattening = $input[1];
+                [$semiMajorAxis, $inverseFlattening] = $input;
             } else {
                 $semiMajorAxis = Utils::extractFromInput($input, self::$semiMajorAxisKeys);
                 $semiMinorAxis = Utils::extractFromInput($input, self::$semiMinorAxisKeys);

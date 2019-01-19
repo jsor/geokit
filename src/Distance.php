@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Geokit;
 
 /**
@@ -7,23 +9,23 @@ namespace Geokit;
  */
 final class Distance
 {
-    const UNIT_METERS = 'meters';
-    const UNIT_KILOMETERS = 'kilometers';
-    const UNIT_MILES = 'miles';
-    const UNIT_FEET = 'feet';
-    const UNIT_NAUTICAL = 'nautical';
+    public const UNIT_METERS = 'meters';
+    public const UNIT_KILOMETERS = 'kilometers';
+    public const UNIT_MILES = 'miles';
+    public const UNIT_FEET = 'feet';
+    public const UNIT_NAUTICAL = 'nautical';
 
-    const DEFAULT_UNIT = self::UNIT_METERS;
+    public const DEFAULT_UNIT = self::UNIT_METERS;
 
-    private static $units = array(
+    private static $units = [
         self::UNIT_METERS => 1.0,
         self::UNIT_KILOMETERS => 1000.0,
         self::UNIT_MILES => 1609.344,
         self::UNIT_FEET => 0.3048,
         self::UNIT_NAUTICAL => 1852.0,
-    );
+    ];
 
-    private static $aliases = array(
+    private static $aliases = [
         'meter' => self::UNIT_METERS,
         'metre' => self::UNIT_METERS,
         'metres' => self::UNIT_METERS,
@@ -39,16 +41,11 @@ final class Distance
         'nm' => self::UNIT_NAUTICAL,
         'nauticalmile' => self::UNIT_NAUTICAL,
         'nauticalmiles' => self::UNIT_NAUTICAL,
-    );
+    ];
 
     private $value;
 
-    /**
-     * @param  integer|float             $value
-     * @param  string                    $unit
-     * @throws \InvalidArgumentException
-     */
-    public function __construct($value, $unit = self::DEFAULT_UNIT)
+    public function __construct(float $value, string $unit = self::DEFAULT_UNIT)
     {
         if (!isset(self::$units[$unit])) {
             throw new \InvalidArgumentException(sprintf('Invalid unit %s.', json_encode($unit)));
@@ -57,82 +54,52 @@ final class Distance
         $this->value = $value * self::$units[$unit];
     }
 
-    /**
-     * @return float
-     */
-    public function meters()
+    public function meters(): float
     {
         return $this->value / self::$units[self::UNIT_METERS];
     }
 
-    /**
-     * @return float
-     */
-    public function m()
+    public function m(): float
     {
         return $this->meters();
     }
 
-    /**
-     * @return float
-     */
-    public function kilometers()
+    public function kilometers(): float
     {
         return $this->value / self::$units[self::UNIT_KILOMETERS];
     }
 
-    /**
-     * @return float
-     */
-    public function km()
+    public function km(): float
     {
         return $this->kilometers();
     }
 
-    /**
-     * @return float
-     */
-    public function miles()
+    public function miles(): float
     {
         return $this->value / self::$units[self::UNIT_MILES];
     }
 
-    /**
-     * @return float
-     */
-    public function mi()
+    public function mi(): float
     {
         return $this->miles();
     }
 
-    /**
-     * @return float
-     */
-    public function feet()
+    public function feet(): float
     {
         return $this->value / self::$units[self::UNIT_FEET];
     }
 
-    /**
-     * @return float
-     */
-    public function ft()
+    public function ft(): float
     {
         return $this->feet();
     }
 
-    /**
-     * @return float
-     */
-    public function nautical()
+    public function nautical(): float
     {
         return $this->value / self::$units[self::UNIT_NAUTICAL];
     }
 
-    /**
-     * @return float
-     */
-    public function nm()
+    public function nm(): float
     {
         return $this->nautical();
     }
@@ -149,18 +116,16 @@ final class Distance
      *
      * If $input is a Distance object, it is just passed through.
      *
-     * @param  mixed                     $input
-     * @return Distance
-     * @throws \InvalidArgumentException
+     * @param mixed $input
      */
-    public static function normalize($input)
+    public static function normalize($input): self
     {
         if ($input instanceof self) {
             return $input;
         }
 
         if (is_numeric($input)) {
-            return new self($input);
+            return new self((float) $input);
         }
 
         if (is_string($input) && preg_match('/(\-?\d+\.?\d*)\s*((kilo)?met[er]+s?|m|km|miles?|mi|feet|foot|ft|nautical(mile)?s?|nm)$/', $input, $match)) {
@@ -176,12 +141,7 @@ final class Distance
         throw new \InvalidArgumentException(sprintf('Cannot normalize Distance from input %s.', json_encode($input)));
     }
 
-    /**
-     * @param  string                    $alias
-     * @return string
-     * @throws \InvalidArgumentException
-     */
-    public static function resolveUnitAlias($alias)
+    public static function resolveUnitAlias(string $alias): string
     {
         if (isset(self::$aliases[$alias])) {
             return self::$aliases[$alias];

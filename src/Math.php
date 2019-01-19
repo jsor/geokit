@@ -1,14 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Geokit;
 
 final class Math
 {
     private $ellipsoid;
 
-    /**
-     * @param Ellipsoid|null $ellipsoid
-     */
     public function __construct(Ellipsoid $ellipsoid = null)
     {
         $this->ellipsoid = $ellipsoid ?: Ellipsoid::wgs84();
@@ -22,9 +21,8 @@ final class Math
      * @see http://www.movable-type.co.uk/scripts/latlong.html
      * @param  mixed    $from
      * @param  mixed    $to
-     * @return Distance
      */
-    public function distanceHaversine($from, $to)
+    public function distanceHaversine($from, $to): Distance
     {
         $from = LatLng::normalize($from);
         $to = LatLng::normalize($to);
@@ -52,12 +50,10 @@ final class Math
      *
      * @see http://en.wikipedia.org/wiki/Vincenty%27s_formulae
      * @see http://www.movable-type.co.uk/scripts/latlong-vincenty.html
-     * @param  mixed             $from
-     * @param  mixed             $to
-     * @return Distance
-     * @throws \RuntimeException
+     * @param mixed $from
+     * @param mixed $to
      */
-    public function distanceVincenty($from, $to)
+    public function distanceVincenty($from, $to): Distance
     {
         $from = LatLng::normalize($from);
         $to = LatLng::normalize($to);
@@ -90,16 +86,16 @@ final class Math
                 ($cosU1 * $sinU2 - $sinU1 * $cosU2 * $cosLambda) *
                 ($cosU1 * $sinU2 - $sinU1 * $cosU2 * $cosLambda));
 
-            if ($sinSigma == 0) {
+            if (0.0 === $sinSigma) {
                 return new Distance(0); // co-incident points
             }
 
             $cosSigma = $sinU1 * $sinU2 + $cosU1 * $cosU2 * $cosLambda;
             $sigma = atan2($sinSigma, $cosSigma);
             $sinAlpha = $cosU1 * $cosU2 * $sinLambda / $sinSigma;
-            $cosSqAlpha = 1 - $sinAlpha * $sinAlpha;
+            $cosSqAlpha = (float) 1 - $sinAlpha * $sinAlpha;
 
-            if (0 != $cosSqAlpha) {
+            if (0.0 !== $cosSqAlpha) {
                 $cos2SigmaM = $cosSigma - 2 * $sinU1 * $sinU2 / $cosSqAlpha;
             } else {
                 $cos2SigmaM = 0.0; // Equatorial line
@@ -111,7 +107,7 @@ final class Math
                 ($sigma + $C * $sinSigma * ($cos2SigmaM + $C * $cosSigma * (-1 + 2 * $cos2SigmaM * $cos2SigmaM)));
         } while (abs($lambda - $lambdaP) > 1e-12 && --$iterLimit > 0);
 
-        if ($iterLimit == 0) {
+        if ($iterLimit === 0) {
             throw new \RuntimeException('Vincenty formula failed to converge.');
         }
 
@@ -129,11 +125,10 @@ final class Math
      * Calculates the (initial) heading from the first point to the second point
      * in degrees.
      *
-     * @param  mixed $from
-     * @param  mixed $to
-     * @return float Initial heading in degrees from North
+     * @param mixed $from
+     * @param mixed $to
      */
-    public function heading($from, $to)
+    public function heading($from, $to): float
     {
         $from = LatLng::normalize($from);
         $to = LatLng::normalize($to);
@@ -161,11 +156,10 @@ final class Math
      * points.
      *
      * @see http://www.movable-type.co.uk/scripts/latlong.html
-     * @param  mixed  $from
-     * @param  mixed  $to
-     * @return LatLng
+     * @param mixed  $from
+     * @param mixed  $to
      */
-    public function midpoint($from, $to)
+    public function midpoint($from, $to): LatLng
     {
         $from = LatLng::normalize($from);
         $to = LatLng::normalize($to);
@@ -194,12 +188,11 @@ final class Math
      * heading and distance, from the given start point.
      *
      * @see http://www.movable-type.co.uk/scripts/latlong.html
-     * @param  mixed  $start
-     * @param  float  $heading  (in degrees)
-     * @param  mixed  $distance (in meters)
-     * @return LatLng
+     * @param mixed  $start
+     * @param float  $heading  (in degrees)
+     * @param mixed  $distance (in meters)
      */
-    public function endpoint($start, $heading, $distance)
+    public function endpoint($start, $heading, $distance): LatLng
     {
         $start = LatLng::normalize($start);
         $distance = Distance::normalize($distance);
@@ -219,11 +212,10 @@ final class Math
     }
 
     /**
-     * @param  mixed  $latLngOrBounds
-     * @param  mixed  $distance       (in meters)
-     * @return Bounds
+     * @param mixed  $latLngOrBounds
+     * @param mixed  $distance       (in meters)
      */
-    public function expand($latLngOrBounds, $distance)
+    public function expand($latLngOrBounds, $distance): Bounds
     {
         return $this->transformBounds(
             $latLngOrBounds,
@@ -232,11 +224,10 @@ final class Math
     }
 
     /**
-     * @param  mixed  $latLngOrBounds
-     * @param  mixed  $distance       (in meters)
-     * @return Bounds
+     * @param mixed $latLngOrBounds
+     * @param mixed $distance       (in meters)
      */
-    public function shrink($latLngOrBounds, $distance)
+    public function shrink($latLngOrBounds, $distance): Bounds
     {
         return $this->transformBounds(
             $latLngOrBounds,
@@ -244,7 +235,7 @@ final class Math
         );
     }
 
-    private function transformBounds($input, $distanceInMeters)
+    private function transformBounds($input, float $distanceInMeters): Bounds
     {
         $bounds = Utils::castToBounds($input);
 
@@ -273,7 +264,7 @@ final class Math
         return new Bounds($latlngSW, $latlngNE);
     }
 
-    private function lngDistance($lat1, $lng1, $distanceInMeters)
+    private function lngDistance(float $lat1, float $lng1, float $distanceInMeters): float
     {
         $radius = $this->ellipsoid->getSemiMajorAxis();
 
@@ -285,7 +276,7 @@ final class Math
         return Utils::normalizeLng(rad2deg($lng2));
     }
 
-    private function latDistance($lat1, $distanceInMeters)
+    private function latDistance(float $lat1, float $distanceInMeters): float
     {
         $radius = $this->ellipsoid->getSemiMajorAxis();
 

@@ -1,25 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Geokit;
 
 final class Polygon implements \Countable, \ArrayAccess, \IteratorAggregate
 {
     private $points;
 
-    public function __construct(array $points = array())
+    public function __construct(array $points = [])
     {
-        $this->points = array_map(function ($latLng) {
+        $this->points = array_map(static function ($latLng) {
             return LatLng::normalize($latLng);
         }, $points);
     }
 
-    public function isClosed()
+    public function isClosed(): bool
     {
         if (0 === count($this->points)) {
             return false;
         }
 
-        $lastPoint  = end($this->points);
+        $lastPoint = end($this->points);
         $firstPoint = reset($this->points);
 
         return (
@@ -28,7 +30,7 @@ final class Polygon implements \Countable, \ArrayAccess, \IteratorAggregate
         );
     }
 
-    public function close()
+    public function close(): self
     {
         if (0 === count($this->points)) {
             return new self();
@@ -45,10 +47,8 @@ final class Polygon implements \Countable, \ArrayAccess, \IteratorAggregate
 
     /**
      * @see https://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
-     * @param  LatLng  $latLng
-     * @return boolean
      */
-    public function contains(LatLng $latLng)
+    public function contains(LatLng $latLng): bool
     {
         if (0 === count($this->points)) {
             return false;
@@ -84,7 +84,7 @@ final class Polygon implements \Countable, \ArrayAccess, \IteratorAggregate
         return $inside;
     }
 
-    public function toBounds()
+    public function toBounds(): Bounds
     {
         if (0 === count($this->points)) {
             throw new \LogicException('Cannot create Bounds from empty Polygon.');
@@ -102,7 +102,7 @@ final class Polygon implements \Countable, \ArrayAccess, \IteratorAggregate
         return $bounds;
     }
 
-    public function count()
+    public function count(): int
     {
         return count($this->points);
     }
@@ -136,7 +136,7 @@ final class Polygon implements \Countable, \ArrayAccess, \IteratorAggregate
         throw new \BadMethodCallException('Polygon is immutable.');
     }
 
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->points);
     }

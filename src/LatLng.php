@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Geokit;
 
 final class LatLng implements \ArrayAccess
@@ -7,46 +9,36 @@ final class LatLng implements \ArrayAccess
     private $latitude;
     private $longitude;
 
-    private static $longitudeKeys = array(
+    private static $longitudeKeys = [
         'longitude',
         'lng',
         'lon',
         'x'
-    );
+    ];
 
-    private static $latitudeKeys = array(
+    private static $latitudeKeys = [
         'latitude',
         'lat',
         'y'
-    );
+    ];
 
-    /**
-     * @param float $longitude
-     * @param float $latitude
-     */
-    public function __construct($latitude, $longitude)
+    public function __construct(float $latitude, float $longitude)
     {
-        $this->latitude = Utils::normalizeLat((float) $latitude);
-        $this->longitude = Utils::normalizeLng((float) $longitude);
+        $this->latitude = Utils::normalizeLat($latitude);
+        $this->longitude = Utils::normalizeLng($longitude);
     }
 
-    /**
-     * @return float
-     */
-    public function getLongitude()
+    public function getLongitude(): float
     {
         return $this->longitude;
     }
 
-    /**
-     * @return float
-     */
-    public function getLatitude()
+    public function getLatitude(): float
     {
         return $this->latitude;
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return in_array(
             $offset,
@@ -71,20 +63,17 @@ final class LatLng implements \ArrayAccess
         throw new \InvalidArgumentException(sprintf('Invalid offset %s.', json_encode($offset)));
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         throw new \BadMethodCallException('LatLng is immutable.');
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         throw new \BadMethodCallException('LatLng is immutable.');
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('%F,%F', $this->getLatitude(), $this->getLongitude());
     }
@@ -120,11 +109,9 @@ final class LatLng implements \ArrayAccess
      *
      * If $input is an LatLng object, it is just passed through.
      *
-     * @param  mixed                     $input
-     * @return LatLng
-     * @throws \InvalidArgumentException
+     * @param mixed $input
      */
-    public static function normalize($input)
+    public static function normalize($input): self
     {
         if ($input instanceof self) {
             return $input;
@@ -134,15 +121,13 @@ final class LatLng implements \ArrayAccess
         $lng = null;
 
         if (is_string($input) && preg_match('/(\-?\d+\.?\d*)[, ] ?(\-?\d+\.?\d*)$/', $input, $match)) {
-            $lat = $match[1];
-            $lng = $match[2];
+            [, $lat, $lng] = $match;
         } elseif (is_object($input) && method_exists($input, 'getLatitude') && method_exists($input, 'getLongitude')) {
             $lat = $input->getLatitude();
             $lng = $input->getLongitude();
         } elseif (is_array($input) || $input instanceof \ArrayAccess) {
             if (Utils::isNumericInputArray($input)) {
-                $lat = $input[0];
-                $lng = $input[1];
+                [$lat, $lng] = $input;
             } else {
                 $lat = Utils::extractFromInput($input, self::$latitudeKeys);
                 $lng = Utils::extractFromInput($input, self::$longitudeKeys);
@@ -150,7 +135,7 @@ final class LatLng implements \ArrayAccess
         }
 
         if (is_numeric($lat) && is_numeric($lng)) {
-            return new self($lat, $lng);
+            return new self((float) $lat, (float) $lng);
         }
 
         throw new \InvalidArgumentException(sprintf('Cannot normalize LatLng from input %s.', json_encode($input)));

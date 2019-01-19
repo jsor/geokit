@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Geokit;
 
 final class Bounds implements \ArrayAccess
@@ -7,23 +9,18 @@ final class Bounds implements \ArrayAccess
     private $southWest;
     private $northEast;
 
-    private static $southWestKeys = array(
+    private static $southWestKeys = [
         'southwest',
         'south_west',
         'southWest'
-    );
+    ];
 
-    private static $northEastKeys = array(
+    private static $northEastKeys = [
         'northeast',
         'north_east',
         'northEast'
-    );
+    ];
 
-    /**
-     * @param  LatLng          $southWest
-     * @param  LatLng          $northEast
-     * @throws \LogicException
-     */
     public function __construct(LatLng $southWest, LatLng $northEast)
     {
         $this->southWest = $southWest;
@@ -34,26 +31,17 @@ final class Bounds implements \ArrayAccess
         }
     }
 
-    /**
-     * @return LatLng
-     */
-    public function getSouthWest()
+    public function getSouthWest(): LatLng
     {
         return $this->southWest;
     }
 
-    /**
-     * @return LatLng
-     */
-    public function getNorthEast()
+    public function getNorthEast(): LatLng
     {
         return $this->northEast;
     }
 
-    /**
-     * @return LatLng
-     */
-    public function getCenter()
+    public function getCenter(): LatLng
     {
         if ($this->crossesAntimeridian()) {
             $span = $this->lngSpan($this->southWest->getLongitude(), $this->northEast->getLongitude());
@@ -68,10 +56,7 @@ final class Bounds implements \ArrayAccess
         );
     }
 
-    /**
-     * @return LatLng
-     */
-    public function getSpan()
+    public function getSpan(): LatLng
     {
         return new LatLng(
             $this->northEast->getLatitude() - $this->southWest->getLatitude(),
@@ -79,14 +64,14 @@ final class Bounds implements \ArrayAccess
         );
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return in_array(
             $offset,
             array_merge(
                 self::$southWestKeys,
                 self::$northEastKeys,
-                array('center', 'span')
+                ['center', 'span']
             ),
             true
         );
@@ -113,33 +98,29 @@ final class Bounds implements \ArrayAccess
         throw new \InvalidArgumentException(sprintf('Invalid offset %s.', json_encode($offset)));
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         throw new \BadMethodCallException('Bounds is immutable.');
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         throw new \BadMethodCallException('Bounds is immutable.');
     }
 
-    /**
-     * @return boolean
-     */
-    public function crossesAntimeridian()
+    public function crossesAntimeridian(): bool
     {
         return $this->southWest->getLongitude() > $this->northEast->getLongitude();
     }
 
-    /**
-     * @param  LatLng  $latLng
-     * @return boolean
-     */
-    public function contains(LatLng $latLng)
+    public function contains(LatLng $latLng): bool
     {
+        $lat = $latLng->getLatitude();
+
         // check latitude
-        if ($this->southWest->getLatitude() > $latLng->getLatitude() ||
-            $latLng->getLatitude() > $this->northEast->getLatitude()
+        if (
+            $this->southWest->getLatitude() > $lat ||
+            $lat > $this->northEast->getLatitude()
         ) {
             return false;
         }
@@ -148,11 +129,7 @@ final class Bounds implements \ArrayAccess
         return $this->containsLng($latLng->getLongitude());
     }
 
-    /**
-     * @param  LatLng $latLng
-     * @return Bounds
-     */
-    public function extend(LatLng $latLng)
+    public function extend(LatLng $latLng): self
     {
         $newSouth = min($this->southWest->getLatitude(), $latLng->getLatitude());
         $newNorth = max($this->northEast->getLatitude(), $latLng->getLatitude());
@@ -176,11 +153,7 @@ final class Bounds implements \ArrayAccess
         return new self(new LatLng($newSouth, $newWest), new LatLng($newNorth, $newEast));
     }
 
-    /**
-     * @param  Bounds $bounds
-     * @return Bounds
-     */
-    public function union(Bounds $bounds)
+    public function union(Bounds $bounds): self
     {
         $newBounds = $this->extend($bounds->getSouthWest());
 
@@ -189,29 +162,22 @@ final class Bounds implements \ArrayAccess
 
     /**
      * Returns whether or not the given line of longitude is inside the bounds.
-     *
-     * @param  float   $lng
-     * @return boolean
      */
-    protected function containsLng($lng)
+    private function containsLng(float $lng): bool
     {
         if ($this->crossesAntimeridian()) {
             return $lng <= $this->northEast->getLongitude() ||
-            $lng >= $this->southWest->getLongitude();
-        } else {
-            return $this->southWest->getLongitude() <= $lng &&
-            $lng <= $this->northEast->getLongitude();
+                $lng >= $this->southWest->getLongitude();
         }
+
+        return $this->southWest->getLongitude() <= $lng &&
+            $lng <= $this->northEast->getLongitude();
     }
 
     /**
      * Gets the longitudinal span of the given west and east coordinates.
-     *
-     * @param  float $west
-     * @param  float $east
-     * @return float
      */
-    protected function lngSpan($west, $east)
+    private function lngSpan(float $west, float $east): float
     {
         return ($west > $east) ? ($east + 360 - $west) : ($east - $west);
     }
@@ -246,11 +212,9 @@ final class Bounds implements \ArrayAccess
      *
      * If $input is an Bounds object, it is just passed through.
      *
-     * @param  mixed                     $input
-     * @return Bounds
-     * @throws \InvalidArgumentException
+     * @param mixed $input
      */
-    public static function normalize($input)
+    public static function normalize($input): self
     {
         if ($input instanceof self) {
             return $input;
@@ -260,12 +224,11 @@ final class Bounds implements \ArrayAccess
         $northEast = null;
 
         if (is_string($input) && preg_match('/(\-?\d+\.?\d*)[, ] ?(\-?\d+\.?\d*)[, ] ?(\-?\d+\.?\d*)[, ] ?(\-?\d+\.?\d*)$/', $input, $match)) {
-            $southWest = array('lat' => $match[1], 'lng' => $match[2]);
-            $northEast = array('lat' => $match[3], 'lng' => $match[4]);
+            $southWest = ['lat' => $match[1], 'lng' => $match[2]];
+            $northEast = ['lat' => $match[3], 'lng' => $match[4]];
         } elseif (is_array($input) || $input instanceof \ArrayAccess) {
             if (Utils::isNumericInputArray($input)) {
-                $southWest = $input[0];
-                $northEast = $input[1];
+                [$southWest, $northEast] = $input;
             } else {
                 $southWest = Utils::extractFromInput($input, self::$southWestKeys);
                 $northEast = Utils::extractFromInput($input, self::$northEastKeys);
