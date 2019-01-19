@@ -63,7 +63,7 @@ final class Distance
                 $unit = $match[2];
 
                 if (!isset(self::$units[$unit])) {
-                    $unit = self::resolveUnitAlias($unit);
+                    $unit = self::$aliases[$unit];
                 }
             }
 
@@ -126,14 +126,5 @@ final class Distance
     public function nm(): float
     {
         return $this->nautical();
-    }
-
-    private static function resolveUnitAlias(string $alias): string
-    {
-        if (isset(self::$aliases[$alias])) {
-            return self::$aliases[$alias];
-        }
-
-        throw new \InvalidArgumentException(sprintf('Cannot resolve unit alias %s.', json_encode($alias)));
     }
 }
