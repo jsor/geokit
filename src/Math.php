@@ -114,9 +114,6 @@ final class Math
     /**
      * Calculates the (initial) heading from the first point to the second point
      * in degrees.
-     *
-     * @param mixed $from
-     * @param mixed $to
      */
     public function heading(LatLng $from, LatLng $to): float
     {
@@ -143,8 +140,6 @@ final class Math
      * points.
      *
      * @see http://www.movable-type.co.uk/scripts/latlong.html
-     * @param mixed  $from
-     * @param mixed  $to
      */
     public function midpoint(LatLng $from, LatLng $to): LatLng
     {
@@ -172,9 +167,6 @@ final class Math
      * heading and distance, from the given start point.
      *
      * @see http://www.movable-type.co.uk/scripts/latlong.html
-     * @param mixed  $start
-     * @param float  $heading  (in degrees)
-     * @param mixed  $distance (in meters)
      */
     public function endpoint(LatLng $start, float $heading, Distance $distance): LatLng
     {

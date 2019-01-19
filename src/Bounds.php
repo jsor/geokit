@@ -104,9 +104,6 @@ final class Bounds
         return $newBounds->extend($bounds->getNorthEast());
     }
 
-    /**
-     * Returns whether or not the given line of longitude is inside the bounds.
-     */
     private function containsLng(float $lng): bool
     {
         if ($this->crossesAntimeridian()) {
@@ -118,9 +115,6 @@ final class Bounds
             $lng <= $this->northEast->getLongitude();
     }
 
-    /**
-     * Gets the longitudinal span of the given west and east coordinates.
-     */
     private function lngSpan(float $west, float $east): float
     {
         return ($west > $east) ? ($east + 360 - $west) : ($east - $west);
