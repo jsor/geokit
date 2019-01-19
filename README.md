@@ -57,10 +57,11 @@ $mathAiry = new Geokit\Math(Geokit\Ellipsoid::airy1830());
 A math instance provides two methods to calculate the distance between 2 points
 on the Earth's surface:
 
-* `distanceHaversine($from, $to)`: Calculates the approximate sea level great
-   circle (Earth) distance between two points using the Haversine formula.
-* `distanceVincenty($from, $to)`: Calculates the geodetic distance between two
-   points using the Vincenty inverse formula for ellipsoids.
+* `distanceHaversine(LatLng $from, LatLng $to)`: Calculates the approximate sea
+  level great circle (Earth) distance between two points using the Haversine
+  formula.
+* `distanceVincenty(LatLng $from, LatLng $to)`: Calculates the geodetic distance
+  between two points using the Vincenty inverse formula for ellipsoids.
 
 ```php
 $distance1 = $math->distanceHaversine($from, $to);
@@ -75,23 +76,22 @@ With the `expandBounds` and `shrinkBounds` methods, you can expand or shrink a
 given Bounds instance by a distance.
 
 ```php
-$expandedBounds1 = $math->expandBounds(['lat' => 49.50042565, 'lng' => 8.50207515], '10km');
-$expandedBounds2 = $math->expandBounds(Geokit\Bounds::normalize('-45 179 45 -179'), '10km');
+$expandedBounds1 = $math->expandBounds(new LatLng(49.50042565, 8.50207515), Distance::fromString('10km'));
 
-$shrinkedBounds = $math->shrinkBounds($expandedBounds2, '10km');
+$shrinkedBounds = $math->shrinkBounds($expandedBounds2, Distance::fromString('10km'));
 ```
 
 #### Other calculations
 
 Other useful methods are:
 
-* `heading($from, $to)`: Calculates the (initial) heading from the first point
-   to the second point in degrees.
-* `midpoint($from, $to)`: Calculates an intermediate point on the geodesic
-   between the two given points.
-* `endpoint($start, $heading, $distance)`: Calculates the destination point
-   along a geodesic, given an initial heading and distance, from the given start
-   point.
+* `heading(LatLng $from, LatLng $to)`: Calculates the (initial) heading from the
+  first point to the second point in degrees.
+* `midpoint(LatLng $from, LatLng $to)`: Calculates an intermediate point on the
+  geodesic between the two given points.
+* `endpoint(LatLng $start, float $heading, Distance $distance)`: Calculates the
+  destination point along a geodesic, given an initial heading and distance, 
+  from the given start point.
 
 ### Distance
 

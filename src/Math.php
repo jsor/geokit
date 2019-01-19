@@ -19,14 +19,9 @@ final class Math
      *
      * @see http://en.wikipedia.org/wiki/Haversine_formula
      * @see http://www.movable-type.co.uk/scripts/latlong.html
-     * @param  mixed    $from
-     * @param  mixed    $to
      */
-    public function distanceHaversine($from, $to): Distance
+    public function distanceHaversine(LatLng $from, LatLng $to): Distance
     {
-        $from = LatLng::normalize($from);
-        $to = LatLng::normalize($to);
-
         $lat1 = deg2rad($from->getLatitude());
         $lng1 = deg2rad($from->getLongitude());
         $lat2 = deg2rad($to->getLatitude());
@@ -50,14 +45,9 @@ final class Math
      *
      * @see http://en.wikipedia.org/wiki/Vincenty%27s_formulae
      * @see http://www.movable-type.co.uk/scripts/latlong-vincenty.html
-     * @param mixed $from
-     * @param mixed $to
      */
-    public function distanceVincenty($from, $to): Distance
+    public function distanceVincenty(LatLng $from, LatLng $to): Distance
     {
-        $from = LatLng::normalize($from);
-        $to = LatLng::normalize($to);
-
         $lat1 = $from->getLatitude();
         $lng1 = $from->getLongitude();
         $lat2 = $to->getLatitude();
@@ -128,11 +118,8 @@ final class Math
      * @param mixed $from
      * @param mixed $to
      */
-    public function heading($from, $to): float
+    public function heading(LatLng $from, LatLng $to): float
     {
-        $from = LatLng::normalize($from);
-        $to = LatLng::normalize($to);
-
         $lat1 = $from->getLatitude();
         $lng1 = $from->getLongitude();
         $lat2 = $to->getLatitude();
@@ -159,11 +146,8 @@ final class Math
      * @param mixed  $from
      * @param mixed  $to
      */
-    public function midpoint($from, $to): LatLng
+    public function midpoint(LatLng $from, LatLng $to): LatLng
     {
-        $from = LatLng::normalize($from);
-        $to = LatLng::normalize($to);
-
         $lat1 = $from->getLatitude();
         $lng1 = $from->getLongitude();
         $lat2 = $to->getLatitude();
@@ -192,11 +176,8 @@ final class Math
      * @param float  $heading  (in degrees)
      * @param mixed  $distance (in meters)
      */
-    public function endpoint($start, $heading, $distance): LatLng
+    public function endpoint(LatLng $start, float $heading, Distance $distance): LatLng
     {
-        $start = LatLng::normalize($start);
-        $distance = Distance::normalize($distance);
-
         $lat = deg2rad($start->getLatitude());
         $lng = deg2rad($start->getLongitude());
 
@@ -211,28 +192,14 @@ final class Math
         return new LatLng(rad2deg($lat2), rad2deg($lon2));
     }
 
-    /**
-     * @param mixed  $bounds
-     * @param mixed  $distance       (in meters)
-     */
-    public function expandBounds($bounds, $distance): Bounds
+    public function expandBounds(Bounds $bounds, Distance $distance): Bounds
     {
-        return $this->transformBounds(
-            Bounds::normalize($bounds),
-            Distance::normalize($distance)->meters()
-        );
+        return $this->transformBounds($bounds, $distance->meters());
     }
 
-    /**
-     * @param mixed $bounds
-     * @param mixed $distance       (in meters)
-     */
-    public function shrinkBounds($bounds, $distance): Bounds
+    public function shrinkBounds(Bounds $bounds, Distance $distance): Bounds
     {
-        return $this->transformBounds(
-            Bounds::normalize($bounds),
-            -Distance::normalize($distance)->meters()
-        );
+        return $this->transformBounds($bounds, -$distance->meters());
     }
 
     private function transformBounds(Bounds $bounds, float $distanceInMeters): Bounds
