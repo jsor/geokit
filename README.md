@@ -26,7 +26,7 @@ Geokit is a PHP toolkit to solve geo-related tasks like:
 Installation
 ------------
 
-Install the latest version with [Composer](http://getcomposer.org).
+Install the latest version with [Composer](https://getcomposer.org).
 
 ```bash
 composer require geokit/geokit
@@ -57,11 +57,12 @@ $mathAiry = new Geokit\Math(Geokit\Ellipsoid::airy1830());
 A math instance provides two methods to calculate the distance between 2 points
 on the Earth's surface:
 
-* `distanceHaversine(LatLng $from, LatLng $to)`: Calculates the approximate sea
-  level great circle (Earth) distance between two points using the Haversine
-  formula.
-* `distanceVincenty(LatLng $from, LatLng $to)`: Calculates the geodetic distance
-  between two points using the Vincenty inverse formula for ellipsoids.
+* `distanceHaversine(Geokit\LatLng $from, Geokit\LatLng $to)`: Calculates the
+  approximate sea level great circle (Earth) distance between two points using
+  the Haversine formula.
+* `distanceVincenty(Geokit\LatLng $from, Geokit\LatLng $to)`: Calculates the
+  geodetic distance between two points using the Vincenty inverse formula for
+  ellipsoids.
 
 ```php
 $distance1 = $math->distanceHaversine($from, $to);
@@ -72,26 +73,32 @@ Both methods return a [Distance](#distance) instance.
 
 #### Transformations
 
-With the `expandBounds` and `shrinkBounds` methods, you can expand or shrink a
-given Bounds instance by a distance.
+With the `expandBounds()` and `shrinkBounds()` methods, you can expand or shrink
+a given Bounds instance by a distance.
 
 ```php
-$expandedBounds1 = $math->expandBounds(new LatLng(49.50042565, 8.50207515), Distance::fromString('10km'));
+$expandedBounds1 = $math->expandBounds(
+    new Geokit\LatLng(49.50042565, 8.50207515), 
+    Geokit\Distance::fromString('10km')
+);
 
-$shrinkedBounds = $math->shrinkBounds($expandedBounds2, Distance::fromString('10km'));
+$shrinkedBounds = $math->shrinkBounds(
+    $expandedBounds2, 
+    Geokit\Distance::fromString('10km')
+);
 ```
 
 #### Other calculations
 
 Other useful methods are:
 
-* `heading(LatLng $from, LatLng $to)`: Calculates the (initial) heading from the
-  first point to the second point in degrees.
-* `midpoint(LatLng $from, LatLng $to)`: Calculates an intermediate point on the
-  geodesic between the two given points.
-* `endpoint(LatLng $start, float $heading, Distance $distance)`: Calculates the
-  destination point along a geodesic, given an initial heading and distance, 
-  from the given start point.
+* `heading(Geokit\LatLng $from, Geokit\LatLng $to)`: Calculates the (initial)
+  heading from the first point to the second point in degrees.
+* `midpoint(Geokit\LatLng $from, Geokit\LatLng $to)`: Calculates an intermediate
+  point on the geodesic between the two given points.
+* `endpoint(Geokit\LatLng $start, float $heading, Geokit\Distance $distance)`:
+  Calculates the destination point along a geodesic, given an initial heading
+  and distance, from the given start point.
 
 ### Distance
 
@@ -185,7 +192,7 @@ $closedPolygon = $polygon->close();
 foreach ($polygon as $latLng) {
 }
 
-$polygon->contains(LatLng(0.5, 0.5)); // true
+$polygon->contains(Geokit\LatLng(0.5, 0.5)); // true
 
 /** @var Geokit\Bounds $bounds */
 $bounds = $polygon->toBounds();
