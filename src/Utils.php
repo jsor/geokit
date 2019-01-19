@@ -2,7 +2,7 @@
 
 namespace Geokit;
 
-class Utils
+abstract class Utils
 {
     /**
      * Normalizes a latitude to the (-90, 90) range. Latitudes above 90 or
