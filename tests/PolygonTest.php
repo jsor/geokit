@@ -8,23 +8,22 @@ class PolygonTest extends TestCase
     {
         $points = array(
             new LatLng(0, 0),
-            array('latitude' => 0, 'longitude' => 1),
-            '1, 1',
-            'key' => array(1, 0)
+            new LatLng(1, 1),
+            'key' => new LatLng(1, 0)
         );
 
         $polygon = new Polygon($points);
 
         $this->assertEquals($points[0], $polygon[0]);
-        $this->assertEquals(0, $polygon[1]->getLatitude());
-        $this->assertEquals(1, $polygon[2]->getLatitude());
+        $this->assertEquals(0, $polygon[0]->getLatitude());
+        $this->assertEquals(1, $polygon[1]->getLatitude());
         $this->assertEquals(1, $polygon['key']->getLatitude());
     }
 
     public function testConstructorThrowsExceptionForInvalidLatLng()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Cannot normalize LatLng from input "foo".');
+        $this->expectExceptionMessage('Point at index 0 is not an instance of Geokit\LatLng.');
 
         new Polygon(array('foo'));
     }
@@ -109,131 +108,131 @@ class PolygonTest extends TestCase
             // Closed counterclockwise polygons
             array(
                 array(
-                    array('lng' => 0, 'lat' => 0),
-                    array('lng' => 0, 'lat' => 1),
-                    array('lng' => 1, 'lat' => 1),
-                    array('lng' => 1, 'lat' => 0),
-                    array('lng' => 0, 'lat' => 0)
+                    new LatLng(0, 0),
+                    new LatLng(1, 0),
+                    new LatLng(1, 1),
+                    new LatLng(0, 1),
+                    new LatLng(0, 0)
                 ),
-                array('lng' => 0.5, 'lat' => 0.5),
+                new LatLng(0.5, 0.5),
                 true
             ),
             array(
                 array(
-                    array('lng' => 0, 'lat' => 0),
-                    array('lng' => 0, 'lat' => 1),
-                    array('lng' => 1, 'lat' => 1),
-                    array('lng' => 1, 'lat' => 0),
-                    array('lng' => 0, 'lat' => 0)
+                    new LatLng(0, 0),
+                    new LatLng(1, 0),
+                    new LatLng(1, 1),
+                    new LatLng(0, 1),
+                    new LatLng(0, 0)
                 ),
-                array('lng' => 1.5, 'lat' => 0.5),
+                new LatLng(0.5, 1.5),
                 false
             ),
             array(
                 array(
-                    array('lng' => 0, 'lat' => 0),
-                    array('lng' => 0, 'lat' => 1),
-                    array('lng' => 1, 'lat' => 1),
-                    array('lng' => 1, 'lat' => 0),
-                    array('lng' => 0, 'lat' => 0)
+                    new LatLng(0, 0),
+                    new LatLng(1, 0),
+                    new LatLng(1, 1),
+                    new LatLng(0, 1),
+                    new LatLng(0, 0)
                 ),
-                array('lng' => -0.5, 'lat' => 0.5),
+                new LatLng(0.5, -0.5),
                 false
             ),
             array(
                 array(
-                    array('lng' => 0, 'lat' => 0),
-                    array('lng' => 0, 'lat' => 1),
-                    array('lng' => 1, 'lat' => 1),
-                    array('lng' => 1, 'lat' => 0),
-                    array('lng' => 0, 'lat' => 0)
+                    new LatLng(0, 0),
+                    new LatLng(1, 0),
+                    new LatLng(1, 1),
+                    new LatLng(0, 1),
+                    new LatLng(0, 0)
                 ),
-                array('lng' => 0.5, 'lat' => 1.5),
+                new LatLng(1.5, 0.5),
                 false
             ),
             array(
                 array(
-                    array('lng' => 0, 'lat' => 0),
-                    array('lng' => 0, 'lat' => 1),
-                    array('lng' => 1, 'lat' => 1),
-                    array('lng' => 1, 'lat' => 0),
-                    array('lng' => 0, 'lat' => 0)
+                    new LatLng(0, 0),
+                    new LatLng(1, 0),
+                    new LatLng(1, 1),
+                    new LatLng(0, 1),
+                    new LatLng(0, 0)
                 ),
-                array('lng' => 0.5, 'lat' => -0.5),
+                new LatLng(-0.5, 0.5),
                 false
             ),
 
             // Closed clockwise polygons
             array(
                 array(
-                    array('lng' => 0, 'lat' => 0),
-                    array('lng' => 1, 'lat' => 0),
-                    array('lng' => 1, 'lat' => 1),
-                    array('lng' => 0, 'lat' => 1),
-                    array('lng' => 0, 'lat' => 0)
+                    new LatLng(0, 0),
+                    new LatLng(0, 1),
+                    new LatLng(1, 1),
+                    new LatLng(1, 0),
+                    new LatLng(0, 0)
                 ),
-                array('lng' => 0.5, 'lat' => 0.5),
+                new LatLng(0.5, 0.5),
                 true
             ),
             array(
                 array(
-                    array('lng' => 1, 'lat' => 1),
-                    array('lng' => 3, 'lat' => 2),
-                    array('lng' => 2, 'lat' => 3),
-                    array('lng' => 1, 'lat' => 1)
+                    new LatLng(1, 1),
+                    new LatLng(2, 3),
+                    new LatLng(3, 2),
+                    new LatLng(1, 1)
                 ),
-                array('lng' => 1.5, 'lat' => 1.5),
+                new LatLng(1.5, 1.5),
                 true
             ),
 
             // Open counterclockwise polygons
             array(
                 array(
-                    array('lng' => 0, 'lat' => 0),
-                    array('lng' => 0, 'lat' => 1),
-                    array('lng' => 1, 'lat' => 1),
-                    array('lng' => 1, 'lat' => 0)
+                    new LatLng(0, 0),
+                    new LatLng(1, 0),
+                    new LatLng(1, 1),
+                    new LatLng(0, 1)
                 ),
-                array('lng' => 0.5, 'lat' => 0.5),
+                new LatLng(0.5, 0.5),
                 true
             ),
 
             // Open clockwise polygons
             array(
                 array(
-                    array('lng' => 0, 'lat' => 0),
-                    array('lng' => 1, 'lat' => 0),
-                    array('lng' => 1, 'lat' => 1),
-                    array('lng' => 0, 'lat' => 1)
+                    new LatLng(0, 0),
+                    new LatLng(0, 1),
+                    new LatLng(1, 1),
+                    new LatLng(1, 0)
                 ),
-                array('lng' => 0.5, 'lat' => 0.5),
+                new LatLng(0.5, 0.5),
                 true
             ),
             array(
                 array(
-                    array('lng' => 1, 'lat' => 1),
-                    array('lng' => 3, 'lat' => 2),
-                    array('lng' => 2, 'lat' => 3)
+                    new LatLng(1, 1),
+                    new LatLng(2, 3),
+                    new LatLng(3, 2)
                 ),
-                array('lng' => 1.5, 'lat' => 1.5),
+                new LatLng(1.5, 1.5),
                 true
             ),
 
             // Empty polygon
             array(
                 array(),
-                array('lng' => 0.5, 'lat' => 0.5),
+                new LatLng(0.5, 0.5),
                 false
             ),
 
             // Assoc polygon
             array(
                 array(
-                    'polygon1' => array('lng' => 1, 'lat' => 1),
-                    'polygon2' => array('lng' => 3, 'lat' => 2),
-                    'polygon3' => array('lng' => 2, 'lat' => 3)
+                    'polygon1' => new LatLng(1, 1),
+                    'polygon2' => new LatLng(2, 3),
+                    'polygon3' => new LatLng(3, 2)
                 ),
-                array('lng' => 1.5, 'lat' => 1.5),
+                new LatLng(1.5, 1.5),
                 true
             ),
         );

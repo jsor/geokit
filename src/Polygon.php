@@ -8,11 +8,25 @@ final class Polygon implements \Countable, \ArrayAccess, \IteratorAggregate
 {
     private $points;
 
+    /**
+     * @param LatLng[] $points
+     */
     public function __construct(array $points = [])
     {
-        $this->points = array_map(static function ($latLng) {
-            return LatLng::normalize($latLng);
-        }, $points);
+        array_walk($points, static function ($latLng, $index) {
+            if ($latLng instanceof LatLng) {
+                return;
+            }
+
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Point at index %s is not an instance of Geokit\LatLng.',
+                    json_encode($index)
+                )
+            );
+        });
+
+        $this->points = $points;
     }
 
     public function isClosed(): bool
