@@ -99,7 +99,7 @@ A Distance instance allows for a convenient representation of a distance unit of
 measure.
 
 ```php
-$distance = new Geokit\Distance(1000);
+$distance = new Geokit\Distance(1000); // Defaults to meters
 // or
 $distance = new Geokit\Distance(1, Geokit\Distance::UNIT_KILOMETERS);
 
@@ -108,6 +108,17 @@ $kilometers = $distance->kilometers();
 $miles = $distance->miles();
 $feet = $distance->feet();
 $nauticalMiles = $distance->nautical();
+```
+
+A Distance can also be created from a string with an optional unit.
+
+```php
+$distance = Geokit\Distance::fromString('1000'); // Defaults to meters
+$distance = Geokit\Distance::fromString('1000m');
+$distance = Geokit\Distance::fromString('1km');
+$distance = Geokit\Distance::fromString('100 miles');
+$distance = Geokit\Distance::fromString('1 foot');
+$distance = Geokit\Distance::fromString('234nm');
 ```
 
 Alternatively, you can create a Distance instance through its static normalize

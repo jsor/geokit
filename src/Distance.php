@@ -54,6 +54,30 @@ final class Distance
         $this->value = $value * self::$units[$unit];
     }
 
+    public static function fromString(string $input): self
+    {
+        if (preg_match('/(\-?\d+\.?\d*)\s*((kilo)?met[er]+s?|m|km|miles?|mi|feet|foot|ft|nautical(mile)?s?|nm)?$/', $input, $match)) {
+            $unit = self::DEFAULT_UNIT;
+
+            if (isset($match[2])) {
+                $unit = $match[2];
+
+                if (!isset(self::$units[$unit])) {
+                    $unit = self::resolveUnitAlias($unit);
+                }
+            }
+
+            return new self((float) $match[1], $unit);
+        }
+
+        throw new \InvalidArgumentException(
+            sprintf(
+                'Cannot create Distance from string %s.',
+                json_encode($input)
+            )
+        );
+    }
+
     public function meters(): float
     {
         return $this->value / self::$units[self::UNIT_METERS];
