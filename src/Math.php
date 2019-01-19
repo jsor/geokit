@@ -282,7 +282,7 @@ class Math
 
         $lng2 = ($radius * $lng1 * cos($lat1) - $distanceInMeters) / ($radius * cos($lat1));
 
-        return LatLng::normalizeLng(rad2deg($lng2));
+        return Utils::normalizeLng(rad2deg($lng2));
     }
 
     private function latDistance($lat1, $distanceInMeters)
@@ -292,6 +292,6 @@ class Math
         $lat1 = deg2rad($lat1);
         $lat2 = ($radius * $lat1 - $distanceInMeters) / $radius;
 
-        return LatLng::normalizeLat(rad2deg($lat2));
+        return Utils::normalizeLat(rad2deg($lat2));
     }
 }
