@@ -9,7 +9,7 @@ namespace Geokit;
  *
  * @see http://en.wikipedia.org/wiki/Earth_ellipsoid
  */
-final class Ellipsoid implements \ArrayAccess
+final class Ellipsoid
 {
     private $semiMajorAxis;
     private $semiMinorAxis;
@@ -81,51 +81,6 @@ final class Ellipsoid implements \ArrayAccess
     public function getInverseFlattening(): float
     {
         return $this->inverseFlattening;
-    }
-
-    public function offsetExists($offset): bool
-    {
-        return in_array(
-            $offset,
-            array_merge(
-                self::$semiMajorAxisKeys,
-                self::$semiMinorAxisKeys,
-                self::$flatteningKeys,
-                self::$inverseFlatteningKeys
-            ),
-            true
-        );
-    }
-
-    public function offsetGet($offset)
-    {
-        if (in_array($offset, self::$semiMajorAxisKeys, true)) {
-            return $this->getSemiMajorAxis();
-        }
-
-        if (in_array($offset, self::$semiMinorAxisKeys, true)) {
-            return $this->getSemiMinorAxis();
-        }
-
-        if (in_array($offset, self::$flatteningKeys, true)) {
-            return $this->getFlattening();
-        }
-
-        if (in_array($offset, self::$inverseFlatteningKeys, true)) {
-            return $this->getInverseFlattening();
-        }
-
-        throw new \InvalidArgumentException(sprintf('Invalid offset %s.', json_encode($offset)));
-    }
-
-    public function offsetUnset($offset): void
-    {
-        throw new \BadMethodCallException('Ellipsoid is immutable.');
-    }
-
-    public function offsetSet($offset, $value): void
-    {
-        throw new \BadMethodCallException('Ellipsoid is immutable.');
     }
 
     /**

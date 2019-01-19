@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Geokit;
 
-final class Polygon implements \Countable, \ArrayAccess, \IteratorAggregate
+final class Polygon implements \Countable, \IteratorAggregate
 {
     private $points;
 
@@ -119,35 +119,6 @@ final class Polygon implements \Countable, \ArrayAccess, \IteratorAggregate
     public function count(): int
     {
         return count($this->points);
-    }
-
-    public function offsetExists($offset)
-    {
-        return array_key_exists($offset, $this->points);
-    }
-
-    public function offsetGet($offset)
-    {
-        if ($this->offsetExists($offset)) {
-            return $this->points[$offset];
-        }
-
-        throw new \InvalidArgumentException(
-            sprintf(
-                'Invalid offset %s.',
-                json_encode($offset)
-            )
-        );
-    }
-
-    public function offsetUnset($offset)
-    {
-        throw new \BadMethodCallException('Polygon is immutable.');
-    }
-
-    public function offsetSet($offset, $value)
-    {
-        throw new \BadMethodCallException('Polygon is immutable.');
     }
 
     public function getIterator(): \ArrayIterator

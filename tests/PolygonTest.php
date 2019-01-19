@@ -14,10 +14,12 @@ class PolygonTest extends TestCase
 
         $polygon = new Polygon($points);
 
-        $this->assertEquals($points[0], $polygon[0]);
-        $this->assertEquals(0, $polygon[0]->getLatitude());
-        $this->assertEquals(1, $polygon[1]->getLatitude());
-        $this->assertEquals(1, $polygon['key']->getLatitude());
+        $array = \iterator_to_array($polygon);
+
+        $this->assertEquals($points[0], $array[0]);
+        $this->assertEquals(0, $array[0]->getLatitude());
+        $this->assertEquals(1, $array[1]->getLatitude());
+        $this->assertEquals(1, $array['key']->getLatitude());
     }
 
     public function testConstructorThrowsExceptionForInvalidLatLng()
@@ -65,7 +67,9 @@ class PolygonTest extends TestCase
 
         $closedPolygon = $polygon->close();
 
-        $this->assertEquals(new LatLng(0, 0), $closedPolygon[count($closedPolygon) - 1]);
+        $array = \iterator_to_array($closedPolygon);
+
+        $this->assertEquals(new LatLng(0, 0), $array[count($closedPolygon) - 1]);
     }
 
     public function testCloseEmptyPolygon()
@@ -89,7 +93,9 @@ class PolygonTest extends TestCase
 
         $closedPolygon = $polygon->close();
 
-        $this->assertEquals(new LatLng(0, 0), $closedPolygon[count($closedPolygon) - 1]);
+        $array = \iterator_to_array($closedPolygon);
+
+        $this->assertEquals(new LatLng(0, 0), $array[count($closedPolygon) - 1]);
     }
 
     /**
@@ -265,68 +271,6 @@ class PolygonTest extends TestCase
         $polygon = new Polygon();
 
         $polygon->toBounds();
-    }
-
-    public function testArrayAccessNumeric()
-    {
-        $points = array(
-            new LatLng(0, 0)
-        );
-
-        $polygon = new Polygon($points);
-
-        $this->assertNotEmpty($polygon[0]);
-        $this->assertNotNull($polygon[0]);
-        $this->assertEquals($points[0], $polygon[0]);
-    }
-
-    public function testArrayAccessAssoc()
-    {
-        $points = array(
-            'key' => new LatLng(0, 0)
-        );
-
-        $polygon = new Polygon($points);
-
-        $this->assertNotEmpty($polygon['key']);
-        $this->assertNotNull($polygon['key']);
-        $this->assertEquals($points['key'], $polygon['key']);
-    }
-
-    public function testOffsetGetThrowsExceptionForInvalidKey()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Invalid offset 0.');
-
-        $polygon = new Polygon();
-
-        $polygon[0];
-    }
-
-    public function testOffsetSetThrowsException()
-    {
-        $this->expectException(\BadMethodCallException::class);
-
-        $points = array(
-            new LatLng(0, 0)
-        );
-
-        $polygon = new Polygon($points);
-
-        $polygon[0] = new LatLng(1, 1);
-    }
-
-    public function testOffsetUnsetThrowsException()
-    {
-        $this->expectException(\BadMethodCallException::class);
-
-        $points = array(
-            new LatLng(0, 0)
-        );
-
-        $polygon = new Polygon($points);
-
-        unset($polygon[0]);
     }
 
     public function testCountable()

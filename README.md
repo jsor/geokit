@@ -150,12 +150,7 @@ coordinates.
 $latLng = new Geokit\LatLng(1, 2);
 
 $latitude = $latLng->getLatitude();
-// or
-$latitude = $latLng['latitude'];
-
 $longitude = $latLng->getLongitude();
-// or
-$longitude = $latLng['longitude'];
 ```
 
 Alternatively, you can create a LatLng instance through its static normalize
@@ -186,20 +181,11 @@ $northEast = new Geokit\LatLng(1, 2);
 $bounds = new Geokit\Bounds($southWest, $northEast);
 
 $southWestLatLng = $bounds->getSouthWest();
-// or
-$southWestLatLng = $bounds['south_west'];
-
 $northEastLatLng = $bounds->getNorthEast();
-// or
-$northEastLatLng = $bounds['north_east'];
 
 $centerLatLng = $bounds->getCenter();
-// or
-$centerLatLng = $bounds['center'];
 
 $spanLatLng = $bounds->getSpan();
-// or
-$spanLatLng = $bounds['span'];
 
 $boolean = $bounds->contains($latLng);
 
@@ -234,13 +220,7 @@ $polygon = new Geokit\Polygon([
     new Geokit\LatLng(1, 1)
 ]);
 
-$latLng1 = $polygon[0];
-$latLng2 = $polygon[1];
-$latLng3 = $polygon[2];
-
 $closedPolygon = $polygon->close();
-
-$latLng4 = $closedPolygon[3]; // LatLng(0, 0)
 
 /** @var Geokit\LatLng $latLng */
 foreach ($polygon as $latLng) {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Geokit;
 
-final class LatLng implements \ArrayAccess
+final class LatLng
 {
     private $latitude;
     private $longitude;
@@ -36,41 +36,6 @@ final class LatLng implements \ArrayAccess
     public function getLatitude(): float
     {
         return $this->latitude;
-    }
-
-    public function offsetExists($offset): bool
-    {
-        return in_array(
-            $offset,
-            array_merge(
-                self::$latitudeKeys,
-                self::$longitudeKeys
-            ),
-            true
-        );
-    }
-
-    public function offsetGet($offset)
-    {
-        if (in_array($offset, self::$latitudeKeys, true)) {
-            return $this->getLatitude();
-        }
-
-        if (in_array($offset, self::$longitudeKeys, true)) {
-            return $this->getLongitude();
-        }
-
-        throw new \InvalidArgumentException(sprintf('Invalid offset %s.', json_encode($offset)));
-    }
-
-    public function offsetUnset($offset): void
-    {
-        throw new \BadMethodCallException('LatLng is immutable.');
-    }
-
-    public function offsetSet($offset, $value): void
-    {
-        throw new \BadMethodCallException('LatLng is immutable.');
     }
 
     public function __toString(): string

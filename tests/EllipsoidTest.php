@@ -37,63 +37,6 @@ class EllipsoidTest extends TestCase
         $this->assertSame(4.0, $ellipsoid->getInverseFlattening());
     }
 
-    public function testArrayAccess()
-    {
-        $keys = array(
-            'semi_major_axis',
-            'semi_major',
-            'semiMajorAxis',
-            'semiMajor',
-            'semi_minor_axis',
-            'semi_minor',
-            'semiMinorAxis',
-            'semiMinor',
-            'flattening',
-            'f',
-            'inverse_flattening',
-            'inverse_f',
-            'inv_f',
-            'inverseFlattening',
-            'inverseF',
-            'invF'
-        );
-
-        $ellipsoid = new Ellipsoid(1, 2, 3, 4);
-
-        foreach ($keys as $key) {
-            $this->assertNotEmpty($ellipsoid[$key]);
-            $this->assertNotNull($ellipsoid[$key]);
-        }
-    }
-
-    public function testOffsetGetThrowsExceptionForInvalidKey()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Invalid offset "foo".');
-
-        $ellipsoid = new Ellipsoid(1, 2, 3, 4);
-
-        $ellipsoid['foo'];
-    }
-
-    public function testOffsetSetThrowsException()
-    {
-        $this->expectException(\BadMethodCallException::class);
-
-        $ellipsoid = new Ellipsoid(1, 2, 3, 4);
-
-        $ellipsoid['flattening'] = 5;
-    }
-
-    public function testOffsetUnsetThrowsException()
-    {
-        $this->expectException(\BadMethodCallException::class);
-
-        $ellipsoid = new Ellipsoid(1, 2, 3, 4);
-
-        unset($ellipsoid['flattening']);
-    }
-
     public function testWGS84()
     {
         $ellipsoid = Ellipsoid::wgs84();
@@ -281,44 +224,5 @@ class EllipsoidTest extends TestCase
         $this->assertSame(6356863.0187730473, $ellipsoid->getSemiMinorAxis());
         $this->assertSame(0.003352329869259135, $ellipsoid->getFlattening());
         $this->assertSame(298.3, $ellipsoid->getInverseFlattening());
-    }
-
-    /**
-     * @dataProvider offsetExistsDataProvider
-     */
-    public function testOffsetExists($existedKey)
-    {
-        $ellipsoid = new Ellipsoid(1, 2, 3, 4);
-
-        $this->assertTrue($ellipsoid->offsetExists($existedKey));
-    }
-
-    public function offsetExistsDataProvider()
-    {
-        return array(
-            array('semi_major_axis'),
-            array('semi_major'),
-            array('semiMajorAxis'),
-            array('semiMajor'),
-            array('semi_minor_axis'),
-            array('semi_minor'),
-            array('semiMinorAxis'),
-            array('semiMinor'),
-            array('flattening'),
-            array('f'),
-            array('inverse_flattening'),
-            array('inverse_f'),
-            array('inv_f'),
-            array('inverseFlattening'),
-            array('inverseF'),
-            array('invF')
-        );
-    }
-
-    public function testOffsetExistsOnNonExistedKeys()
-    {
-        $ellipsoid = new Ellipsoid(1, 2, 3, 4);
-
-        $this->assertFalse($ellipsoid->offsetExists('non_existed_key'));
     }
 }

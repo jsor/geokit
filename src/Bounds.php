@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Geokit;
 
-final class Bounds implements \ArrayAccess
+final class Bounds
 {
     private $southWest;
     private $northEast;
@@ -62,50 +62,6 @@ final class Bounds implements \ArrayAccess
             $this->northEast->getLatitude() - $this->southWest->getLatitude(),
             $this->lngSpan($this->southWest->getLongitude(), $this->northEast->getLongitude())
         );
-    }
-
-    public function offsetExists($offset): bool
-    {
-        return in_array(
-            $offset,
-            array_merge(
-                self::$southWestKeys,
-                self::$northEastKeys,
-                ['center', 'span']
-            ),
-            true
-        );
-    }
-
-    public function offsetGet($offset)
-    {
-        if (in_array($offset, self::$southWestKeys, true)) {
-            return $this->getSouthWest();
-        }
-
-        if (in_array($offset, self::$northEastKeys, true)) {
-            return $this->getNorthEast();
-        }
-
-        if ('center' === $offset) {
-            return $this->getCenter();
-        }
-
-        if ('span' === $offset) {
-            return $this->getSpan();
-        }
-
-        throw new \InvalidArgumentException(sprintf('Invalid offset %s.', json_encode($offset)));
-    }
-
-    public function offsetUnset($offset): void
-    {
-        throw new \BadMethodCallException('Bounds is immutable.');
-    }
-
-    public function offsetSet($offset, $value): void
-    {
-        throw new \BadMethodCallException('Bounds is immutable.');
     }
 
     public function crossesAntimeridian(): bool

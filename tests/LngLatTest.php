@@ -46,54 +46,6 @@ class LngLatTest extends TestCase
         setlocale(LC_NUMERIC, $currentLocale);
     }
 
-    public function testArrayAccess()
-    {
-        $keys = array(
-            'latitude',
-            'lat',
-            'y',
-            'longitude',
-            'lng',
-            'lon',
-            'x'
-        );
-
-        $LatLng = new LatLng(2, 1);
-
-        foreach ($keys as $key) {
-            $this->assertNotEmpty($LatLng[$key]);
-            $this->assertNotNull($LatLng[$key]);
-        }
-    }
-
-    public function testOffsetGetThrowsExceptionForInvalidKey()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Invalid offset "foo".');
-
-        $LatLng = new LatLng(2, 1);
-
-        $LatLng['foo'];
-    }
-
-    public function testOffsetSetThrowsException()
-    {
-        $this->expectException(\BadMethodCallException::class);
-
-        $LatLng = new LatLng(2, 1);
-
-        $LatLng['lat'] = 5;
-    }
-
-    public function testOffsetUnsetThrowsException()
-    {
-        $this->expectException(\BadMethodCallException::class);
-
-        $LatLng = new LatLng(2, 1);
-
-        unset($LatLng['lat']);
-    }
-
     public function testToStringShouldReturnLatitudeAndLongitudeAsCommaSeparatedString()
     {
         $LatLng = new LatLng(2.5678, 1.1234);
@@ -191,35 +143,5 @@ class LngLatTest extends TestCase
 
         $this->assertSame(2.5678, $LatLng->getLatitude());
         $this->assertSame(1.1234, $LatLng->getLongitude());
-    }
-
-    /**
-     * @dataProvider offsetExistsDataProvider
-     */
-    public function testOffsetExists($existedKey)
-    {
-        $LatLng = new LatLng('2.5678', '1.1234');
-
-        $this->assertTrue($LatLng->offsetExists($existedKey));
-    }
-
-    public function offsetExistsDataProvider()
-    {
-        return array(
-            array('longitude'),
-            array('lng'),
-            array('lon'),
-            array('x'),
-            array('latitude'),
-            array('lat'),
-            array('y')
-        );
-    }
-
-    public function testOffsetExistsOnNonExistedKeys()
-    {
-        $LatLng = new LatLng('1.24', '1.123');
-
-        $this->assertFalse($LatLng->offsetExists('non_existed_key'));
     }
 }
