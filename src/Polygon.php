@@ -2,7 +2,7 @@
 
 namespace Geokit;
 
-class Polygon implements \Countable, \ArrayAccess, \IteratorAggregate
+final class Polygon implements \Countable, \ArrayAccess, \IteratorAggregate
 {
     private $points;
 

@@ -5,7 +5,7 @@ namespace Geokit;
 /**
  * Inspired by GeoPy's distance class (https://github.com/geopy/geopy)
  */
-class Distance
+final class Distance
 {
     const UNIT_METERS = 'meters';
     const UNIT_KILOMETERS = 'kilometers';

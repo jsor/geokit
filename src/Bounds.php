@@ -2,7 +2,7 @@
 
 namespace Geokit;
 
-class Bounds implements \ArrayAccess
+final class Bounds implements \ArrayAccess
 {
     private $southWest;
     private $northEast;

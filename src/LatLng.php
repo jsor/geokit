@@ -2,7 +2,7 @@
 
 namespace Geokit;
 
-class LatLng implements \ArrayAccess
+final class LatLng implements \ArrayAccess
 {
     private $latitude;
     private $longitude;

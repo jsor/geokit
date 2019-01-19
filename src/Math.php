@@ -2,7 +2,7 @@
 
 namespace Geokit;
 
-class Math
+final class Math
 {
     private $ellipsoid;
 

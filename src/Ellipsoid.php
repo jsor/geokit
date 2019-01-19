@@ -7,7 +7,7 @@ namespace Geokit;
  *
  * @see http://en.wikipedia.org/wiki/Earth_ellipsoid
  */
-class Ellipsoid implements \ArrayAccess
+final class Ellipsoid implements \ArrayAccess
 {
     private $semiMajorAxis;
     private $semiMinorAxis;
