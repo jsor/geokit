@@ -212,33 +212,31 @@ final class Math
     }
 
     /**
-     * @param mixed  $latLngOrBounds
+     * @param mixed  $bounds
      * @param mixed  $distance       (in meters)
      */
-    public function expand($latLngOrBounds, $distance): Bounds
+    public function expandBounds($bounds, $distance): Bounds
     {
         return $this->transformBounds(
-            $latLngOrBounds,
+            Bounds::normalize($bounds),
             Distance::normalize($distance)->meters()
         );
     }
 
     /**
-     * @param mixed $latLngOrBounds
+     * @param mixed $bounds
      * @param mixed $distance       (in meters)
      */
-    public function shrink($latLngOrBounds, $distance): Bounds
+    public function shrinkBounds($bounds, $distance): Bounds
     {
         return $this->transformBounds(
-            $latLngOrBounds,
+            Bounds::normalize($bounds),
             -Distance::normalize($distance)->meters()
         );
     }
 
-    private function transformBounds($input, float $distanceInMeters): Bounds
+    private function transformBounds(Bounds $bounds, float $distanceInMeters): Bounds
     {
-        $bounds = Utils::castToBounds($input);
-
         $latSW = $bounds->getSouthWest()->getLatitude();
         $lngSW = $bounds->getSouthWest()->getLongitude();
         $latNE = $bounds->getNorthEast()->getLatitude();

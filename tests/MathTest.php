@@ -305,38 +305,11 @@ class MathTest extends TestCase
         );
     }
 
-    public function testExpandWithLatLng()
+    public function testExpandBounds()
     {
         $math = new Math();
 
-        $bounds = $math->expand(
-            '49.50042565 8.50207515',
-            '100 meters'
-        );
-
-        $this->assertEquals(
-            49.499527334715879,
-            $bounds->getSouthWest()->getLatitude()
-        );
-        $this->assertEquals(
-            8.5006919399029339,
-            $bounds->getSouthWest()->getLongitude()
-        );
-        $this->assertEquals(
-            49.501323965284122,
-            $bounds->getNorthEast()->getLatitude()
-        );
-        $this->assertEquals(
-            8.5034583600970635,
-            $bounds->getNorthEast()->getLongitude()
-        );
-    }
-
-    public function testExpandWithBounds()
-    {
-        $math = new Math();
-
-        $bounds = $math->expand(
+        $bounds = $math->expandBounds(
             '-45 179 45 -179',
             '100 meters'
         );
@@ -359,51 +332,24 @@ class MathTest extends TestCase
         );
     }
 
-    public function testExpandThrowsForInvalidInput()
+    public function testExpandBoundsThrowsForInvalidInput()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Cannot cast to Bounds from input "foo".');
+        $this->expectExceptionMessage('Cannot normalize Bounds from input "foo".');
 
         $math = new Math();
 
-        $math->expand(
+        $math->expandBounds(
             'foo',
             '100 meters'
         );
     }
 
-    public function testShrinkExpandWithLatLng()
+    public function testShrinkBounds()
     {
         $math = new Math();
 
-        $bounds = $math->shrink(
-            '49.50042565 8.50207515',
-            '100 meters'
-        );
-
-        $this->assertEquals(
-            49.50042565,
-            $bounds->getSouthWest()->getLatitude()
-        );
-        $this->assertEquals(
-            8.50207515,
-            $bounds->getSouthWest()->getLongitude()
-        );
-        $this->assertEquals(
-            49.50042565,
-            $bounds->getNorthEast()->getLatitude()
-        );
-        $this->assertEquals(
-            8.50207515,
-            $bounds->getNorthEast()->getLongitude()
-        );
-    }
-
-    public function testShrinkWithBounds()
-    {
-        $math = new Math();
-
-        $bounds = $math->shrink(
+        $bounds = $math->shrinkBounds(
             '-45.000898315284132 178.99872959034192 45.000898315284132 -178.99872959034192',
             '100 meters'
         );
@@ -426,14 +372,14 @@ class MathTest extends TestCase
         );
     }
 
-    public function testShrinkThrowsForInvalidInput()
+    public function testShrinkBoundsThrowsForInvalidInput()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Cannot cast to Bounds from input "foo".');
+        $this->expectExceptionMessage('Cannot normalize Bounds from input "foo".');
 
         $math = new Math();
 
-        $math->shrink(
+        $math->shrinkBounds(
             'foo',
             '100 meters'
         );

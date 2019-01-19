@@ -71,14 +71,14 @@ Both methods return a [Distance](#distance) instance.
 
 #### Transformations
 
-With the `expand` and `shrink` methods, you can expand/shrink a given Bounds or
-LatLng instance by a distance.
+With the `expandBounds` and `shrinkBounds` methods, you can expand or shrink a
+given Bounds instance by a distance.
 
 ```php
-$expandedBounds1 = $math->expand(['lat' => 49.50042565, 'lng' => 8.50207515], '10km');
-$expandedBounds2 = $math->expand(Geokit\Bounds::normalize('-45 179 45 -179'), '10km');
+$expandedBounds1 = $math->expandBounds(['lat' => 49.50042565, 'lng' => 8.50207515], '10km');
+$expandedBounds2 = $math->expandBounds(Geokit\Bounds::normalize('-45 179 45 -179'), '10km');
 
-$shrinkedBounds = $math->shrink($expandedBounds2, '10km');
+$shrinkedBounds = $math->shrinkBounds($expandedBounds2, '10km');
 ```
 
 #### Other calculations
