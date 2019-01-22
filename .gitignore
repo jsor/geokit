@@ -2,4 +2,6 @@ build/
 composer.lock
 composer.phar
 phpunit.xml
+php-cs-fixer*.phar
+.php_cs.cache
 vendor/
