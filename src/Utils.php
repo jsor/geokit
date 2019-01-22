@@ -12,7 +12,7 @@ abstract class Utils
      */
     public static function normalizeLat(float $lat): float
     {
-        return max(-90, min(90, $lat));
+        return \max(-90, \min(90, $lat));
     }
 
     /**
@@ -21,7 +21,7 @@ abstract class Utils
      */
     public static function normalizeLng(float $lng): float
     {
-        $mod = fmod($lng, 360);
+        $mod = \fmod($lng, 360);
 
         if ($mod < -180) {
             return $mod + 360;

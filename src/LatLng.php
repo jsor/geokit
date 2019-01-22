@@ -27,6 +27,6 @@ final class LatLng
 
     public function __toString(): string
     {
-        return sprintf('%F,%F', $this->getLatitude(), $this->getLongitude());
+        return \sprintf('%F,%F', $this->getLatitude(), $this->getLongitude());
     }
 }

@@ -80,8 +80,8 @@ final class Bounds
 
     public function extend(LatLng $latLng): self
     {
-        $newSouth = min($this->southWest->getLatitude(), $latLng->getLatitude());
-        $newNorth = max($this->northEast->getLatitude(), $latLng->getLatitude());
+        $newSouth = \min($this->southWest->getLatitude(), $latLng->getLatitude());
+        $newNorth = \max($this->northEast->getLatitude(), $latLng->getLatitude());
 
         $newWest = $this->southWest->getLongitude();
         $newEast = $this->northEast->getLongitude();

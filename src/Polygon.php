@@ -13,15 +13,15 @@ final class Polygon implements \Countable, \IteratorAggregate
      */
     public function __construct(array $points = [])
     {
-        array_walk($points, static function ($latLng, $index) {
+        \array_walk($points, static function ($latLng, $index) {
             if ($latLng instanceof LatLng) {
                 return;
             }
 
             throw new \InvalidArgumentException(
-                sprintf(
+                \sprintf(
                     'Point at index %s is not an instance of Geokit\LatLng.',
-                    json_encode($index)
+                    \json_encode($index)
                 )
             );
         });
@@ -31,12 +31,12 @@ final class Polygon implements \Countable, \IteratorAggregate
 
     public function isClosed(): bool
     {
-        if (0 === count($this->points)) {
+        if (0 === \count($this->points)) {
             return false;
         }
 
-        $lastPoint = end($this->points);
-        $firstPoint = reset($this->points);
+        $lastPoint = \end($this->points);
+        $firstPoint = \reset($this->points);
 
         return (
             $lastPoint->getLatitude() === $firstPoint->getLatitude() &&
@@ -46,14 +46,14 @@ final class Polygon implements \Countable, \IteratorAggregate
 
     public function close(): self
     {
-        if (0 === count($this->points)) {
+        if (0 === \count($this->points)) {
             return new self();
         }
 
         $points = $this->points;
 
         if (!$this->isClosed()) {
-            $points[] = clone reset($this->points);
+            $points[] = clone \reset($this->points);
         }
 
         $polygon = new self();
@@ -67,7 +67,7 @@ final class Polygon implements \Countable, \IteratorAggregate
      */
     public function contains(LatLng $latLng): bool
     {
-        if (0 === count($this->points)) {
+        if (0 === \count($this->points)) {
             return false;
         }
 
@@ -76,7 +76,7 @@ final class Polygon implements \Countable, \IteratorAggregate
         $x = $latLng->getLongitude();
         $y = $latLng->getLatitude();
 
-        $p = end($points);
+        $p = \end($points);
 
         $x0 = $p->getLongitude();
         $y0 = $p->getLatitude();
@@ -103,12 +103,12 @@ final class Polygon implements \Countable, \IteratorAggregate
 
     public function toBounds(): Bounds
     {
-        if (0 === count($this->points)) {
+        if (0 === \count($this->points)) {
             throw new \LogicException('Cannot create Bounds from empty Polygon.');
         }
 
         $points = $this->points;
-        $start = array_shift($points);
+        $start = \array_shift($points);
 
         $bounds = new Bounds($start, $start);
 
@@ -121,7 +121,7 @@ final class Polygon implements \Countable, \IteratorAggregate
 
     public function count(): int
     {
-        return count($this->points);
+        return \count($this->points);
     }
 
     public function getIterator(): \ArrayIterator

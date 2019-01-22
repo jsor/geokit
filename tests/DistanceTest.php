@@ -75,8 +75,8 @@ class DistanceTest extends TestCase
      */
     public function testFromString($value, $unit)
     {
-        $this->assertEquals(1000, Distance::fromString(sprintf('%.15F%s', $value, $unit))->meters());
-        $this->assertEquals(1000, Distance::fromString(sprintf('%.15F %s', $value, $unit))->meters(), 'With space');
+        $this->assertEquals(1000, Distance::fromString(\sprintf('%.15F%s', $value, $unit))->meters());
+        $this->assertEquals(1000, Distance::fromString(\sprintf('%.15F %s', $value, $unit))->meters(), 'With space');
     }
 
     public function fromStringDataProvider()

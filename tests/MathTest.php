@@ -12,8 +12,8 @@ class MathTest extends TestCase
         $math = new Math();
 
         $this->assertEquals(
-            sprintf('%F', $distance),
-            sprintf('%F', $math->distanceHaversine($LatLng1, $LatLng2)->meters())
+            \sprintf('%F', $distance),
+            \sprintf('%F', $math->distanceHaversine($LatLng1, $LatLng2)->meters())
         );
     }
 
@@ -131,8 +131,8 @@ class MathTest extends TestCase
         $math = new Math();
 
         $this->assertEquals(
-            sprintf('%F', $distance),
-            sprintf('%F', $math->distanceVincenty($LatLng1, $LatLng2)->meters())
+            \sprintf('%F', $distance),
+            \sprintf('%F', $math->distanceVincenty($LatLng1, $LatLng2)->meters())
         );
     }
 
@@ -247,8 +247,8 @@ class MathTest extends TestCase
         $math = new Math();
 
         $this->assertEquals(
-            sprintf('%F', 0),
-            sprintf('%F', $math->distanceVincenty(new LatLng(90, 90), new LatLng(90, 90))->meters())
+            \sprintf('%F', 0),
+            \sprintf('%F', $math->distanceVincenty(new LatLng(90, 90), new LatLng(90, 90))->meters())
         );
     }
 

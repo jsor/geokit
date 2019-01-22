@@ -48,7 +48,7 @@ final class Distance
     public function __construct(float $value, string $unit = self::DEFAULT_UNIT)
     {
         if (!isset(self::$units[$unit])) {
-            throw new \InvalidArgumentException(sprintf('Invalid unit %s.', json_encode($unit)));
+            throw new \InvalidArgumentException(\sprintf('Invalid unit %s.', \json_encode($unit)));
         }
 
         $this->value = $value * self::$units[$unit];
@@ -56,7 +56,7 @@ final class Distance
 
     public static function fromString(string $input): self
     {
-        if (preg_match('/(\-?\d+\.?\d*)\s*((kilo)?met[er]+s?|m|km|miles?|mi|feet|foot|ft|nautical(mile)?s?|nm)?$/', $input, $match)) {
+        if (\preg_match('/(\-?\d+\.?\d*)\s*((kilo)?met[er]+s?|m|km|miles?|mi|feet|foot|ft|nautical(mile)?s?|nm)?$/', $input, $match)) {
             $unit = self::DEFAULT_UNIT;
 
             if (isset($match[2])) {
@@ -71,9 +71,9 @@ final class Distance
         }
 
         throw new \InvalidArgumentException(
-            sprintf(
+            \sprintf(
                 'Cannot create Distance from string %s.',
-                json_encode($input)
+                \json_encode($input)
             )
         );
     }

@@ -22,19 +22,19 @@ final class Math
      */
     public function distanceHaversine(LatLng $from, LatLng $to): Distance
     {
-        $lat1 = deg2rad($from->getLatitude());
-        $lng1 = deg2rad($from->getLongitude());
-        $lat2 = deg2rad($to->getLatitude());
-        $lng2 = deg2rad($to->getLongitude());
+        $lat1 = \deg2rad($from->getLatitude());
+        $lng1 = \deg2rad($from->getLongitude());
+        $lat2 = \deg2rad($to->getLatitude());
+        $lng2 = \deg2rad($to->getLongitude());
 
         $dLat = $lat2 - $lat1;
         $dLon = $lng2 - $lng1;
 
-        $a = sin($dLat / 2) * sin($dLat / 2) +
-            cos($lat1) * cos($lat2) *
-            sin($dLon / 2) * sin($dLon / 2);
+        $a = \sin($dLat / 2) * \sin($dLat / 2) +
+            \cos($lat1) * \cos($lat2) *
+            \sin($dLon / 2) * \sin($dLon / 2);
 
-        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+        $c = 2 * \atan2(\sqrt($a), \sqrt(1 - $a));
 
         return new Distance($this->ellipsoid->getSemiMajorAxis() * $c);
     }
@@ -57,22 +57,22 @@ final class Math
         $b = $this->ellipsoid->getSemiMinorAxis();
         $f = $this->ellipsoid->getFlattening();
 
-        $L = deg2rad($lng2 - $lng1);
-        $U1 = atan((1 - $f) * tan(deg2rad($lat1)));
-        $U2 = atan((1 - $f) * tan(deg2rad($lat2)));
+        $L = \deg2rad($lng2 - $lng1);
+        $U1 = \atan((1 - $f) * \tan(\deg2rad($lat1)));
+        $U2 = \atan((1 - $f) * \tan(\deg2rad($lat2)));
 
-        $sinU1 = sin($U1);
-        $cosU1 = cos($U1);
-        $sinU2 = sin($U2);
-        $cosU2 = cos($U2);
+        $sinU1 = \sin($U1);
+        $cosU1 = \cos($U1);
+        $sinU2 = \sin($U2);
+        $cosU2 = \cos($U2);
 
         $lambda = $L;
         $iterLimit = 100;
 
         do {
-            $sinLambda = sin($lambda);
-            $cosLambda = cos($lambda);
-            $sinSigma = sqrt(($cosU2 * $sinLambda) * ($cosU2 * $sinLambda) +
+            $sinLambda = \sin($lambda);
+            $cosLambda = \cos($lambda);
+            $sinSigma = \sqrt(($cosU2 * $sinLambda) * ($cosU2 * $sinLambda) +
                 ($cosU1 * $sinU2 - $sinU1 * $cosU2 * $cosLambda) *
                 ($cosU1 * $sinU2 - $sinU1 * $cosU2 * $cosLambda));
 
@@ -81,7 +81,7 @@ final class Math
             }
 
             $cosSigma = $sinU1 * $sinU2 + $cosU1 * $cosU2 * $cosLambda;
-            $sigma = atan2($sinSigma, $cosSigma);
+            $sigma = \atan2($sinSigma, $cosSigma);
             $sinAlpha = $cosU1 * $cosU2 * $sinLambda / $sinSigma;
             $cosSqAlpha = (float) 1 - $sinAlpha * $sinAlpha;
 
@@ -95,7 +95,7 @@ final class Math
             $lambdaP = $lambda;
             $lambda = $L + (1 - $C) * $f * $sinAlpha *
                 ($sigma + $C * $sinSigma * ($cos2SigmaM + $C * $cosSigma * (-1 + 2 * $cos2SigmaM * $cos2SigmaM)));
-        } while (abs($lambda - $lambdaP) > 1e-12 && --$iterLimit > 0);
+        } while (\abs($lambda - $lambdaP) > 1e-12 && --$iterLimit > 0);
 
         if ($iterLimit === 0) {
             throw new \RuntimeException('Vincenty formula failed to converge.');
@@ -122,17 +122,17 @@ final class Math
         $lat2 = $to->getLatitude();
         $lng2 = $to->getLongitude();
 
-        $lat1 = deg2rad($lat1);
-        $lat2 = deg2rad($lat2);
-        $dLon = deg2rad($lng2 - $lng1);
+        $lat1 = \deg2rad($lat1);
+        $lat2 = \deg2rad($lat2);
+        $dLon = \deg2rad($lng2 - $lng1);
 
-        $y = sin($dLon) * cos($lat2);
-        $x = cos($lat1) * sin($lat2) -
-            sin($lat1) * cos($lat2) * cos($dLon);
+        $y = \sin($dLon) * \cos($lat2);
+        $x = \cos($lat1) * \sin($lat2) -
+            \sin($lat1) * \cos($lat2) * \cos($dLon);
 
-        $heading = atan2($y, $x);
+        $heading = \atan2($y, $x);
 
-        return fmod(rad2deg($heading) + 360, 360);
+        return \fmod(\rad2deg($heading) + 360, 360);
     }
 
     /**
@@ -148,20 +148,20 @@ final class Math
         $lat2 = $to->getLatitude();
         $lng2 = $to->getLongitude();
 
-        $lat1 = deg2rad($lat1);
-        $lat2 = deg2rad($lat2);
-        $dLon = deg2rad($lng2 - $lng1);
+        $lat1 = \deg2rad($lat1);
+        $lat2 = \deg2rad($lat2);
+        $dLon = \deg2rad($lng2 - $lng1);
 
-        $Bx = cos($lat2) * cos($dLon);
-        $By = cos($lat2) * sin($dLon);
+        $Bx = \cos($lat2) * \cos($dLon);
+        $By = \cos($lat2) * \sin($dLon);
 
-        $lat3 = atan2(
-            sin($lat1) + sin($lat2),
-            sqrt((cos($lat1) + $Bx) * (cos($lat1) + $Bx) + $By * $By)
+        $lat3 = \atan2(
+            \sin($lat1) + \sin($lat2),
+            \sqrt((\cos($lat1) + $Bx) * (\cos($lat1) + $Bx) + $By * $By)
         );
-        $lon3 = deg2rad($lng1) + atan2($By, cos($lat1) + $Bx);
+        $lon3 = \deg2rad($lng1) + \atan2($By, \cos($lat1) + $Bx);
 
-        return new LatLng(rad2deg($lat3), rad2deg($lon3));
+        return new LatLng(\rad2deg($lat3), \rad2deg($lon3));
     }
 
     /**
@@ -172,22 +172,22 @@ final class Math
      */
     public function endpoint(LatLng $start, float $heading, Distance $distance): LatLng
     {
-        $lat = deg2rad($start->getLatitude());
-        $lng = deg2rad($start->getLongitude());
+        $lat = \deg2rad($start->getLatitude());
+        $lng = \deg2rad($start->getLongitude());
 
         $angularDistance = $distance->meters() / $this->ellipsoid->getSemiMajorAxis();
-        $heading = deg2rad($heading);
+        $heading = \deg2rad($heading);
 
-        $lat2 = asin(
-            sin($lat) * cos($angularDistance) +
-            cos($lat) * sin($angularDistance) * cos($heading)
+        $lat2 = \asin(
+            \sin($lat) * \cos($angularDistance) +
+            \cos($lat) * \sin($angularDistance) * \cos($heading)
         );
-        $lon2 = $lng + atan2(
-            sin($heading) * sin($angularDistance) * cos($lat),
-            cos($angularDistance) - sin($lat) * sin($lat2)
+        $lon2 = $lng + \atan2(
+            \sin($heading) * \sin($angularDistance) * \cos($lat),
+            \cos($angularDistance) - \sin($lat) * \sin($lat2)
         );
 
-        return new LatLng(rad2deg($lat2), rad2deg($lon2));
+        return new LatLng(\rad2deg($lat2), \rad2deg($lon2));
     }
 
     public function expandBounds(Bounds $bounds, Distance $distance): Bounds
@@ -231,21 +231,21 @@ final class Math
     {
         $radius = $this->ellipsoid->getSemiMajorAxis();
 
-        $lat1 = deg2rad($lat1);
-        $lng1 = deg2rad($lng1);
+        $lat1 = \deg2rad($lat1);
+        $lng1 = \deg2rad($lng1);
 
-        $lng2 = ($radius * $lng1 * cos($lat1) - $distanceInMeters) / ($radius * cos($lat1));
+        $lng2 = ($radius * $lng1 * \cos($lat1) - $distanceInMeters) / ($radius * \cos($lat1));
 
-        return Utils::normalizeLng(rad2deg($lng2));
+        return Utils::normalizeLng(\rad2deg($lng2));
     }
 
     private function latDistance(float $lat1, float $distanceInMeters): float
     {
         $radius = $this->ellipsoid->getSemiMajorAxis();
 
-        $lat1 = deg2rad($lat1);
+        $lat1 = \deg2rad($lat1);
         $lat2 = ($radius * $lat1 - $distanceInMeters) / $radius;
 
-        return Utils::normalizeLat(rad2deg($lat2));
+        return Utils::normalizeLat(\rad2deg($lat2));
     }
 }

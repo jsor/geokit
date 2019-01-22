@@ -69,7 +69,7 @@ class PolygonTest extends TestCase
 
         $array = \iterator_to_array($closedPolygon);
 
-        $this->assertEquals(new LatLng(0, 0), $array[count($closedPolygon) - 1]);
+        $this->assertEquals(new LatLng(0, 0), $array[\count($closedPolygon) - 1]);
     }
 
     public function testCloseEmptyPolygon()
@@ -95,7 +95,7 @@ class PolygonTest extends TestCase
 
         $array = \iterator_to_array($closedPolygon);
 
-        $this->assertEquals(new LatLng(0, 0), $array[count($closedPolygon) - 1]);
+        $this->assertEquals(new LatLng(0, 0), $array[\count($closedPolygon) - 1]);
     }
 
     /**

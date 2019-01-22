@@ -32,38 +32,38 @@ class LngLatTest extends TestCase
 
     public function testConstructorShouldAcceptLocalizedFloatsAsArguments()
     {
-        $currentLocale = setlocale(LC_NUMERIC, '0');
-        setlocale(LC_NUMERIC, 'de_DE.utf8', 'de_DE@euro', 'de_DE', 'deu_deu');
+        $currentLocale = \setlocale(\LC_NUMERIC, '0');
+        \setlocale(\LC_NUMERIC, 'de_DE.utf8', 'de_DE@euro', 'de_DE', 'deu_deu');
 
-        $latitude = floatval('1.1234');
-        $longitude = floatval('2.5678');
+        $latitude = \floatval('1.1234');
+        $longitude = \floatval('2.5678');
 
         $LatLng = new LatLng($latitude, $longitude);
 
         $this->assertSame(1.1234, $LatLng->getLatitude());
         $this->assertSame(2.5678, $LatLng->getLongitude());
 
-        setlocale(LC_NUMERIC, $currentLocale);
+        \setlocale(\LC_NUMERIC, $currentLocale);
     }
 
     public function testToStringShouldReturnLatitudeAndLongitudeAsCommaSeparatedString()
     {
         $LatLng = new LatLng(2.5678, 1.1234);
 
-        $this->assertSame(sprintf('%F,%F', 2.5678, 1.1234), (string) $LatLng);
+        $this->assertSame(\sprintf('%F,%F', 2.5678, 1.1234), (string) $LatLng);
     }
 
     public function testToStringShouldReturnLatitudeAndLongitudeAsCommaSeparatedStringWithLocalizedFloats()
     {
-        $currentLocale = setlocale(LC_NUMERIC, '0');
-        setlocale(LC_NUMERIC, 'de_DE.utf8', 'de_DE@euro', 'de_DE', 'deu_deu');
+        $currentLocale = \setlocale(\LC_NUMERIC, '0');
+        \setlocale(\LC_NUMERIC, 'de_DE.utf8', 'de_DE@euro', 'de_DE', 'deu_deu');
 
-        $latitude = floatval('1.1234');
-        $longitude = floatval('2.5678');
+        $latitude = \floatval('1.1234');
+        $longitude = \floatval('2.5678');
 
         $LatLng = new LatLng($latitude, $longitude);
 
-        $this->assertSame(sprintf('%F,%F', 1.1234, 2.5678), (string) $LatLng);
-        setlocale(LC_NUMERIC, $currentLocale);
+        $this->assertSame(\sprintf('%F,%F', 1.1234, 2.5678), (string) $LatLng);
+        \setlocale(\LC_NUMERIC, $currentLocale);
     }
 }
