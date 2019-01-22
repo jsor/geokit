@@ -56,7 +56,10 @@ final class Polygon implements \Countable, \IteratorAggregate
             $points[] = clone reset($this->points);
         }
 
-        return new self($points);
+        $polygon = new self();
+        $polygon->points = $points;
+
+        return $polygon;
     }
 
     /**
