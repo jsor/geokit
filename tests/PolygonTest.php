@@ -6,11 +6,11 @@ class PolygonTest extends TestCase
 {
     public function testConstructorShouldAcceptArrayOfLatLngs()
     {
-        $points = array(
+        $points = [
             new LatLng(0, 0),
             new LatLng(1, 1),
             'key' => new LatLng(1, 0)
-        );
+        ];
 
         $polygon = new Polygon($points);
 
@@ -27,7 +27,7 @@ class PolygonTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Point at index 0 is not an instance of Geokit\LatLng.');
 
-        new Polygon(array('foo'));
+        new Polygon(['foo']);
     }
 
     public function testIsClose()
@@ -36,34 +36,34 @@ class PolygonTest extends TestCase
 
         $this->assertFalse($polygon->isClosed());
 
-        $polygon = new Polygon(array(
+        $polygon = new Polygon([
             new LatLng(0, 0),
             new LatLng(0, 1),
             new LatLng(1, 1),
             new LatLng(1, 0)
-        ));
+        ]);
 
         $this->assertFalse($polygon->isClosed());
 
-        $polygon = new Polygon(array(
+        $polygon = new Polygon([
             new LatLng(0, 0),
             new LatLng(0, 1),
             new LatLng(1, 1),
             new LatLng(1, 0),
             new LatLng(0, 0)
-        ));
+        ]);
 
         $this->assertTrue($polygon->isClosed());
     }
 
     public function testCloseOpenPolygon()
     {
-        $polygon = new Polygon(array(
+        $polygon = new Polygon([
             new LatLng(0, 0),
             new LatLng(0, 1),
             new LatLng(1, 1),
             new LatLng(1, 0)
-        ));
+        ]);
 
         $closedPolygon = $polygon->close();
 
@@ -83,13 +83,13 @@ class PolygonTest extends TestCase
 
     public function testCloseAlreadyClosedPolygon()
     {
-        $polygon = new Polygon(array(
+        $polygon = new Polygon([
             new LatLng(0, 0),
             new LatLng(0, 1),
             new LatLng(1, 1),
             new LatLng(1, 0),
             new LatLng(0, 0)
-        ));
+        ]);
 
         $closedPolygon = $polygon->close();
 
@@ -110,157 +110,157 @@ class PolygonTest extends TestCase
 
     public function containsDataProvider()
     {
-        return array(
+        return [
             // Closed counterclockwise polygons
-            array(
-                array(
+            [
+                [
                     new LatLng(0, 0),
                     new LatLng(1, 0),
                     new LatLng(1, 1),
                     new LatLng(0, 1),
                     new LatLng(0, 0)
-                ),
+                ],
                 new LatLng(0.5, 0.5),
                 true
-            ),
-            array(
-                array(
+            ],
+            [
+                [
                     new LatLng(0, 0),
                     new LatLng(1, 0),
                     new LatLng(1, 1),
                     new LatLng(0, 1),
                     new LatLng(0, 0)
-                ),
+                ],
                 new LatLng(0.5, 1.5),
                 false
-            ),
-            array(
-                array(
+            ],
+            [
+                [
                     new LatLng(0, 0),
                     new LatLng(1, 0),
                     new LatLng(1, 1),
                     new LatLng(0, 1),
                     new LatLng(0, 0)
-                ),
+                ],
                 new LatLng(0.5, -0.5),
                 false
-            ),
-            array(
-                array(
+            ],
+            [
+                [
                     new LatLng(0, 0),
                     new LatLng(1, 0),
                     new LatLng(1, 1),
                     new LatLng(0, 1),
                     new LatLng(0, 0)
-                ),
+                ],
                 new LatLng(1.5, 0.5),
                 false
-            ),
-            array(
-                array(
+            ],
+            [
+                [
                     new LatLng(0, 0),
                     new LatLng(1, 0),
                     new LatLng(1, 1),
                     new LatLng(0, 1),
                     new LatLng(0, 0)
-                ),
+                ],
                 new LatLng(-0.5, 0.5),
                 false
-            ),
+            ],
 
             // Closed clockwise polygons
-            array(
-                array(
+            [
+                [
                     new LatLng(0, 0),
                     new LatLng(0, 1),
                     new LatLng(1, 1),
                     new LatLng(1, 0),
                     new LatLng(0, 0)
-                ),
+                ],
                 new LatLng(0.5, 0.5),
                 true
-            ),
-            array(
-                array(
+            ],
+            [
+                [
                     new LatLng(1, 1),
                     new LatLng(2, 3),
                     new LatLng(3, 2),
                     new LatLng(1, 1)
-                ),
+                ],
                 new LatLng(1.5, 1.5),
                 true
-            ),
+            ],
 
             // Open counterclockwise polygons
-            array(
-                array(
+            [
+                [
                     new LatLng(0, 0),
                     new LatLng(1, 0),
                     new LatLng(1, 1),
                     new LatLng(0, 1)
-                ),
+                ],
                 new LatLng(0.5, 0.5),
                 true
-            ),
+            ],
 
             // Open clockwise polygons
-            array(
-                array(
+            [
+                [
                     new LatLng(0, 0),
                     new LatLng(0, 1),
                     new LatLng(1, 1),
                     new LatLng(1, 0)
-                ),
+                ],
                 new LatLng(0.5, 0.5),
                 true
-            ),
-            array(
-                array(
+            ],
+            [
+                [
                     new LatLng(1, 1),
                     new LatLng(2, 3),
                     new LatLng(3, 2)
-                ),
+                ],
                 new LatLng(1.5, 1.5),
                 true
-            ),
+            ],
 
             // Empty polygon
-            array(
-                array(),
+            [
+                [],
                 new LatLng(0.5, 0.5),
                 false
-            ),
+            ],
 
             // Assoc polygon
-            array(
-                array(
+            [
+                [
                     'polygon1' => new LatLng(1, 1),
                     'polygon2' => new LatLng(2, 3),
                     'polygon3' => new LatLng(3, 2)
-                ),
+                ],
                 new LatLng(1.5, 1.5),
                 true
-            ),
-        );
+            ],
+        ];
     }
 
     public function testToBounds()
     {
-        $points = array(
+        $points = [
             new LatLng(0, 0),
             new LatLng(0, 1),
             new LatLng(1, 1),
             new LatLng(1, 0)
-        );
+        ];
 
         $polygon = new Polygon($points);
 
         $bounds = $polygon->toBounds();
 
         $this->assertEquals(0, $bounds->getSouthWest()->getLatitude());
-        $this->assertEquals(0,  $bounds->getSouthWest()->getLongitude());
+        $this->assertEquals(0, $bounds->getSouthWest()->getLongitude());
         $this->assertEquals(1, $bounds->getNorthEast()->getLatitude());
-        $this->assertEquals(1,  $bounds->getNorthEast()->getLongitude());
+        $this->assertEquals(1, $bounds->getNorthEast()->getLongitude());
     }
 
     public function testToBoundsThrowsExceptionForEmptyPolygon()
@@ -275,9 +275,9 @@ class PolygonTest extends TestCase
 
     public function testCountable()
     {
-        $points = array(
+        $points = [
             new LatLng(0, 0)
-        );
+        ];
 
         $polygon = new Polygon($points);
 
@@ -286,9 +286,9 @@ class PolygonTest extends TestCase
 
     public function testIteratorAggregate()
     {
-        $points = array(
+        $points = [
             new LatLng(0, 0)
-        );
+        ];
 
         $polygon = new Polygon($points);
 

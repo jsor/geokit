@@ -81,92 +81,92 @@ class DistanceTest extends TestCase
 
     public function fromStringDataProvider()
     {
-        return array(
-            array(
+        return [
+            [
                 1000,
                 ''
-            ),
-            array(
+            ],
+            [
                 1000,
                 'm'
-            ),
-            array(
+            ],
+            [
                 1000,
                 'meter'
-            ),
-            array(
+            ],
+            [
                 1000,
                 'meters'
-            ),
-            array(
+            ],
+            [
                 1000,
                 'metre'
-            ),
-            array(
+            ],
+            [
                 1000,
                 'metres'
-            ),
-            array(
+            ],
+            [
                 1,
                 'km'
-            ),
-            array(
+            ],
+            [
                 1,
                 'kilometer'
-            ),
-            array(
+            ],
+            [
                 1,
                 'kilometers'
-            ),
-            array(
+            ],
+            [
                 1,
                 'kilometre'
-            ),
-            array(
+            ],
+            [
                 1,
                 'kilometres'
-            ),
-            array(
+            ],
+            [
                 0.62137119223733,
                 'mi'
-            ),
-            array(
+            ],
+            [
                 0.62137119223733,
                 'mile'
-            ),
-            array(
+            ],
+            [
                 0.62137119223733,
                 'miles'
-            ),
-            array(
+            ],
+            [
                 3280.83989501312336,
                 'ft'
-            ),
-            array(
+            ],
+            [
                 3280.83989501312336,
                 'foot'
-            ),
-            array(
+            ],
+            [
                 3280.83989501312336,
                 'feet'
-            ),
-            array(
+            ],
+            [
                 0.53995680345572,
                 'nm'
-            ),
-            array(
+            ],
+            [
                 0.53995680345572,
                 'nautical'
-            ),
-            array(
+            ],
+            [
                 0.53995680345572,
                 'nauticalmile'
-            ),
-            array(
+            ],
+            [
                 0.53995680345572,
                 'nauticalmiles'
-            ),
-        );
+            ],
+        ];
     }
 
     public function testFromStringThrowsExceptionForInvalidInput()

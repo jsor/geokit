@@ -14,13 +14,13 @@ class UtilsTest extends TestCase
 
     public function normalizeLatDataProvider()
     {
-        return array(
-            array(-95, -90),
-            array(-90, -90),
-            array(5, 5),
-            array(90, 90),
-            array(180, 90)
-        );
+        return [
+            [-95, -90],
+            [-90, -90],
+            [5, 5],
+            [90, 90],
+            [180, 90]
+        ];
     }
 
     /**
@@ -33,17 +33,17 @@ class UtilsTest extends TestCase
 
     public function normalizeLngDataProvider()
     {
-        return array(
-            array(-545, 175),
-            array(-365, -5),
-            array(-185, 175),
-            array(-180, -180),
-            array(5, 5),
-            array(180, 180),
-            array(215, -145),
-            array(360, 0),
-            array(395, 35),
-            array(540, 180)
-        );
+        return [
+            [-545, 175],
+            [-365, -5],
+            [-185, 175],
+            [-180, -180],
+            [5, 5],
+            [180, 180],
+            [215, -145],
+            [360, 0],
+            [395, 35],
+            [540, 180]
+        ];
     }
 }
