@@ -155,8 +155,10 @@ final class Math
         $Bx = cos($lat2) * cos($dLon);
         $By = cos($lat2) * sin($dLon);
 
-        $lat3 = atan2(sin($lat1) + sin($lat2),
-            sqrt((cos($lat1) + $Bx) * (cos($lat1) + $Bx) + $By * $By));
+        $lat3 = atan2(
+            sin($lat1) + sin($lat2),
+            sqrt((cos($lat1) + $Bx) * (cos($lat1) + $Bx) + $By * $By)
+        );
         $lon3 = deg2rad($lng1) + atan2($By, cos($lat1) + $Bx);
 
         return new LatLng(rad2deg($lat3), rad2deg($lon3));
@@ -176,10 +178,14 @@ final class Math
         $angularDistance = $distance->meters() / $this->ellipsoid->getSemiMajorAxis();
         $heading = deg2rad($heading);
 
-        $lat2 = asin(sin($lat) * cos($angularDistance) +
-            cos($lat) * sin($angularDistance) * cos($heading));
-        $lon2 = $lng + atan2(sin($heading) * sin($angularDistance) * cos($lat),
-                cos($angularDistance) - sin($lat) * sin($lat2));
+        $lat2 = asin(
+            sin($lat) * cos($angularDistance) +
+            cos($lat) * sin($angularDistance) * cos($heading)
+        );
+        $lon2 = $lng + atan2(
+            sin($heading) * sin($angularDistance) * cos($lat),
+            cos($angularDistance) - sin($lat) * sin($lat2)
+        );
 
         return new LatLng(rad2deg($lat2), rad2deg($lon2));
     }

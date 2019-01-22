@@ -15,7 +15,9 @@ final class Bounds
         $this->northEast = $northEast;
 
         if ($this->southWest->getLatitude() > $this->northEast->getLatitude()) {
-            throw new \LogicException('Bounds south-west coordinate cannot be north of the north-east coordinate');
+            throw new \LogicException(
+                'Bounds south-west coordinate cannot be north of the north-east coordinate'
+            );
         }
     }
 
@@ -32,7 +34,10 @@ final class Bounds
     public function getCenter(): LatLng
     {
         if ($this->crossesAntimeridian()) {
-            $span = $this->lngSpan($this->southWest->getLongitude(), $this->northEast->getLongitude());
+            $span = $this->lngSpan(
+                $this->southWest->getLongitude(),
+                $this->northEast->getLongitude()
+            );
             $lng = $this->southWest->getLongitude() + $span / 2;
         } else {
             $lng = ($this->southWest->getLongitude() + $this->northEast->getLongitude()) / 2;

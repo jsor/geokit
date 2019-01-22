@@ -27,8 +27,7 @@ final class Ellipsoid
         float $semiMinorAxis,
         float $flattening,
         float $inverseFlattening
-    )
-    {
+    ) {
         $this->semiMajorAxis = $semiMajorAxis;
         $this->semiMinorAxis = $semiMinorAxis;
         $this->flattening = $flattening;
@@ -135,8 +134,7 @@ final class Ellipsoid
     public static function createFromSemiMajorAndInvF(
         float $semiMajorAxis,
         float $inverseFlattening
-    ): self
-    {
+    ): self {
         if ($inverseFlattening <= 0) {
             throw new \InvalidArgumentException('The inverse flattening must be > 0.');
         }
@@ -154,8 +152,7 @@ final class Ellipsoid
     public static function createFromSemiMajorAndSemiMinor(
         float $semiMajorAxis,
         float $semiMinorAxis
-    ): self
-    {
+    ): self {
         $flattening = ($semiMajorAxis - $semiMinorAxis) / $semiMajorAxis;
 
         return new self(
