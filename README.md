@@ -88,6 +88,17 @@ $shrinkedBounds = $math->shrinkBounds(
 );
 ```
 
+The `circle()` method calculates a closed circle Polygon given a center, radius
+and steps for precision.
+
+```php
+$circlePolygon = $math->circle(
+    new Geokit\LatLng(49.50042565, 8.50207515), 
+    Geokit\Distance::fromString('5km'),
+    32
+);
+```
+
 #### Other calculations
 
 Other useful methods are:

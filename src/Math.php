@@ -190,6 +190,24 @@ final class Math
         return new LatLng(\rad2deg($lat2), \rad2deg($lon2));
     }
 
+    public function circle(
+        LatLng $center,
+        Distance $radius,
+        int $steps
+    ): Polygon {
+        $points = [];
+
+        for ($i = 0; $i <= $steps; $i++) {
+            $points[] = $this->endpoint(
+                $center,
+                $i * (-360 / $steps),
+                $radius
+            );
+        }
+
+        return new Polygon($points);
+    }
+
     public function expandBounds(Bounds $bounds, Distance $distance): Bounds
     {
         return $this->transformBounds($bounds, $distance->meters());

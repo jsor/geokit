@@ -305,6 +305,33 @@ class MathTest extends TestCase
         );
     }
 
+    public function testCircle()
+    {
+        $math = new Math();
+
+        $center = new LatLng(39.984, -75.343);
+        $distance = Distance::fromString('50km');
+
+        $circle = $math->circle(
+            $center,
+            $distance,
+            32
+        );
+
+        $this->assertTrue($circle->isClosed());
+        $this->assertCount(33, $circle);
+
+        $this->assertTrue($circle->contains($center));
+
+        foreach ($circle as $point) {
+            $this->assertEqualsWithDelta(
+                $distance->meters(),
+                $math->distanceHaversine($center, $point)->meters(),
+                0.001
+            );
+        }
+    }
+
     public function testExpandBounds()
     {
         $math = new Math();
