@@ -71,21 +71,6 @@ Both methods return a [Distance](#distance) instance.
 
 #### Transformations
 
-With the `expandBoundingBox()` and `shrinkBoundingBox()` methods, you can expand
-or shrink a given BoundingBox instance by a distance.
-
-```php
-$expandedBoundingBox = $math->expandBoundingBox(
-    new Geokit\LatLng(49.50042565, 8.50207515), 
-    Geokit\Distance::fromString('10km')
-);
-
-$shrinkedBoundingBox = $math->shrinkBoundingBox(
-    $expandedBoundingBox, 
-    Geokit\Distance::fromString('10km')
-);
-```
-
 The `circle()` method calculates a closed circle Polygon given a center, radius
 and steps for precision.
 
@@ -181,6 +166,19 @@ $boolean = $boundingBox->contains($latLng);
 
 $newBoundingBox = $boundingBox->extend($latLng);
 $newBoundingBox = $boundingBox->union($otherBoundingBox);
+```
+
+With the `expand()` and `shrink()` methods, you can expand or shrink a
+BoundingBox instance by a distance.
+
+```php
+$expandedBoundingBox = $boundingBox->expand(
+    Geokit\Distance::fromString('10km')
+);
+
+$shrinkedBoundingBox = $boundingBox->shrink(
+    Geokit\Distance::fromString('10km')
+);
 ```
 
 ### Polygon

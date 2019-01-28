@@ -107,4 +107,86 @@ class BoundingBoxTest extends TestCase
         $this->assertEquals(90, $bbox->getSpan()->getLatitude());
         $this->assertEquals(2, $bbox->getSpan()->getLongitude());
     }
+
+    public function testExpand()
+    {
+        $bbox = new BoundingBox(new LatLng(-45, 179), new LatLng(45, -179));
+
+        $expandedBbox = $bbox->expand(new Distance(100));
+
+        $this->assertEquals(
+            -45.000898315284132,
+            $expandedBbox->getSouthWest()->getLatitude()
+        );
+        $this->assertEquals(
+            178.99872959034192,
+            $expandedBbox->getSouthWest()->getLongitude()
+        );
+        $this->assertEquals(
+            45.000898315284132,
+            $expandedBbox->getNorthEast()->getLatitude()
+        );
+        $this->assertEquals(
+            -178.99872959034192,
+            $expandedBbox->getNorthEast()->getLongitude()
+        );
+    }
+
+    public function testShrink()
+    {
+        $bbox = new BoundingBox(
+            new LatLng(-45.000898315284132, 178.99872959034192),
+            new LatLng(45.000898315284132, -178.99872959034192)
+        );
+
+        $shrinkedBbox = $bbox->shrink(
+            new Distance(100)
+        );
+
+        $this->assertEquals(
+            -45,
+            $shrinkedBbox->getSouthWest()->getLatitude()
+        );
+        $this->assertEquals(
+            179.0000000199187,
+            $shrinkedBbox->getSouthWest()->getLongitude()
+        );
+        $this->assertEquals(
+            45,
+            $shrinkedBbox->getNorthEast()->getLatitude()
+        );
+        $this->assertEquals(
+            -179.0000000199187,
+            $shrinkedBbox->getNorthEast()->getLongitude()
+        );
+    }
+
+    public function testShrinkTooMuch()
+    {
+        $bbox = new BoundingBox(
+            new LatLng(1, 1),
+            new LatLng(1, 1)
+        );
+
+        $shrinkedBbox = $bbox->shrink(
+            new Distance(100)
+        );
+
+        $this->assertEquals(
+            1,
+            $shrinkedBbox->getSouthWest()->getLatitude()
+        );
+        $this->assertEquals(
+            1,
+            $shrinkedBbox->getSouthWest()->getLongitude()
+        );
+        $this->assertEquals(
+            1,
+            $shrinkedBbox->getNorthEast()->getLatitude()
+        );
+        $this->assertEquals(
+            1,
+            $shrinkedBbox->getNorthEast()->getLongitude()
+        );
+    }
 }

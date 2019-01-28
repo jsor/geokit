@@ -109,6 +109,65 @@ final class BoundingBox
         return $newBbox->extend($bbox->getNorthEast());
     }
 
+    public function expand(Distance $distance): BoundingBox
+    {
+        return self::transformBoundingBox($this, $distance->meters());
+    }
+
+    public function shrink(Distance $distance): BoundingBox
+    {
+        return self::transformBoundingBox($this, -$distance->meters());
+    }
+
+    private static function transformBoundingBox(BoundingBox $bbox, float $distanceInMeters): BoundingBox
+    {
+        $latSW = $bbox->getSouthWest()->getLatitude();
+        $lngSW = $bbox->getSouthWest()->getLongitude();
+        $latNE = $bbox->getNorthEast()->getLatitude();
+        $lngNE = $bbox->getNorthEast()->getLongitude();
+
+        $latlngSW = new LatLng(
+            self::latDistance($latSW, $distanceInMeters),
+            self::lngDistance($latSW, $lngSW, $distanceInMeters)
+        );
+
+        $latlngNE = new LatLng(
+            self::latDistance($latNE, -$distanceInMeters),
+            self::lngDistance($latNE, $lngNE, -$distanceInMeters)
+        );
+
+        // Check if we're shrinking too much
+        if ($latlngSW->getLatitude() > $latlngNE->getLatitude()) {
+            $center = $bbox->getCenter();
+
+            return new BoundingBox($center, $center);
+        }
+
+        return new BoundingBox($latlngSW, $latlngNE);
+    }
+
+    private static function lngDistance(float $lat1, float $lng1, float $distanceInMeters): float
+    {
+        $radius = WGS84::SEMI_MAJOR_AXIS;
+
+        $lat1 = \deg2rad($lat1);
+        $lng1 = \deg2rad($lng1);
+
+        $lng2 = ($radius * $lng1 * \cos($lat1) - $distanceInMeters) / ($radius * \cos($lat1));
+
+        return Utils::normalizeLng(\rad2deg($lng2));
+    }
+
+    private static function latDistance(float $lat1, float $distanceInMeters): float
+    {
+        $radius = WGS84::SEMI_MAJOR_AXIS;
+
+        $lat1 = \deg2rad($lat1);
+        $lat2 = ($radius * $lat1 - $distanceInMeters) / $radius;
+
+        return Utils::normalizeLat(\rad2deg($lat2));
+    }
+
     private function containsLng(float $lng): bool
     {
         if ($this->crossesAntimeridian()) {
