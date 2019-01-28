@@ -40,16 +40,14 @@ Reference
 
 ### Math
 
-A Math instance can be used to perform geographic calculations on LatLng and
-Bounds instances. Since such calculations depend on an
-[Earth Ellipsoid](http://en.wikipedia.org/wiki/Earth_ellipsoid), you can pass an
-instance of `Geokit\Ellipsoid` to its constructor. If no Ellipsoid instance is
-provided, it uses the default
-[WGS 86 Ellipsoid](http://en.wikipedia.org/wiki/World_Geodetic_System).
+A Math instance can be used to perform geographic calculations on LatLng and 
+Bounds instances.
+
+The [World Geodetic System 1984](http://en.wikipedia.org/wiki/World_Geodetic_System) 
+(WGS84) is exclusively used as the coordinate reference system.
 
 ```php
 $math = new Geokit\Math();
-$mathAiry = new Geokit\Math(Geokit\Ellipsoid::airy1830());
 ```
 
 #### Distance calculations

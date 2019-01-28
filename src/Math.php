@@ -6,13 +6,6 @@ namespace Geokit;
 
 final class Math
 {
-    private $ellipsoid;
-
-    public function __construct(Ellipsoid $ellipsoid = null)
-    {
-        $this->ellipsoid = $ellipsoid ?: Ellipsoid::wgs84();
-    }
-
     /**
      * Calculates the approximate sea level great circle (Earth) distance
      * between two points using the Haversine formula.
@@ -36,7 +29,7 @@ final class Math
 
         $c = 2 * \atan2(\sqrt($a), \sqrt(1 - $a));
 
-        return new Distance($this->ellipsoid->getSemiMajorAxis() * $c);
+        return new Distance(WGS84::SEMI_MAJOR_AXIS * $c);
     }
 
     /**
@@ -53,9 +46,9 @@ final class Math
         $lat2 = $to->getLatitude();
         $lng2 = $to->getLongitude();
 
-        $a = $this->ellipsoid->getSemiMajorAxis();
-        $b = $this->ellipsoid->getSemiMinorAxis();
-        $f = $this->ellipsoid->getFlattening();
+        $a = WGS84::SEMI_MAJOR_AXIS;
+        $b = WGS84::SEMI_MINOR_AXIS;
+        $f = WGS84::FLATTENING;
 
         $L = \deg2rad($lng2 - $lng1);
         $U1 = \atan((1 - $f) * \tan(\deg2rad($lat1)));
@@ -175,7 +168,7 @@ final class Math
         $lat = \deg2rad($start->getLatitude());
         $lng = \deg2rad($start->getLongitude());
 
-        $angularDistance = $distance->meters() / $this->ellipsoid->getSemiMajorAxis();
+        $angularDistance = $distance->meters() / WGS84::SEMI_MAJOR_AXIS;
         $heading = \deg2rad($heading);
 
         $lat2 = \asin(
@@ -247,7 +240,7 @@ final class Math
 
     private function lngDistance(float $lat1, float $lng1, float $distanceInMeters): float
     {
-        $radius = $this->ellipsoid->getSemiMajorAxis();
+        $radius = WGS84::SEMI_MAJOR_AXIS;
 
         $lat1 = \deg2rad($lat1);
         $lng1 = \deg2rad($lng1);
@@ -259,7 +252,7 @@ final class Math
 
     private function latDistance(float $lat1, float $distanceInMeters): float
     {
-        $radius = $this->ellipsoid->getSemiMajorAxis();
+        $radius = WGS84::SEMI_MAJOR_AXIS;
 
         $lat1 = \deg2rad($lat1);
         $lat2 = ($radius * $lat1 - $distanceInMeters) / $radius;
