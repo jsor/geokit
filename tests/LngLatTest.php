@@ -2,8 +2,6 @@
 
 namespace Geokit;
 
-use Geokit\Fixtures\ThirdPartyLatLng;
-
 class LngLatTest extends TestCase
 {
     public function testConstructorShouldAcceptStringsAsArguments()
