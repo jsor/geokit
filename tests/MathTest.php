@@ -334,39 +334,39 @@ class MathTest extends TestCase
         }
     }
 
-    public function testExpandBounds()
+    public function testExpandBoundingBox()
     {
         $math = new Math();
 
-        $bounds = $math->expandBounds(
-            new Bounds(new LatLng(-45, 179), new LatLng(45, -179)),
+        $bbox = $math->expandBoundingBox(
+            new BoundingBox(new LatLng(-45, 179), new LatLng(45, -179)),
             new Distance(100)
         );
 
         $this->assertEquals(
             -45.000898315284132,
-            $bounds->getSouthWest()->getLatitude()
+            $bbox->getSouthWest()->getLatitude()
         );
         $this->assertEquals(
             178.99872959034192,
-            $bounds->getSouthWest()->getLongitude()
+            $bbox->getSouthWest()->getLongitude()
         );
         $this->assertEquals(
             45.000898315284132,
-            $bounds->getNorthEast()->getLatitude()
+            $bbox->getNorthEast()->getLatitude()
         );
         $this->assertEquals(
             -178.99872959034192,
-            $bounds->getNorthEast()->getLongitude()
+            $bbox->getNorthEast()->getLongitude()
         );
     }
 
-    public function testShrinkBounds()
+    public function testShrinkBoundingBox()
     {
         $math = new Math();
 
-        $bounds = $math->shrinkBounds(
-            new Bounds(
+        $bbox = $math->shrinkBoundingBox(
+            new BoundingBox(
                 new LatLng(-45.000898315284132, 178.99872959034192),
                 new LatLng(45.000898315284132, -178.99872959034192)
             ),
@@ -375,28 +375,28 @@ class MathTest extends TestCase
 
         $this->assertEquals(
             -45,
-            $bounds->getSouthWest()->getLatitude()
+            $bbox->getSouthWest()->getLatitude()
         );
         $this->assertEquals(
             179.0000000199187,
-            $bounds->getSouthWest()->getLongitude()
+            $bbox->getSouthWest()->getLongitude()
         );
         $this->assertEquals(
             45,
-            $bounds->getNorthEast()->getLatitude()
+            $bbox->getNorthEast()->getLatitude()
         );
         $this->assertEquals(
             -179.0000000199187,
-            $bounds->getNorthEast()->getLongitude()
+            $bbox->getNorthEast()->getLongitude()
         );
     }
 
-    public function testShrinkBoundsTooMuch()
+    public function testShrinkBoundingBoxTooMuch()
     {
         $math = new Math();
 
-        $bounds = $math->shrinkBounds(
-            new Bounds(
+        $bbox = $math->shrinkBoundingBox(
+            new BoundingBox(
                 new LatLng(1, 1),
                 new LatLng(1, 1)
             ),
@@ -405,19 +405,19 @@ class MathTest extends TestCase
 
         $this->assertEquals(
             1,
-            $bounds->getSouthWest()->getLatitude()
+            $bbox->getSouthWest()->getLatitude()
         );
         $this->assertEquals(
             1,
-            $bounds->getSouthWest()->getLongitude()
+            $bbox->getSouthWest()->getLongitude()
         );
         $this->assertEquals(
             1,
-            $bounds->getNorthEast()->getLatitude()
+            $bbox->getNorthEast()->getLatitude()
         );
         $this->assertEquals(
             1,
-            $bounds->getNorthEast()->getLongitude()
+            $bbox->getNorthEast()->getLongitude()
         );
     }
 }

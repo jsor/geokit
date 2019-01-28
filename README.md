@@ -5,7 +5,7 @@ Geokit is a PHP toolkit to solve geo-related tasks like:
 
 * Distance calculations.
 * Heading, midpoint and endpoint calculations.
-* Rectangular bounds calculations.
+* Rectangular bounding box calculations.
 
 [![Build Status](https://travis-ci.org/jsor/geokit.svg?branch=master)](http://travis-ci.org/jsor/geokit?branch=master)
 [![Coverage Status](https://img.shields.io/coveralls/jsor/geokit.svg?style=flat)](https://coveralls.io/r/jsor/geokit?branch=master)
@@ -18,7 +18,7 @@ Geokit is a PHP toolkit to solve geo-related tasks like:
         * [Other calculations](#other-calculations)
     * [Distance](#distance)
     * [LatLng](#latlng)
-    * [Bounds](#bounds)
+    * [BoundingBox](#boundingbox)
     * [Polygon](#polygon)
 * [License](#license)
 * [Credits](#credits)
@@ -41,7 +41,7 @@ Reference
 ### Math
 
 A Math instance can be used to perform geographic calculations on LatLng and 
-Bounds instances.
+BoundingBox instances.
 
 The [World Geodetic System 1984](http://en.wikipedia.org/wiki/World_Geodetic_System) 
 (WGS84) is exclusively used as the coordinate reference system.
@@ -71,17 +71,17 @@ Both methods return a [Distance](#distance) instance.
 
 #### Transformations
 
-With the `expandBounds()` and `shrinkBounds()` methods, you can expand or shrink
-a given Bounds instance by a distance.
+With the `expandBoundingBox()` and `shrinkBoundingBox()` methods, you can expand
+or shrink a given BoundingBox instance by a distance.
 
 ```php
-$expandedBounds1 = $math->expandBounds(
+$expandedBoundingBox = $math->expandBoundingBox(
     new Geokit\LatLng(49.50042565, 8.50207515), 
     Geokit\Distance::fromString('10km')
 );
 
-$shrinkedBounds = $math->shrinkBounds(
-    $expandedBounds2, 
+$shrinkedBoundingBox = $math->shrinkBoundingBox(
+    $expandedBoundingBox, 
     Geokit\Distance::fromString('10km')
 );
 ```
@@ -156,10 +156,10 @@ $latitude = $latLng->getLatitude();
 $longitude = $latLng->getLongitude();
 ```
 
-### Bounds
+### BoundingBox
 
-A Bounds instance represents a rectangle in geographical coordinates, including
-one that crosses the 180 degrees longitudinal meridian.
+A BoundingBox instance represents a rectangle in geographical coordinates,
+including one that crosses the 180 degrees longitudinal meridian.
 
 It is constructed from its left-bottom (south-west) and right-top (north-east)
 corner points.
@@ -168,19 +168,19 @@ corner points.
 $southWest = new Geokit\LatLng(1, 2);
 $northEast = new Geokit\LatLng(1, 2);
 
-$bounds = new Geokit\Bounds($southWest, $northEast);
+$boundingBox = new Geokit\BoundingBox($southWest, $northEast);
 
-$southWestLatLng = $bounds->getSouthWest();
-$northEastLatLng = $bounds->getNorthEast();
+$southWestLatLng = $boundingBox->getSouthWest();
+$northEastLatLng = $boundingBox->getNorthEast();
 
-$centerLatLng = $bounds->getCenter();
+$centerLatLng = $boundingBox->getCenter();
 
-$spanLatLng = $bounds->getSpan();
+$spanLatLng = $boundingBox->getSpan();
 
-$boolean = $bounds->contains($latLng);
+$boolean = $boundingBox->contains($latLng);
 
-$newBounds = $bounds->extend($latLng);
-$newBounds = $bounds->union($otherBounds);
+$newBoundingBox = $boundingBox->extend($latLng);
+$newBoundingBox = $boundingBox->union($otherBoundingBox);
 ```
 
 ### Polygon
@@ -203,8 +203,8 @@ foreach ($polygon as $latLng) {
 
 $polygon->contains(Geokit\LatLng(0.5, 0.5)); // true
 
-/** @var Geokit\Bounds $bounds */
-$bounds = $polygon->toBounds();
+/** @var Geokit\BoundingBox $boundingBox */
+$boundingBox = $polygon->toBoundingBox();
 ```
 
 License

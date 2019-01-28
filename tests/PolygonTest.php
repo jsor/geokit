@@ -244,7 +244,7 @@ class PolygonTest extends TestCase
         ];
     }
 
-    public function testToBounds()
+    public function testToBoundingBox()
     {
         $points = [
             new LatLng(0, 0),
@@ -255,22 +255,22 @@ class PolygonTest extends TestCase
 
         $polygon = new Polygon($points);
 
-        $bounds = $polygon->toBounds();
+        $bbox = $polygon->toBoundingBox();
 
-        $this->assertEquals(0, $bounds->getSouthWest()->getLatitude());
-        $this->assertEquals(0, $bounds->getSouthWest()->getLongitude());
-        $this->assertEquals(1, $bounds->getNorthEast()->getLatitude());
-        $this->assertEquals(1, $bounds->getNorthEast()->getLongitude());
+        $this->assertEquals(0, $bbox->getSouthWest()->getLatitude());
+        $this->assertEquals(0, $bbox->getSouthWest()->getLongitude());
+        $this->assertEquals(1, $bbox->getNorthEast()->getLatitude());
+        $this->assertEquals(1, $bbox->getNorthEast()->getLongitude());
     }
 
-    public function testToBoundsThrowsExceptionForEmptyPolygon()
+    public function testToBoundingBoxThrowsExceptionForEmptyPolygon()
     {
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('Cannot create Bounds from empty Polygon.');
+        $this->expectExceptionMessage('Cannot create a BoundingBox from empty Polygon.');
 
         $polygon = new Polygon();
 
-        $polygon->toBounds();
+        $polygon->toBoundingBox();
     }
 
     public function testCountable()

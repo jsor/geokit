@@ -101,22 +101,22 @@ final class Polygon implements \Countable, \IteratorAggregate
         return $inside;
     }
 
-    public function toBounds(): Bounds
+    public function toBoundingBox(): BoundingBox
     {
         if (0 === \count($this->points)) {
-            throw new \LogicException('Cannot create Bounds from empty Polygon.');
+            throw new \LogicException('Cannot create a BoundingBox from empty Polygon.');
         }
 
         $points = $this->points;
         $start = \array_shift($points);
 
-        $bounds = new Bounds($start, $start);
+        $bbox = new BoundingBox($start, $start);
 
         foreach ($points as $latLng) {
-            $bounds = $bounds->extend($latLng);
+            $bbox = $bbox->extend($latLng);
         }
 
-        return $bounds;
+        return $bbox;
     }
 
     public function count(): int

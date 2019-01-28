@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Geokit;
 
-final class Bounds
+final class BoundingBox
 {
     private $southWest;
     private $northEast;
@@ -16,7 +16,7 @@ final class Bounds
 
         if ($this->southWest->getLatitude() > $this->northEast->getLatitude()) {
             throw new \LogicException(
-                'Bounds south-west coordinate cannot be north of the north-east coordinate'
+                'Bounding Box south-west coordinate cannot be north of the north-east coordinate'
             );
         }
     }
@@ -102,11 +102,11 @@ final class Bounds
         return new self(new LatLng($newSouth, $newWest), new LatLng($newNorth, $newEast));
     }
 
-    public function union(Bounds $bounds): self
+    public function union(BoundingBox $bbox): self
     {
-        $newBounds = $this->extend($bounds->getSouthWest());
+        $newBbox = $this->extend($bbox->getSouthWest());
 
-        return $newBounds->extend($bounds->getNorthEast());
+        return $newBbox->extend($bbox->getNorthEast());
     }
 
     private function containsLng(float $lng): bool

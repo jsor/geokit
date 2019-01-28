@@ -201,22 +201,22 @@ final class Math
         return new Polygon($points);
     }
 
-    public function expandBounds(Bounds $bounds, Distance $distance): Bounds
+    public function expandBoundingBox(BoundingBox $bbox, Distance $distance): BoundingBox
     {
-        return $this->transformBounds($bounds, $distance->meters());
+        return $this->transformBoundingBox($bbox, $distance->meters());
     }
 
-    public function shrinkBounds(Bounds $bounds, Distance $distance): Bounds
+    public function shrinkBoundingBox(BoundingBox $bbox, Distance $distance): BoundingBox
     {
-        return $this->transformBounds($bounds, -$distance->meters());
+        return $this->transformBoundingBox($bbox, -$distance->meters());
     }
 
-    private function transformBounds(Bounds $bounds, float $distanceInMeters): Bounds
+    private function transformBoundingBox(BoundingBox $bbox, float $distanceInMeters): BoundingBox
     {
-        $latSW = $bounds->getSouthWest()->getLatitude();
-        $lngSW = $bounds->getSouthWest()->getLongitude();
-        $latNE = $bounds->getNorthEast()->getLatitude();
-        $lngNE = $bounds->getNorthEast()->getLongitude();
+        $latSW = $bbox->getSouthWest()->getLatitude();
+        $lngSW = $bbox->getSouthWest()->getLongitude();
+        $latNE = $bbox->getNorthEast()->getLatitude();
+        $lngNE = $bbox->getNorthEast()->getLongitude();
 
         $latlngSW = new LatLng(
             $this->latDistance($latSW, $distanceInMeters),
@@ -230,12 +230,12 @@ final class Math
 
         // Check if we're shrinking too much
         if ($latlngSW->getLatitude() > $latlngNE->getLatitude()) {
-            $center = $bounds->getCenter();
+            $center = $bbox->getCenter();
 
-            return new Bounds($center, $center);
+            return new BoundingBox($center, $center);
         }
 
-        return new Bounds($latlngSW, $latlngNE);
+        return new BoundingBox($latlngSW, $latlngNE);
     }
 
     private function lngDistance(float $lat1, float $lng1, float $distanceInMeters): float
