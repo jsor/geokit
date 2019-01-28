@@ -189,4 +189,55 @@ class BoundingBoxTest extends TestCase
             $shrinkedBbox->getNorthEast()->getLongitude()
         );
     }
+
+    public function testToPolygon()
+    {
+        $bbox = new BoundingBox(
+            new LatLng(0, 0),
+            new LatLng(10, 10)
+        );
+
+        $polygon = $bbox->toPolygon();
+
+        $this->assertCount(5, $polygon);
+        $this->assertTrue($polygon->isClosed());
+
+        $array = iterator_to_array($polygon);
+
+        $this->assertEquals(
+            0,
+            $array[0]->getLatitude()
+        );
+        $this->assertEquals(
+            0,
+            $array[0]->getLongitude()
+        );
+
+        $this->assertEquals(
+            0,
+            $array[1]->getLatitude()
+        );
+        $this->assertEquals(
+            10,
+            $array[1]->getLongitude()
+        );
+
+        $this->assertEquals(
+            10,
+            $array[2]->getLatitude()
+        );
+        $this->assertEquals(
+            10,
+            $array[2]->getLongitude()
+        );
+
+        $this->assertEquals(
+            10,
+            $array[3]->getLatitude()
+        );
+        $this->assertEquals(
+            0,
+            $array[3]->getLongitude()
+        );
+    }
 }

@@ -181,6 +181,13 @@ $shrinkedBoundingBox = $boundingBox->shrink(
 );
 ```
 
+The `toPolygon()` method converts the BoundingBox to an equivalent Polygon
+instance.
+
+```php
+$polygon = $boundingBox->toPolygon();
+```
+
 ### Polygon
 
 A Polygon instance represents a two-dimensional shape of connected line segments

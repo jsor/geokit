@@ -119,6 +119,17 @@ final class BoundingBox
         return self::transformBoundingBox($this, -$distance->meters());
     }
 
+    public function toPolygon(): Polygon
+    {
+        return new Polygon([
+            new LatLng($this->southWest->getLatitude(), $this->southWest->getLongitude()),
+            new LatLng($this->southWest->getLatitude(), $this->northEast->getLongitude()),
+            new LatLng($this->northEast->getLatitude(), $this->northEast->getLongitude()),
+            new LatLng($this->northEast->getLatitude(), $this->southWest->getLongitude()),
+            new LatLng($this->southWest->getLatitude(), $this->southWest->getLongitude()),
+        ]);
+    }
+
     private static function transformBoundingBox(BoundingBox $bbox, float $distanceInMeters): BoundingBox
     {
         $latSW = $bbox->getSouthWest()->getLatitude();
