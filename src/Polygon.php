@@ -124,8 +124,8 @@ final class Polygon implements \Countable, \IteratorAggregate
         return \count($this->points);
     }
 
-    public function getIterator(): \ArrayIterator
+    public function getIterator(): \Generator
     {
-        return new \ArrayIterator($this->points);
+        yield from $this->points;
     }
 }
