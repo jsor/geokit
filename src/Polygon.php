@@ -18,7 +18,7 @@ final class Polygon implements \Countable, \IteratorAggregate
                 return;
             }
 
-            throw new \InvalidArgumentException(
+            throw new Exception\InvalidArgumentException(
                 \sprintf(
                     'Point at index %s is not an instance of Geokit\LatLng.',
                     \json_encode($index)
@@ -104,7 +104,7 @@ final class Polygon implements \Countable, \IteratorAggregate
     public function toBoundingBox(): BoundingBox
     {
         if (0 === \count($this->points)) {
-            throw new \LogicException('Cannot create a BoundingBox from empty Polygon.');
+            throw new Exception\LogicException('Cannot create a BoundingBox from empty Polygon.');
         }
 
         $points = $this->points;

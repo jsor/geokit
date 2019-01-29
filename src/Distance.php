@@ -57,7 +57,12 @@ final class Distance
     public function __construct(float $value, string $unit = self::DEFAULT_UNIT)
     {
         if (!isset(self::$units[$unit])) {
-            throw new \InvalidArgumentException(\sprintf('Invalid unit %s.', \json_encode($unit)));
+            throw new Exception\InvalidArgumentException(
+                \sprintf(
+                    'Invalid unit %s.',
+                    \json_encode($unit)
+                )
+            );
         }
 
         $this->value = $value * self::$units[$unit];
@@ -79,7 +84,7 @@ final class Distance
             return new self((float) $match[1], $unit);
         }
 
-        throw new \InvalidArgumentException(
+        throw new Exception\InvalidArgumentException(
             \sprintf(
                 'Cannot create Distance from string %s.',
                 \json_encode($input)

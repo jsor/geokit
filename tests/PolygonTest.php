@@ -24,7 +24,7 @@ class PolygonTest extends TestCase
 
     public function testConstructorThrowsExceptionForInvalidLatLng()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(Exception\InvalidArgumentException::class);
         $this->expectExceptionMessage('Point at index 0 is not an instance of Geokit\LatLng.');
 
         new Polygon(['foo']);
@@ -265,7 +265,7 @@ class PolygonTest extends TestCase
 
     public function testToBoundingBoxThrowsExceptionForEmptyPolygon()
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(Exception\LogicException::class);
         $this->expectExceptionMessage('Cannot create a BoundingBox from empty Polygon.');
 
         $polygon = new Polygon();

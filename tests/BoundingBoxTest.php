@@ -34,7 +34,7 @@ class BoundingBoxTest extends TestCase
 
     public function testConstructorShouldThrowExceptionForInvalidSouthCoordinate()
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(Exception\LogicException::class);
         new BoundingBox(new LatLng(1, 90), new LatLng(0, 90));
     }
 

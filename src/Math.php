@@ -91,7 +91,7 @@ final class Math
         } while (\abs($lambda - $lambdaP) > 1e-12 && --$iterLimit > 0);
 
         if ($iterLimit === 0) {
-            throw new \RuntimeException('Vincenty formula failed to converge.');
+            throw new Exception\RuntimeException('Vincenty formula failed to converge.');
         }
 
         $uSq = $cosSqAlpha * ($a * $a - $b * $b) / ($b * $b);

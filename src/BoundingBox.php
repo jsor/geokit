@@ -15,7 +15,7 @@ final class BoundingBox
         $this->northEast = $northEast;
 
         if ($this->southWest->getLatitude() > $this->northEast->getLatitude()) {
-            throw new \LogicException(
+            throw new Exception\LogicException(
                 'Bounding Box south-west coordinate cannot be north of the north-east coordinate'
             );
         }

@@ -256,7 +256,8 @@ class MathTest extends TestCase
 
     public function testDistanceHaversineShouldNotConvergeForHalfTripAroundEquator()
     {
-        $this->expectException('\RuntimeException', 'Vincenty formula failed to converge.');
+        $this->expectException(Exception\RuntimeException::class);
+        $this->expectExceptionMessage('Vincenty formula failed to converge.');
 
         $math = new Math();
         $math->distanceVincenty(new LatLng(0, 0), new LatLng(0, 180));
