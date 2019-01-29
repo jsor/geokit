@@ -14,6 +14,7 @@ final class Distance
     public const UNIT_MILES = 'miles';
     public const UNIT_YARDS = 'yards';
     public const UNIT_FEET = 'feet';
+    public const UNIT_INCHES = 'inches';
     public const UNIT_NAUTICAL = 'nautical';
 
     public const DEFAULT_UNIT = self::UNIT_METERS;
@@ -24,6 +25,7 @@ final class Distance
         self::UNIT_MILES => 1609.344,
         self::UNIT_YARDS => 0.9144,
         self::UNIT_FEET => 0.3048,
+        self::UNIT_INCHES => 0.0254,
         self::UNIT_NAUTICAL => 1852.0,
     ];
 
@@ -43,6 +45,9 @@ final class Distance
         'foot' => self::UNIT_FEET,
         'ft' => self::UNIT_FEET,
         'nm' => self::UNIT_NAUTICAL,
+        'inch' => self::UNIT_INCHES,
+        'in' => self::UNIT_INCHES,
+        '″' => self::UNIT_INCHES,
         'nauticalmile' => self::UNIT_NAUTICAL,
         'nauticalmiles' => self::UNIT_NAUTICAL,
     ];
@@ -60,7 +65,7 @@ final class Distance
 
     public static function fromString(string $input): self
     {
-        if (\preg_match('/(\-?\d+\.?\d*)\s*((kilo)?met[er]+s?|m|km|miles?|mi|yards?|yd|feet|foot|ft|nautical(mile)?s?|nm)?$/', $input, $match)) {
+        if (\preg_match('/(\-?\d+\.?\d*)\s*((kilo)?met[er]+s?|m|km|miles?|mi|yards?|yd|feet|foot|ft|in(ch(es)?)?|″|nautical(mile)?s?|nm)?$/u', $input, $match)) {
             $unit = self::DEFAULT_UNIT;
 
             if (isset($match[2])) {
@@ -130,6 +135,16 @@ final class Distance
     public function ft(): float
     {
         return $this->feet();
+    }
+
+    public function inches(): float
+    {
+        return $this->value / self::$units[self::UNIT_INCHES];
+    }
+
+    public function in(): float
+    {
+        return $this->inches();
     }
 
     public function nautical(): float

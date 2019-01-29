@@ -64,6 +64,18 @@ class DistanceTest extends TestCase
         $this->assertSame(3280.8398950131232, $distance->ft());
     }
 
+    public function testShouldConvertToInches()
+    {
+        $distance = new Distance(1000);
+        $this->assertSame(39370.078740157485, $distance->inches());
+    }
+
+    public function testShouldConvertToInchesWithAlias()
+    {
+        $distance = new Distance(1000);
+        $this->assertSame(39370.078740157485, $distance->in());
+    }
+
     public function testShouldConvertToNauticalMiles()
     {
         $distance = new Distance(1000);
@@ -173,6 +185,22 @@ class DistanceTest extends TestCase
             [
                 3280.83989501312336,
                 'feet'
+            ],
+            [
+                39370.078740157485,
+                '″'
+            ],
+            [
+                39370.0787401574856,
+                'in'
+            ],
+            [
+                39370.0787401574856,
+                'inch'
+            ],
+            [
+                39370.078740157485,
+                'inches'
             ],
             [
                 0.53995680345572,

@@ -109,6 +109,7 @@ $kilometers = $distance->kilometers();
 $miles = $distance->miles();
 $yards = $distance->yards();
 $feet = $distance->feet();
+$inches = $distance->inches();
 $nauticalMiles = $distance->nautical();
 ```
 
@@ -121,6 +122,7 @@ $distance = Geokit\Distance::fromString('1km');
 $distance = Geokit\Distance::fromString('100 miles');
 $distance = Geokit\Distance::fromString('100 yards');
 $distance = Geokit\Distance::fromString('1 foot');
+$distance = Geokit\Distance::fromString('1 inch');
 $distance = Geokit\Distance::fromString('234nm');
 ```
 
