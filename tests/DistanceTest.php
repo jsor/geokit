@@ -40,6 +40,18 @@ class DistanceTest extends TestCase
         $this->assertSame(0.62137119223733395, $distance->mi());
     }
 
+    public function testShouldConvertToYards()
+    {
+        $distance = new Distance(1000);
+        $this->assertSame(1093.6132983377079, $distance->yards());
+    }
+
+    public function testShouldConvertToYardsWithAlias()
+    {
+        $distance = new Distance(1000);
+        $this->assertSame(1093.6132983377079, $distance->yd());
+    }
+
     public function testShouldConvertToFeet()
     {
         $distance = new Distance(1000);
@@ -137,6 +149,18 @@ class DistanceTest extends TestCase
             [
                 0.62137119223733,
                 'miles'
+            ],
+            [
+                1093.6132983377079,
+                'yd'
+            ],
+            [
+                1093.6132983377079,
+                'yard'
+            ],
+            [
+                1093.6132983377079,
+                'yards'
             ],
             [
                 3280.83989501312336,
