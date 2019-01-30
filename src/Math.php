@@ -29,7 +29,7 @@ final class Math
 
         $c = 2 * \atan2(\sqrt($a), \sqrt(1 - $a));
 
-        return new Distance(WGS84::SEMI_MAJOR_AXIS * $c);
+        return new Distance(WGS84::EARTH_RADIUS * $c);
     }
 
     /**
@@ -168,7 +168,7 @@ final class Math
         $lat = \deg2rad($start->getLatitude());
         $lng = \deg2rad($start->getLongitude());
 
-        $angularDistance = $distance->meters() / WGS84::SEMI_MAJOR_AXIS;
+        $angularDistance = $distance->meters() / WGS84::EARTH_RADIUS;
         $heading = \deg2rad($heading);
 
         $lat2 = \asin(

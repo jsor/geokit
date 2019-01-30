@@ -115,19 +115,19 @@ class BoundingBoxTest extends TestCase
         $expandedBbox = $bbox->expand(new Distance(100));
 
         $this->assertEquals(
-            -45.000898315284132,
+            -45.00089932036373,
             $expandedBbox->getSouthWest()->getLatitude()
         );
         $this->assertEquals(
-            178.99872959034192,
+            178.99872816894472,
             $expandedBbox->getSouthWest()->getLongitude()
         );
         $this->assertEquals(
-            45.000898315284132,
+            45.00089932036373,
             $expandedBbox->getNorthEast()->getLatitude()
         );
         $this->assertEquals(
-            -178.99872959034192,
+            -178.99872816894472,
             $expandedBbox->getNorthEast()->getLongitude()
         );
     }
@@ -144,19 +144,19 @@ class BoundingBoxTest extends TestCase
         );
 
         $this->assertEquals(
-            -45,
+            -44.999998994920404,
             $shrinkedBbox->getSouthWest()->getLatitude()
         );
         $this->assertEquals(
-            179.0000000199187,
+            179.00000144133816,
             $shrinkedBbox->getSouthWest()->getLongitude()
         );
         $this->assertEquals(
-            45,
+            44.999998994920404,
             $shrinkedBbox->getNorthEast()->getLatitude()
         );
         $this->assertEquals(
-            -179.0000000199187,
+            -179.00000144133816,
             $shrinkedBbox->getNorthEast()->getLongitude()
         );
     }

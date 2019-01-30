@@ -159,7 +159,7 @@ final class BoundingBox
 
     private static function lngDistance(float $lat1, float $lng1, float $distanceInMeters): float
     {
-        $radius = WGS84::SEMI_MAJOR_AXIS;
+        $radius = WGS84::EARTH_RADIUS;
 
         $lat1 = \deg2rad($lat1);
         $lng1 = \deg2rad($lng1);
@@ -171,7 +171,7 @@ final class BoundingBox
 
     private static function latDistance(float $lat1, float $distanceInMeters): float
     {
-        $radius = WGS84::SEMI_MAJOR_AXIS;
+        $radius = WGS84::EARTH_RADIUS;
 
         $lat1 = \deg2rad($lat1);
         $lat2 = ($radius * $lat1 - $distanceInMeters) / $radius;
