@@ -285,19 +285,8 @@ class PolygonTest extends TestCase
         $this->assertCount(1, $polygon);
     }
 
-    public function testIteratorAggregate()
+    public function testIterable()
     {
-        $points = [
-            new LatLng(0, 0)
-        ];
-
-        $polygon = new Polygon($points);
-
-        foreach ($polygon as $point) {
-            $this->assertInstanceOf('Geokit\LatLng', $point);
-            return;
-        }
-
-        $this->fail('Polygon is not iterable.');
+        $this->assertIsIterable(new Polygon());
     }
 }
