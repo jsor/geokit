@@ -29,7 +29,7 @@ final class Math
 
         $c = 2 * \atan2(\sqrt($a), \sqrt(1 - $a));
 
-        return new Distance(WGS84::EARTH_RADIUS * $c);
+        return new Distance(Earth::RADIUS * $c);
     }
 
     /**
@@ -46,9 +46,9 @@ final class Math
         $lat2 = $to->getLatitude();
         $lng2 = $to->getLongitude();
 
-        $a = WGS84::SEMI_MAJOR_AXIS;
-        $b = WGS84::SEMI_MINOR_AXIS;
-        $f = WGS84::FLATTENING;
+        $a = Earth::SEMI_MAJOR_AXIS;
+        $b = Earth::SEMI_MINOR_AXIS;
+        $f = Earth::FLATTENING;
 
         $L = \deg2rad($lng2 - $lng1);
         $U1 = \atan((1 - $f) * \tan(\deg2rad($lat1)));
@@ -168,7 +168,7 @@ final class Math
         $lat = \deg2rad($start->getLatitude());
         $lng = \deg2rad($start->getLongitude());
 
-        $angularDistance = $distance->meters() / WGS84::EARTH_RADIUS;
+        $angularDistance = $distance->meters() / Earth::RADIUS;
         $heading = \deg2rad($heading);
 
         $lat2 = \asin(
