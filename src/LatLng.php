@@ -15,12 +15,12 @@ final class LatLng
         $this->longitude = Utils::normalizeLng($longitude);
     }
 
-    public function getLongitude(): float
+    public function longitude(): float
     {
         return $this->longitude;
     }
 
-    public function getLatitude(): float
+    public function latitude(): float
     {
         return $this->latitude;
     }

@@ -15,10 +15,10 @@ final class Math
      */
     public function distanceHaversine(LatLng $from, LatLng $to): Distance
     {
-        $lat1 = \deg2rad($from->getLatitude());
-        $lng1 = \deg2rad($from->getLongitude());
-        $lat2 = \deg2rad($to->getLatitude());
-        $lng2 = \deg2rad($to->getLongitude());
+        $lat1 = \deg2rad($from->latitude());
+        $lng1 = \deg2rad($from->longitude());
+        $lat2 = \deg2rad($to->latitude());
+        $lng2 = \deg2rad($to->longitude());
 
         $dLat = $lat2 - $lat1;
         $dLon = $lng2 - $lng1;
@@ -41,10 +41,10 @@ final class Math
      */
     public function distanceVincenty(LatLng $from, LatLng $to): Distance
     {
-        $lat1 = $from->getLatitude();
-        $lng1 = $from->getLongitude();
-        $lat2 = $to->getLatitude();
-        $lng2 = $to->getLongitude();
+        $lat1 = $from->latitude();
+        $lng1 = $from->longitude();
+        $lat2 = $to->latitude();
+        $lng2 = $to->longitude();
 
         $a = Earth::SEMI_MAJOR_AXIS;
         $b = Earth::SEMI_MINOR_AXIS;
@@ -110,10 +110,10 @@ final class Math
      */
     public function heading(LatLng $from, LatLng $to): float
     {
-        $lat1 = $from->getLatitude();
-        $lng1 = $from->getLongitude();
-        $lat2 = $to->getLatitude();
-        $lng2 = $to->getLongitude();
+        $lat1 = $from->latitude();
+        $lng1 = $from->longitude();
+        $lat2 = $to->latitude();
+        $lng2 = $to->longitude();
 
         $lat1 = \deg2rad($lat1);
         $lat2 = \deg2rad($lat2);
@@ -136,10 +136,10 @@ final class Math
      */
     public function midpoint(LatLng $from, LatLng $to): LatLng
     {
-        $lat1 = $from->getLatitude();
-        $lng1 = $from->getLongitude();
-        $lat2 = $to->getLatitude();
-        $lng2 = $to->getLongitude();
+        $lat1 = $from->latitude();
+        $lng1 = $from->longitude();
+        $lat2 = $to->latitude();
+        $lng2 = $to->longitude();
 
         $lat1 = \deg2rad($lat1);
         $lat2 = \deg2rad($lat2);
@@ -165,8 +165,8 @@ final class Math
      */
     public function endpoint(LatLng $start, float $heading, Distance $distance): LatLng
     {
-        $lat = \deg2rad($start->getLatitude());
-        $lng = \deg2rad($start->getLongitude());
+        $lat = \deg2rad($start->latitude());
+        $lng = \deg2rad($start->longitude());
 
         $angularDistance = $distance->meters() / Earth::RADIUS;
         $heading = \deg2rad($heading);

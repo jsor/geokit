@@ -14,88 +14,88 @@ final class BoundingBox
         $this->southWest = $southWest;
         $this->northEast = $northEast;
 
-        if ($this->southWest->getLatitude() > $this->northEast->getLatitude()) {
+        if ($this->southWest->latitude() > $this->northEast->latitude()) {
             throw new Exception\LogicException(
                 'Bounding Box south-west coordinate cannot be north of the north-east coordinate'
             );
         }
     }
 
-    public function getSouthWest(): LatLng
+    public function southWest(): LatLng
     {
         return $this->southWest;
     }
 
-    public function getNorthEast(): LatLng
+    public function northEast(): LatLng
     {
         return $this->northEast;
     }
 
-    public function getCenter(): LatLng
+    public function center(): LatLng
     {
         if ($this->crossesAntimeridian()) {
             $span = $this->lngSpan(
-                $this->southWest->getLongitude(),
-                $this->northEast->getLongitude()
+                $this->southWest->longitude(),
+                $this->northEast->longitude()
             );
-            $lng = $this->southWest->getLongitude() + $span / 2;
+            $lng = $this->southWest->longitude() + $span / 2;
         } else {
-            $lng = ($this->southWest->getLongitude() + $this->northEast->getLongitude()) / 2;
+            $lng = ($this->southWest->longitude() + $this->northEast->longitude()) / 2;
         }
 
         return new LatLng(
-            ($this->southWest->getLatitude() + $this->northEast->getLatitude()) / 2,
+            ($this->southWest->latitude() + $this->northEast->latitude()) / 2,
             $lng
         );
     }
 
-    public function getSpan(): LatLng
+    public function span(): LatLng
     {
         return new LatLng(
-            $this->northEast->getLatitude() - $this->southWest->getLatitude(),
-            $this->lngSpan($this->southWest->getLongitude(), $this->northEast->getLongitude())
+            $this->northEast->latitude() - $this->southWest->latitude(),
+            $this->lngSpan($this->southWest->longitude(), $this->northEast->longitude())
         );
     }
 
     public function crossesAntimeridian(): bool
     {
-        return $this->southWest->getLongitude() > $this->northEast->getLongitude();
+        return $this->southWest->longitude() > $this->northEast->longitude();
     }
 
     public function contains(LatLng $latLng): bool
     {
-        $lat = $latLng->getLatitude();
+        $lat = $latLng->latitude();
 
         // check latitude
         if (
-            $this->southWest->getLatitude() > $lat ||
-            $lat > $this->northEast->getLatitude()
+            $this->southWest->latitude() > $lat ||
+            $lat > $this->northEast->latitude()
         ) {
             return false;
         }
 
         // check longitude
-        return $this->containsLng($latLng->getLongitude());
+        return $this->containsLng($latLng->longitude());
     }
 
     public function extend(LatLng $latLng): self
     {
-        $newSouth = \min($this->southWest->getLatitude(), $latLng->getLatitude());
-        $newNorth = \max($this->northEast->getLatitude(), $latLng->getLatitude());
+        $newSouth = \min($this->southWest->latitude(), $latLng->latitude());
+        $newNorth = \max($this->northEast->latitude(), $latLng->latitude());
 
-        $newWest = $this->southWest->getLongitude();
-        $newEast = $this->northEast->getLongitude();
+        $newWest = $this->southWest->longitude();
+        $newEast = $this->northEast->longitude();
 
-        if (!$this->containsLng($latLng->getLongitude())) {
+        if (!$this->containsLng($latLng->longitude())) {
             // try extending east and try extending west, and use the one that
             // has the smaller longitudinal span
-            $extendEastLngSpan = $this->lngSpan($newWest, $latLng->getLongitude());
-            $extendWestLngSpan = $this->lngSpan($latLng->getLongitude(), $newEast);
+            $extendEastLngSpan = $this->lngSpan($newWest, $latLng->longitude());
+            $extendWestLngSpan = $this->lngSpan($latLng->longitude(), $newEast);
 
             if ($extendEastLngSpan <= $extendWestLngSpan) {
-                $newEast = $latLng->getLongitude();
+                $newEast = $latLng->longitude();
             } else {
-                $newWest = $latLng->getLongitude();
+                $newWest = $latLng->longitude();
             }
         }
 
@@ -104,9 +104,9 @@ final class BoundingBox
 
     public function union(BoundingBox $bbox): self
     {
-        $newBbox = $this->extend($bbox->getSouthWest());
+        $newBbox = $this->extend($bbox->southWest());
 
-        return $newBbox->extend($bbox->getNorthEast());
+        return $newBbox->extend($bbox->northEast());
     }
 
     public function expand(Distance $distance): BoundingBox
@@ -122,20 +122,20 @@ final class BoundingBox
     public function toPolygon(): Polygon
     {
         return new Polygon([
-            new LatLng($this->southWest->getLatitude(), $this->southWest->getLongitude()),
-            new LatLng($this->southWest->getLatitude(), $this->northEast->getLongitude()),
-            new LatLng($this->northEast->getLatitude(), $this->northEast->getLongitude()),
-            new LatLng($this->northEast->getLatitude(), $this->southWest->getLongitude()),
-            new LatLng($this->southWest->getLatitude(), $this->southWest->getLongitude()),
+            new LatLng($this->southWest->latitude(), $this->southWest->longitude()),
+            new LatLng($this->southWest->latitude(), $this->northEast->longitude()),
+            new LatLng($this->northEast->latitude(), $this->northEast->longitude()),
+            new LatLng($this->northEast->latitude(), $this->southWest->longitude()),
+            new LatLng($this->southWest->latitude(), $this->southWest->longitude()),
         ]);
     }
 
     private static function transformBoundingBox(BoundingBox $bbox, float $distanceInMeters): BoundingBox
     {
-        $latSW = $bbox->getSouthWest()->getLatitude();
-        $lngSW = $bbox->getSouthWest()->getLongitude();
-        $latNE = $bbox->getNorthEast()->getLatitude();
-        $lngNE = $bbox->getNorthEast()->getLongitude();
+        $latSW = $bbox->southWest()->latitude();
+        $lngSW = $bbox->southWest()->longitude();
+        $latNE = $bbox->northEast()->latitude();
+        $lngNE = $bbox->northEast()->longitude();
 
         $latlngSW = new LatLng(
             self::latDistance($latSW, $distanceInMeters),
@@ -148,8 +148,8 @@ final class BoundingBox
         );
 
         // Check if we're shrinking too much
-        if ($latlngSW->getLatitude() > $latlngNE->getLatitude()) {
-            $center = $bbox->getCenter();
+        if ($latlngSW->latitude() > $latlngNE->latitude()) {
+            $center = $bbox->center();
 
             return new BoundingBox($center, $center);
         }
@@ -182,12 +182,12 @@ final class BoundingBox
     private function containsLng(float $lng): bool
     {
         if ($this->crossesAntimeridian()) {
-            return $lng <= $this->northEast->getLongitude() ||
-                $lng >= $this->southWest->getLongitude();
+            return $lng <= $this->northEast->longitude() ||
+                $lng >= $this->southWest->longitude();
         }
 
-        return $this->southWest->getLongitude() <= $lng &&
-            $lng <= $this->northEast->getLongitude();
+        return $this->southWest->longitude() <= $lng &&
+            $lng <= $this->northEast->longitude();
     }
 
     private function lngSpan(float $west, float $east): float

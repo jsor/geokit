@@ -13,23 +13,23 @@ class BoundingBoxTest extends TestCase
      */
     protected function assertBoundingBox(BoundingBox $b, $s, $w, $n, $e)
     {
-        $this->assertEquals($s, $b->getSouthWest()->getLatitude());
-        $this->assertEquals($w, $b->getSouthWest()->getLongitude());
-        $this->assertEquals($n, $b->getNorthEast()->getLatitude());
-        $this->assertEquals($e, $b->getNorthEast()->getLongitude());
+        $this->assertEquals($s, $b->southWest()->latitude());
+        $this->assertEquals($w, $b->southWest()->longitude());
+        $this->assertEquals($n, $b->northEast()->latitude());
+        $this->assertEquals($e, $b->northEast()->longitude());
     }
 
     public function testConstructorShouldAcceptLatLngsAsFirstAndSecondArgument()
     {
         $bbox = new BoundingBox(new LatLng(2.5678, 1.1234), new LatLng(4.5678, 3.1234));
 
-        $this->assertInstanceOf('\Geokit\LatLng', $bbox->getSouthWest());
-        $this->assertEquals(1.1234, $bbox->getSouthWest()->getLongitude());
-        $this->assertEquals(2.5678, $bbox->getSouthWest()->getLatitude());
+        $this->assertInstanceOf('\Geokit\LatLng', $bbox->southWest());
+        $this->assertEquals(1.1234, $bbox->southWest()->longitude());
+        $this->assertEquals(2.5678, $bbox->southWest()->latitude());
 
-        $this->assertInstanceOf('\Geokit\LatLng', $bbox->getNorthEast());
-        $this->assertEquals(3.1234, $bbox->getNorthEast()->getLongitude());
-        $this->assertEquals(4.5678, $bbox->getNorthEast()->getLatitude());
+        $this->assertInstanceOf('\Geokit\LatLng', $bbox->northEast());
+        $this->assertEquals(3.1234, $bbox->northEast()->longitude());
+        $this->assertEquals(4.5678, $bbox->northEast()->latitude());
     }
 
     public function testConstructorShouldThrowExceptionForInvalidSouthCoordinate()
@@ -43,12 +43,12 @@ class BoundingBoxTest extends TestCase
         $bbox = new BoundingBox(new LatLng(2.5678, 1.1234), new LatLng(4.5678, 3.1234));
         $center = new LatLng(3.5678, 2.1234);
 
-        $this->assertEquals($center, $bbox->getCenter());
+        $this->assertEquals($center, $bbox->center());
 
         $bbox = new BoundingBox(new LatLng(-45, 179), new LatLng(45, -179));
         $center = new LatLng(0, 180);
 
-        $this->assertEquals($center, $bbox->getCenter());
+        $this->assertEquals($center, $bbox->center());
     }
 
     public function testGetSpanShouldReturnALatLngObject()
@@ -57,7 +57,7 @@ class BoundingBoxTest extends TestCase
 
         $span = new LatLng(2, 2);
 
-        $this->assertEquals($span, $bbox->getSpan());
+        $this->assertEquals($span, $bbox->span());
     }
 
     public function testContains()
@@ -93,8 +93,8 @@ class BoundingBoxTest extends TestCase
         $bbox = new BoundingBox(new LatLng(-45, 179), new LatLng(45, -179));
 
         $this->assertTrue($bbox->crossesAntimeridian());
-        $this->assertEquals(90, $bbox->getSpan()->getLatitude());
-        $this->assertEquals(2, $bbox->getSpan()->getLongitude());
+        $this->assertEquals(90, $bbox->span()->latitude());
+        $this->assertEquals(2, $bbox->span()->longitude());
     }
 
     public function testCrossesAntimeridianViaExtend()
@@ -104,8 +104,8 @@ class BoundingBoxTest extends TestCase
         $bbox = $bbox->extend(new LatLng(90, -180));
 
         $this->assertTrue($bbox->crossesAntimeridian());
-        $this->assertEquals(90, $bbox->getSpan()->getLatitude());
-        $this->assertEquals(2, $bbox->getSpan()->getLongitude());
+        $this->assertEquals(90, $bbox->span()->latitude());
+        $this->assertEquals(2, $bbox->span()->longitude());
     }
 
     public function testExpand()
@@ -116,19 +116,19 @@ class BoundingBoxTest extends TestCase
 
         $this->assertEquals(
             -45.00089932036373,
-            $expandedBbox->getSouthWest()->getLatitude()
+            $expandedBbox->southWest()->latitude()
         );
         $this->assertEquals(
             178.99872816894472,
-            $expandedBbox->getSouthWest()->getLongitude()
+            $expandedBbox->southWest()->longitude()
         );
         $this->assertEquals(
             45.00089932036373,
-            $expandedBbox->getNorthEast()->getLatitude()
+            $expandedBbox->northEast()->latitude()
         );
         $this->assertEquals(
             -178.99872816894472,
-            $expandedBbox->getNorthEast()->getLongitude()
+            $expandedBbox->northEast()->longitude()
         );
     }
 
@@ -145,19 +145,19 @@ class BoundingBoxTest extends TestCase
 
         $this->assertEquals(
             -44.999998994920404,
-            $shrinkedBbox->getSouthWest()->getLatitude()
+            $shrinkedBbox->southWest()->latitude()
         );
         $this->assertEquals(
             179.00000144133816,
-            $shrinkedBbox->getSouthWest()->getLongitude()
+            $shrinkedBbox->southWest()->longitude()
         );
         $this->assertEquals(
             44.999998994920404,
-            $shrinkedBbox->getNorthEast()->getLatitude()
+            $shrinkedBbox->northEast()->latitude()
         );
         $this->assertEquals(
             -179.00000144133816,
-            $shrinkedBbox->getNorthEast()->getLongitude()
+            $shrinkedBbox->northEast()->longitude()
         );
     }
 
@@ -174,19 +174,19 @@ class BoundingBoxTest extends TestCase
 
         $this->assertEquals(
             1,
-            $shrinkedBbox->getSouthWest()->getLatitude()
+            $shrinkedBbox->southWest()->latitude()
         );
         $this->assertEquals(
             1,
-            $shrinkedBbox->getSouthWest()->getLongitude()
+            $shrinkedBbox->southWest()->longitude()
         );
         $this->assertEquals(
             1,
-            $shrinkedBbox->getNorthEast()->getLatitude()
+            $shrinkedBbox->northEast()->latitude()
         );
         $this->assertEquals(
             1,
-            $shrinkedBbox->getNorthEast()->getLongitude()
+            $shrinkedBbox->northEast()->longitude()
         );
     }
 
@@ -202,42 +202,43 @@ class BoundingBoxTest extends TestCase
         $this->assertCount(5, $polygon);
         $this->assertTrue($polygon->isClosed());
 
+        /** @var LatLng[] $array */
         $array = iterator_to_array($polygon);
 
         $this->assertEquals(
             0,
-            $array[0]->getLatitude()
+            $array[0]->latitude()
         );
         $this->assertEquals(
             0,
-            $array[0]->getLongitude()
+            $array[0]->longitude()
         );
 
         $this->assertEquals(
             0,
-            $array[1]->getLatitude()
+            $array[1]->latitude()
         );
         $this->assertEquals(
             10,
-            $array[1]->getLongitude()
-        );
-
-        $this->assertEquals(
-            10,
-            $array[2]->getLatitude()
-        );
-        $this->assertEquals(
-            10,
-            $array[2]->getLongitude()
+            $array[1]->longitude()
         );
 
         $this->assertEquals(
             10,
-            $array[3]->getLatitude()
+            $array[2]->latitude()
+        );
+        $this->assertEquals(
+            10,
+            $array[2]->longitude()
+        );
+
+        $this->assertEquals(
+            10,
+            $array[3]->latitude()
         );
         $this->assertEquals(
             0,
-            $array[3]->getLongitude()
+            $array[3]->longitude()
         );
     }
 }

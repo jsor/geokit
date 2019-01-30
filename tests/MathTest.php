@@ -154,11 +154,11 @@ class MathTest extends TestCase
 
         $this->assertEquals(
             32.94406100147102,
-            $midpoint->getLatitude()
+            $midpoint->latitude()
         );
         $this->assertEquals(
             -96.974296932499726,
-            $midpoint->getLongitude()
+            $midpoint->longitude()
         );
     }
 
@@ -170,11 +170,11 @@ class MathTest extends TestCase
 
         $this->assertEquals(
             32.96932167481445,
-            $endpoint->getLatitude()
+            $endpoint->latitude()
         );
         $this->assertEquals(
             -96.99059694331415,
-            $endpoint->getLongitude()
+            $endpoint->longitude()
         );
     }
 

@@ -39,8 +39,8 @@ final class Polygon implements \Countable, \IteratorAggregate
         $firstPoint = \reset($this->points);
 
         return (
-            $lastPoint->getLatitude() === $firstPoint->getLatitude() &&
-            $lastPoint->getLongitude() === $firstPoint->getLongitude()
+            $lastPoint->latitude() === $firstPoint->latitude() &&
+            $lastPoint->longitude() === $firstPoint->longitude()
         );
     }
 
@@ -73,19 +73,19 @@ final class Polygon implements \Countable, \IteratorAggregate
 
         $points = $this->points;
 
-        $x = $latLng->getLongitude();
-        $y = $latLng->getLatitude();
+        $x = $latLng->longitude();
+        $y = $latLng->latitude();
 
         $p = \end($points);
 
-        $x0 = $p->getLongitude();
-        $y0 = $p->getLatitude();
+        $x0 = $p->longitude();
+        $y0 = $p->latitude();
 
         $inside = false;
 
         foreach ($points as $point) {
-            $x1 = $point->getLongitude();
-            $y1 = $point->getLatitude();
+            $x1 = $point->longitude();
+            $y1 = $point->latitude();
 
             if (
                 (($y1 > $y) !== ($y0 > $y)) &&

@@ -14,12 +14,13 @@ class PolygonTest extends TestCase
 
         $polygon = new Polygon($points);
 
+        /** @var LatLng[] $array */
         $array = \iterator_to_array($polygon);
 
         $this->assertEquals($points[0], $array[0]);
-        $this->assertEquals(0, $array[0]->getLatitude());
-        $this->assertEquals(1, $array[1]->getLatitude());
-        $this->assertEquals(1, $array['key']->getLatitude());
+        $this->assertEquals(0, $array[0]->latitude());
+        $this->assertEquals(1, $array[1]->latitude());
+        $this->assertEquals(1, $array['key']->latitude());
     }
 
     public function testConstructorThrowsExceptionForInvalidLatLng()
@@ -257,10 +258,10 @@ class PolygonTest extends TestCase
 
         $bbox = $polygon->toBoundingBox();
 
-        $this->assertEquals(0, $bbox->getSouthWest()->getLatitude());
-        $this->assertEquals(0, $bbox->getSouthWest()->getLongitude());
-        $this->assertEquals(1, $bbox->getNorthEast()->getLatitude());
-        $this->assertEquals(1, $bbox->getNorthEast()->getLongitude());
+        $this->assertEquals(0, $bbox->southWest()->latitude());
+        $this->assertEquals(0, $bbox->southWest()->longitude());
+        $this->assertEquals(1, $bbox->northEast()->latitude());
+        $this->assertEquals(1, $bbox->northEast()->longitude());
     }
 
     public function testToBoundingBoxThrowsExceptionForEmptyPolygon()
