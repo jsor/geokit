@@ -17,7 +17,7 @@ Geokit is a PHP toolkit to solve geo-related tasks like:
         * [Transformations](#transformations)
         * [Other calculations](#other-calculations)
     * [Distance](#distance)
-    * [LatLng](#latlng)
+    * [Position](#position)
     * [BoundingBox](#boundingbox)
     * [Polygon](#polygon)
 * [License](#license)
@@ -40,7 +40,7 @@ Reference
 
 ### Math
 
-A Math instance can be used to perform geographic calculations on LatLng and 
+A Math instance can be used to perform geographic calculations on Position and 
 BoundingBox instances.
 
 The [World Geodetic System 1984](http://en.wikipedia.org/wiki/World_Geodetic_System) 
@@ -55,10 +55,10 @@ $math = new Geokit\Math();
 A math instance provides two methods to calculate the distance between 2 points
 on the Earth's surface:
 
-* `distanceHaversine(Geokit\LatLng $from, Geokit\LatLng $to)`: Calculates the
+* `distanceHaversine(Geokit\Position $from, Geokit\Position $to)`: Calculates the
   approximate sea level great circle (Earth) distance between two points using
   the Haversine formula.
-* `distanceVincenty(Geokit\LatLng $from, Geokit\LatLng $to)`: Calculates the
+* `distanceVincenty(Geokit\Position $from, Geokit\Position $to)`: Calculates the
   geodetic distance between two points using the Vincenty inverse formula for
   ellipsoids.
 
@@ -76,7 +76,7 @@ and steps for precision.
 
 ```php
 $circlePolygon = $math->circle(
-    new Geokit\LatLng(49.50042565, 8.50207515), 
+    new Geokit\Position(8.50207515, 49.50042565), 
     Geokit\Distance::fromString('5km'),
     32
 );
@@ -86,11 +86,11 @@ $circlePolygon = $math->circle(
 
 Other useful methods are:
 
-* `heading(Geokit\LatLng $from, Geokit\LatLng $to)`: Calculates the (initial)
-  heading from the first point to the second point in degrees.
-* `midpoint(Geokit\LatLng $from, Geokit\LatLng $to)`: Calculates an intermediate
-  point on the geodesic between the two given points.
-* `endpoint(Geokit\LatLng $start, float $heading, Geokit\Distance $distance)`:
+* `heading(Geokit\Position $from, Geokit\Position $to)`: Calculates the
+  (initial) heading from the first point to the second point in degrees.
+* `midpoint(Geokit\Position $from, Geokit\Position $to)`: Calculates an
+  intermediate point on the geodesic between the two given points.
+* `endpoint(Geokit\Position $start, float $heading, Geokit\Distance $distance)`:
   Calculates the destination point along a geodesic, given an initial heading
   and distance, from the given start point.
 
@@ -126,23 +126,28 @@ $distance = Geokit\Distance::fromString('1 inch');
 $distance = Geokit\Distance::fromString('234nm');
 ```
 
-### LatLng
+### Position
 
-A LatLng instance represents a geographical point in latitude/longitude
-coordinates.
+A `Position` is a fundamental construct representing a geographical position in
+`x`/`y` or `longitude`/`latitude` coordinates.
 
-* Latitude ranges between -90 and 90 degrees, inclusive. Latitudes above 90 or
-  below -90 are capped, not wrapped. For example, 100 will be capped to 90
-  degrees.
-* Longitude ranges between -180 and 180 degrees, inclusive. Longitudes above 180
+Note, that `x`/`y` coordinates are kept as is, while `longitude`/`latitude` are
+wrapped/capped.
+
+* Longitudes range between -180 and 180 degrees, inclusive. Longitudes above 180
   or below -180 are wrapped. For example, 480, 840 and 1200 will all be wrapped
   to 120 degrees.
+* Latitudes range between -90 and 90 degrees, inclusive. Latitudes above 90 or
+  below -90 are capped, not wrapped. For example, 100 will be capped to 90
+  degrees.
 
 ```php
-$latLng = new Geokit\LatLng(1, 2);
+$position = new Geokit\Position(181, 91);
 
-$latitude = $latLng->getLatitude();
-$longitude = $latLng->getLongitude();
+$x = $position->x(); // Returns 181.0
+$y = $position->y(); // Returns 91.0
+$longitude = $position->longitude(); // Returns -179.0, wrapped
+$latitude = $position->latitude(); // Returns 90.0, capped
 ```
 
 ### BoundingBox
@@ -154,21 +159,21 @@ It is constructed from its left-bottom (south-west) and right-top (north-east)
 corner points.
 
 ```php
-$southWest = new Geokit\LatLng(1, 2);
-$northEast = new Geokit\LatLng(1, 2);
+$southWest = new Geokit\Position(2, 1);
+$northEast = new Geokit\Position(2, 1);
 
 $boundingBox = new Geokit\BoundingBox($southWest, $northEast);
 
-$southWestLatLng = $boundingBox->getSouthWest();
-$northEastLatLng = $boundingBox->getNorthEast();
+$southWestPosition = $boundingBox->getSouthWest();
+$northEastPosition = $boundingBox->getNorthEast();
 
-$centerLatLng = $boundingBox->getCenter();
+$center = $boundingBox->getCenter();
 
-$spanLatLng = $boundingBox->getSpan();
+$span = $boundingBox->getSpan();
 
-$boolean = $boundingBox->contains($latLng);
+$boolean = $boundingBox->contains($position);
 
-$newBoundingBox = $boundingBox->extend($latLng);
+$newBoundingBox = $boundingBox->extend($position);
 $newBoundingBox = $boundingBox->union($otherBoundingBox);
 ```
 
@@ -199,18 +204,18 @@ and may either be closed (the first and last point are the same) or open.
 
 ```php
 $polygon = new Geokit\Polygon([
-    new Geokit\LatLng(0, 0),
-    new Geokit\LatLng(0, 1),
-    new Geokit\LatLng(1, 1)
+    new Geokit\Position(0, 0),
+    new Geokit\Position(1, 0),
+    new Geokit\Position(1, 1)
 ]);
 
 $closedPolygon = $polygon->close();
 
-/** @var Geokit\LatLng $latLng */
-foreach ($polygon as $latLng) {
+/** @var Geokit\Position $position */
+foreach ($polygon as $position) {
 }
 
-$polygon->contains(Geokit\LatLng(0.5, 0.5)); // true
+$polygon->contains(Geokit\Position(0.5, 0.5)); // true
 
 /** @var Geokit\BoundingBox $boundingBox */
 $boundingBox = $polygon->toBoundingBox();

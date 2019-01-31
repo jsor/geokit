@@ -7,9 +7,9 @@ class PolygonTest extends TestCase
     public function testConstructorShouldAcceptArrayOfLatLngs()
     {
         $points = [
-            new LatLng(0, 0),
-            new LatLng(1, 1),
-            'key' => new LatLng(1, 0)
+            new Position(0, 0),
+            new Position(1, 1),
+            'key' => new Position(0, 1)
         ];
 
         $polygon = new Polygon($points);
@@ -23,10 +23,10 @@ class PolygonTest extends TestCase
         $this->assertEquals(1, $array['key']->latitude());
     }
 
-    public function testConstructorThrowsExceptionForInvalidLatLng()
+    public function testConstructorThrowsExceptionForInvalidPosition()
     {
         $this->expectException(Exception\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Point at index 0 is not an instance of Geokit\LatLng.');
+        $this->expectExceptionMessage('Position at index 0 is not an instance of Geokit\Position.');
 
         new Polygon(['foo']);
     }
@@ -38,20 +38,20 @@ class PolygonTest extends TestCase
         $this->assertFalse($polygon->isClosed());
 
         $polygon = new Polygon([
-            new LatLng(0, 0),
-            new LatLng(0, 1),
-            new LatLng(1, 1),
-            new LatLng(1, 0)
+            new Position(0, 0),
+            new Position(1, 0),
+            new Position(1, 1),
+            new Position(1, 0)
         ]);
 
         $this->assertFalse($polygon->isClosed());
 
         $polygon = new Polygon([
-            new LatLng(0, 0),
-            new LatLng(0, 1),
-            new LatLng(1, 1),
-            new LatLng(1, 0),
-            new LatLng(0, 0)
+            new Position(0, 0),
+            new Position(1, 0),
+            new Position(1, 1),
+            new Position(1, 0),
+            new Position(0, 0)
         ]);
 
         $this->assertTrue($polygon->isClosed());
@@ -60,17 +60,17 @@ class PolygonTest extends TestCase
     public function testCloseOpenPolygon()
     {
         $polygon = new Polygon([
-            new LatLng(0, 0),
-            new LatLng(0, 1),
-            new LatLng(1, 1),
-            new LatLng(1, 0)
+            new Position(0, 0),
+            new Position(1, 0),
+            new Position(1, 1),
+            new Position(1, 0)
         ]);
 
         $closedPolygon = $polygon->close();
 
         $array = \iterator_to_array($closedPolygon);
 
-        $this->assertEquals(new LatLng(0, 0), $array[\count($closedPolygon) - 1]);
+        $this->assertEquals(new Position(0, 0), $array[\count($closedPolygon) - 1]);
     }
 
     public function testCloseEmptyPolygon()
@@ -85,18 +85,18 @@ class PolygonTest extends TestCase
     public function testCloseAlreadyClosedPolygon()
     {
         $polygon = new Polygon([
-            new LatLng(0, 0),
-            new LatLng(0, 1),
-            new LatLng(1, 1),
-            new LatLng(1, 0),
-            new LatLng(0, 0)
+            new Position(0, 0),
+            new Position(1, 0),
+            new Position(1, 1),
+            new Position(1, 0),
+            new Position(0, 0)
         ]);
 
         $closedPolygon = $polygon->close();
 
         $array = \iterator_to_array($closedPolygon);
 
-        $this->assertEquals(new LatLng(0, 0), $array[\count($closedPolygon) - 1]);
+        $this->assertEquals(new Position(0, 0), $array[\count($closedPolygon) - 1]);
     }
 
     /**
@@ -115,131 +115,131 @@ class PolygonTest extends TestCase
             // Closed counterclockwise polygons
             [
                 [
-                    new LatLng(0, 0),
-                    new LatLng(1, 0),
-                    new LatLng(1, 1),
-                    new LatLng(0, 1),
-                    new LatLng(0, 0)
+                    new Position(0, 0),
+                    new Position(0, 1),
+                    new Position(1, 1),
+                    new Position(1, 0),
+                    new Position(0, 0)
                 ],
-                new LatLng(0.5, 0.5),
+                new Position(0.5, 0.5),
                 true
             ],
             [
                 [
-                    new LatLng(0, 0),
-                    new LatLng(1, 0),
-                    new LatLng(1, 1),
-                    new LatLng(0, 1),
-                    new LatLng(0, 0)
+                    new Position(0, 0),
+                    new Position(0, 1),
+                    new Position(1, 1),
+                    new Position(1, 0),
+                    new Position(0, 0)
                 ],
-                new LatLng(0.5, 1.5),
+                new Position(1.5, 0.5),
                 false
             ],
             [
                 [
-                    new LatLng(0, 0),
-                    new LatLng(1, 0),
-                    new LatLng(1, 1),
-                    new LatLng(0, 1),
-                    new LatLng(0, 0)
+                    new Position(0, 0),
+                    new Position(0, 1),
+                    new Position(1, 1),
+                    new Position(1, 0),
+                    new Position(0, 0)
                 ],
-                new LatLng(0.5, -0.5),
+                new Position(-0.5, 0.5),
                 false
             ],
             [
                 [
-                    new LatLng(0, 0),
-                    new LatLng(1, 0),
-                    new LatLng(1, 1),
-                    new LatLng(0, 1),
-                    new LatLng(0, 0)
+                    new Position(0, 0),
+                    new Position(0, 1),
+                    new Position(1, 1),
+                    new Position(1, 0),
+                    new Position(0, 0)
                 ],
-                new LatLng(1.5, 0.5),
+                new Position(0.5, 1.5),
                 false
             ],
             [
                 [
-                    new LatLng(0, 0),
-                    new LatLng(1, 0),
-                    new LatLng(1, 1),
-                    new LatLng(0, 1),
-                    new LatLng(0, 0)
+                    new Position(0, 0),
+                    new Position(0, 1),
+                    new Position(1, 1),
+                    new Position(1, 0),
+                    new Position(0, 0)
                 ],
-                new LatLng(-0.5, 0.5),
+                new Position(0.5, -0.5),
                 false
             ],
 
             // Closed clockwise polygons
             [
                 [
-                    new LatLng(0, 0),
-                    new LatLng(0, 1),
-                    new LatLng(1, 1),
-                    new LatLng(1, 0),
-                    new LatLng(0, 0)
+                    new Position(0, 0),
+                    new Position(0, 1),
+                    new Position(1, 1),
+                    new Position(1, 0),
+                    new Position(0, 0)
                 ],
-                new LatLng(0.5, 0.5),
+                new Position(0.5, 0.5),
                 true
             ],
             [
                 [
-                    new LatLng(1, 1),
-                    new LatLng(2, 3),
-                    new LatLng(3, 2),
-                    new LatLng(1, 1)
+                    new Position(1, 1),
+                    new Position(3, 2),
+                    new Position(2, 3),
+                    new Position(1, 1)
                 ],
-                new LatLng(1.5, 1.5),
+                new Position(1.5, 1.5),
                 true
             ],
 
             // Open counterclockwise polygons
             [
                 [
-                    new LatLng(0, 0),
-                    new LatLng(1, 0),
-                    new LatLng(1, 1),
-                    new LatLng(0, 1)
+                    new Position(0, 0),
+                    new Position(0, 1),
+                    new Position(1, 1),
+                    new Position(1, 0)
                 ],
-                new LatLng(0.5, 0.5),
+                new Position(0.5, 0.5),
                 true
             ],
 
             // Open clockwise polygons
             [
                 [
-                    new LatLng(0, 0),
-                    new LatLng(0, 1),
-                    new LatLng(1, 1),
-                    new LatLng(1, 0)
+                    new Position(0, 0),
+                    new Position(0, 1),
+                    new Position(1, 1),
+                    new Position(1, 0)
                 ],
-                new LatLng(0.5, 0.5),
+                new Position(0.5, 0.5),
                 true
             ],
             [
                 [
-                    new LatLng(1, 1),
-                    new LatLng(2, 3),
-                    new LatLng(3, 2)
+                    new Position(1, 1),
+                    new Position(3, 2),
+                    new Position(2, 3)
                 ],
-                new LatLng(1.5, 1.5),
+                new Position(1.5, 1.5),
                 true
             ],
 
             // Empty polygon
             [
                 [],
-                new LatLng(0.5, 0.5),
+                new Position(0.5, 0.5),
                 false
             ],
 
             // Assoc polygon
             [
                 [
-                    'polygon1' => new LatLng(1, 1),
-                    'polygon2' => new LatLng(2, 3),
-                    'polygon3' => new LatLng(3, 2)
+                    'polygon1' => new Position(1, 1),
+                    'polygon2' => new Position(3, 2),
+                    'polygon3' => new Position(2, 3)
                 ],
-                new LatLng(1.5, 1.5),
+                new Position(1.5, 1.5),
                 true
             ],
         ];
@@ -248,10 +248,10 @@ class PolygonTest extends TestCase
     public function testToBoundingBox()
     {
         $points = [
-            new LatLng(0, 0),
-            new LatLng(0, 1),
-            new LatLng(1, 1),
-            new LatLng(1, 0)
+            new Position(0, 0),
+            new Position(1, 0),
+            new Position(1, 1),
+            new Position(1, 0)
         ];
 
         $polygon = new Polygon($points);
@@ -277,7 +277,7 @@ class PolygonTest extends TestCase
     public function testCountable()
     {
         $points = [
-            new LatLng(0, 0)
+            new Position(0, 0)
         ];
 
         $polygon = new Polygon($points);

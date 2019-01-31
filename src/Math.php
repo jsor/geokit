@@ -13,7 +13,7 @@ final class Math
      * @see http://en.wikipedia.org/wiki/Haversine_formula
      * @see http://www.movable-type.co.uk/scripts/latlong.html
      */
-    public function distanceHaversine(LatLng $from, LatLng $to): Distance
+    public function distanceHaversine(Position $from, Position $to): Distance
     {
         $lat1 = \deg2rad($from->latitude());
         $lng1 = \deg2rad($from->longitude());
@@ -39,7 +39,7 @@ final class Math
      * @see http://en.wikipedia.org/wiki/Vincenty%27s_formulae
      * @see http://www.movable-type.co.uk/scripts/latlong-vincenty.html
      */
-    public function distanceVincenty(LatLng $from, LatLng $to): Distance
+    public function distanceVincenty(Position $from, Position $to): Distance
     {
         $lat1 = $from->latitude();
         $lng1 = $from->longitude();
@@ -108,7 +108,7 @@ final class Math
      * Calculates the (initial) heading from the first point to the second point
      * in degrees.
      */
-    public function heading(LatLng $from, LatLng $to): float
+    public function heading(Position $from, Position $to): float
     {
         $lat1 = $from->latitude();
         $lng1 = $from->longitude();
@@ -134,7 +134,7 @@ final class Math
      *
      * @see http://www.movable-type.co.uk/scripts/latlong.html
      */
-    public function midpoint(LatLng $from, LatLng $to): LatLng
+    public function midpoint(Position $from, Position $to): Position
     {
         $lat1 = $from->latitude();
         $lng1 = $from->longitude();
@@ -154,7 +154,7 @@ final class Math
         );
         $lon3 = \deg2rad($lng1) + \atan2($By, \cos($lat1) + $Bx);
 
-        return new LatLng(\rad2deg($lat3), \rad2deg($lon3));
+        return new Position(\rad2deg($lon3), \rad2deg($lat3));
     }
 
     /**
@@ -163,7 +163,7 @@ final class Math
      *
      * @see http://www.movable-type.co.uk/scripts/latlong.html
      */
-    public function endpoint(LatLng $start, float $heading, Distance $distance): LatLng
+    public function endpoint(Position $start, float $heading, Distance $distance): Position
     {
         $lat = \deg2rad($start->latitude());
         $lng = \deg2rad($start->longitude());
@@ -180,11 +180,11 @@ final class Math
             \cos($angularDistance) - \sin($lat) * \sin($lat2)
         );
 
-        return new LatLng(\rad2deg($lat2), \rad2deg($lon2));
+        return new Position(\rad2deg($lon2), \rad2deg($lat2));
     }
 
     public function circle(
-        LatLng $center,
+        Position $center,
         Distance $radius,
         int $steps
     ): Polygon {

@@ -19,15 +19,13 @@ class BoundingBoxTest extends TestCase
         $this->assertEquals($e, $b->northEast()->longitude());
     }
 
-    public function testConstructorShouldAcceptLatLngsAsFirstAndSecondArgument()
+    public function testConstructorShouldAcceptPositionsAsFirstAndSecondArgument()
     {
-        $bbox = new BoundingBox(new LatLng(2.5678, 1.1234), new LatLng(4.5678, 3.1234));
+        $bbox = new BoundingBox(new Position(1.1234, 2.5678), new Position(3.1234, 4.5678));
 
-        $this->assertInstanceOf('\Geokit\LatLng', $bbox->southWest());
         $this->assertEquals(1.1234, $bbox->southWest()->longitude());
         $this->assertEquals(2.5678, $bbox->southWest()->latitude());
 
-        $this->assertInstanceOf('\Geokit\LatLng', $bbox->northEast());
         $this->assertEquals(3.1234, $bbox->northEast()->longitude());
         $this->assertEquals(4.5678, $bbox->northEast()->latitude());
     }
@@ -35,62 +33,62 @@ class BoundingBoxTest extends TestCase
     public function testConstructorShouldThrowExceptionForInvalidSouthCoordinate()
     {
         $this->expectException(Exception\LogicException::class);
-        new BoundingBox(new LatLng(1, 90), new LatLng(0, 90));
+        new BoundingBox(new Position(90, 1), new Position(90, 0));
     }
 
-    public function testGetCenterShouldReturnALatLngObject()
+    public function testGetCenterShouldReturnAPositionObject()
     {
-        $bbox = new BoundingBox(new LatLng(2.5678, 1.1234), new LatLng(4.5678, 3.1234));
-        $center = new LatLng(3.5678, 2.1234);
+        $bbox = new BoundingBox(new Position(1.1234, 2.5678), new Position(3.1234, 4.5678));
+        $center = new Position(2.1234, 3.5678);
 
         $this->assertEquals($center, $bbox->center());
 
-        $bbox = new BoundingBox(new LatLng(-45, 179), new LatLng(45, -179));
-        $center = new LatLng(0, 180);
+        $bbox = new BoundingBox(new Position(179, -45), new Position(-179, 45));
+        $center = new Position(180, 0);
 
         $this->assertEquals($center, $bbox->center());
     }
 
-    public function testGetSpanShouldReturnALatLngObject()
+    public function testGetSpanShouldReturnAPositionObject()
     {
-        $bbox = new BoundingBox(new LatLng(2.5678, 1.1234), new LatLng(4.5678, 3.1234));
+        $bbox = new BoundingBox(new Position(1.1234, 2.5678), new Position(3.1234, 4.5678));
 
-        $span = new LatLng(2, 2);
+        $span = new Position(2, 2);
 
         $this->assertEquals($span, $bbox->span());
     }
 
     public function testContains()
     {
-        $bbox = new BoundingBox(new LatLng(-122, 37), new LatLng(-123, 38));
+        $bbox = new BoundingBox(new Position(37, -122), new Position(38, -123));
 
-        $this->assertTrue($bbox->contains(new LatLng(-122, 37)));
-        $this->assertTrue($bbox->contains(new LatLng(-123, 38)));
+        $this->assertTrue($bbox->contains(new Position(37, -122)));
+        $this->assertTrue($bbox->contains(new Position(38, -123)));
 
-        $this->assertFalse($bbox->contains(new LatLng(-70, -12)));
+        $this->assertFalse($bbox->contains(new Position(-12, -70)));
     }
 
     public function testExtendInACircle()
     {
-        $bbox = new BoundingBox(new LatLng(0, 0), new LatLng(0, 0));
-        $bbox = $bbox->extend(new LatLng(0, 1));
-        $bbox = $bbox->extend(new LatLng(1, 0));
-        $bbox = $bbox->extend(new LatLng(0, -1));
-        $bbox = $bbox->extend(new LatLng(-1, 0));
+        $bbox = new BoundingBox(new Position(0, 0), new Position(0, 0));
+        $bbox = $bbox->extend(new Position(1, 0));
+        $bbox = $bbox->extend(new Position(0, 1));
+        $bbox = $bbox->extend(new Position(-1, 0));
+        $bbox = $bbox->extend(new Position(0, -1));
         $this->assertBoundingBox($bbox, -1, -1, 1, 1);
     }
 
     public function testUnion()
     {
-        $bbox = new BoundingBox(new LatLng(37, -122), new LatLng(37, -122));
+        $bbox = new BoundingBox(new Position(-122, 37), new Position(-122, 37));
 
-        $bbox = $bbox->union(new BoundingBox(new LatLng(-38, 123), new LatLng(38, -123)));
+        $bbox = $bbox->union(new BoundingBox(new Position(123, -38), new Position(-123, 38)));
         $this->assertBoundingBox($bbox, -38, 123, 38, -122);
     }
 
     public function testCrossesAntimeridian()
     {
-        $bbox = new BoundingBox(new LatLng(-45, 179), new LatLng(45, -179));
+        $bbox = new BoundingBox(new Position(179, -45), new Position(-179, 45));
 
         $this->assertTrue($bbox->crossesAntimeridian());
         $this->assertEquals(90, $bbox->span()->latitude());
@@ -99,9 +97,9 @@ class BoundingBoxTest extends TestCase
 
     public function testCrossesAntimeridianViaExtend()
     {
-        $bbox = new BoundingBox(new LatLng(-45, 179), new LatLng(45, -179));
+        $bbox = new BoundingBox(new Position(179, -45), new Position(-179, 45));
 
-        $bbox = $bbox->extend(new LatLng(90, -180));
+        $bbox = $bbox->extend(new Position(-180, 90));
 
         $this->assertTrue($bbox->crossesAntimeridian());
         $this->assertEquals(90, $bbox->span()->latitude());
@@ -110,7 +108,7 @@ class BoundingBoxTest extends TestCase
 
     public function testExpand()
     {
-        $bbox = new BoundingBox(new LatLng(-45, 179), new LatLng(45, -179));
+        $bbox = new BoundingBox(new Position(179, -45), new Position(-179, 45));
 
         $expandedBbox = $bbox->expand(new Distance(100));
 
@@ -135,8 +133,8 @@ class BoundingBoxTest extends TestCase
     public function testShrink()
     {
         $bbox = new BoundingBox(
-            new LatLng(-45.000898315284132, 178.99872959034192),
-            new LatLng(45.000898315284132, -178.99872959034192)
+            new Position(178.99872959034192, -45.000898315284132),
+            new Position(-178.99872959034192, 45.000898315284132)
         );
 
         $shrinkedBbox = $bbox->shrink(
@@ -164,8 +162,8 @@ class BoundingBoxTest extends TestCase
     public function testShrinkTooMuch()
     {
         $bbox = new BoundingBox(
-            new LatLng(1, 1),
-            new LatLng(1, 1)
+            new Position(1, 1),
+            new Position(1, 1)
         );
 
         $shrinkedBbox = $bbox->shrink(
@@ -193,8 +191,8 @@ class BoundingBoxTest extends TestCase
     public function testToPolygon()
     {
         $bbox = new BoundingBox(
-            new LatLng(0, 0),
-            new LatLng(10, 10)
+            new Position(0, 0),
+            new Position(10, 10)
         );
 
         $polygon = $bbox->toPolygon();
@@ -202,8 +200,8 @@ class BoundingBoxTest extends TestCase
         $this->assertCount(5, $polygon);
         $this->assertTrue($polygon->isClosed());
 
-        /** @var LatLng[] $array */
-        $array = iterator_to_array($polygon);
+        /** @var Position[] $array */
+        $array = \iterator_to_array($polygon);
 
         $this->assertEquals(
             0,
