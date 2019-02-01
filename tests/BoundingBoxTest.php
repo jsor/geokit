@@ -36,6 +36,126 @@ class BoundingBoxTest extends TestCase
         new BoundingBox(new Position(90, 1), new Position(90, 0));
     }
 
+    public function testFromCoordinatesWithArray()
+    {
+        $bbox = BoundingBox::fromCoordinates([1, 2, 3, 4]);
+
+        $this->assertSame(1.0, $bbox->southWest()->x());
+        $this->assertSame(2.0, $bbox->southWest()->y());
+        $this->assertSame(1.0, $bbox->southWest()->longitude());
+        $this->assertSame(2.0, $bbox->southWest()->latitude());
+
+        $this->assertSame(3.0, $bbox->northEast()->x());
+        $this->assertSame(4.0, $bbox->northEast()->y());
+        $this->assertSame(3.0, $bbox->northEast()->longitude());
+        $this->assertSame(4.0, $bbox->northEast()->latitude());
+    }
+
+    public function testFromCoordinatesWithIterator()
+    {
+        $bbox = BoundingBox::fromCoordinates(new \ArrayIterator([1, 2, 3, 4]));
+
+        $this->assertSame(1.0, $bbox->southWest()->x());
+        $this->assertSame(2.0, $bbox->southWest()->y());
+        $this->assertSame(1.0, $bbox->southWest()->longitude());
+        $this->assertSame(2.0, $bbox->southWest()->latitude());
+
+        $this->assertSame(3.0, $bbox->northEast()->x());
+        $this->assertSame(4.0, $bbox->northEast()->y());
+        $this->assertSame(3.0, $bbox->northEast()->longitude());
+        $this->assertSame(4.0, $bbox->northEast()->latitude());
+    }
+
+    public function testFromCoordinatesWithGenerator()
+    {
+        $bbox = BoundingBox::fromCoordinates((function () {
+            yield 1;
+            yield 2;
+            yield 3;
+            yield 4;
+        })());
+
+        $this->assertSame(1.0, $bbox->southWest()->x());
+        $this->assertSame(2.0, $bbox->southWest()->y());
+        $this->assertSame(1.0, $bbox->southWest()->longitude());
+        $this->assertSame(2.0, $bbox->southWest()->latitude());
+
+        $this->assertSame(3.0, $bbox->northEast()->x());
+        $this->assertSame(4.0, $bbox->northEast()->y());
+        $this->assertSame(3.0, $bbox->northEast()->longitude());
+        $this->assertSame(4.0, $bbox->northEast()->latitude());
+    }
+
+    public function testFromCoordinatesThrowsExceptionForMissingSouthWestXCoordinate()
+    {
+        $this->expectException(Exception\MissingCoordinateException::class);
+
+        BoundingBox::fromCoordinates([]);
+    }
+
+    public function testFromCoordinatesThrowsExceptionForInvalidSouthWestXCoordinate()
+    {
+        $this->expectException(Exception\InvalidCoordinateException::class);
+
+        BoundingBox::fromCoordinates(['foo', 2]);
+    }
+
+    public function testFromCoordinatesThrowsExceptionForMissingSouthWestYCoordinate()
+    {
+        $this->expectException(Exception\MissingCoordinateException::class);
+
+        BoundingBox::fromCoordinates([1]);
+    }
+
+    public function testFromCoordinatesThrowsExceptionForInvalidSouthWestYCoordinate()
+    {
+        $this->expectException(Exception\InvalidCoordinateException::class);
+
+        BoundingBox::fromCoordinates([1, 'foo']);
+    }
+
+    public function testFromCoordinatesThrowsExceptionForMissingNorthEastXCoordinate()
+    {
+        $this->expectException(Exception\MissingCoordinateException::class);
+
+        BoundingBox::fromCoordinates([1, 2]);
+    }
+
+    public function testFromCoordinatesThrowsExceptionForInvalidNorthEastXCoordinate()
+    {
+        $this->expectException(Exception\InvalidCoordinateException::class);
+
+        BoundingBox::fromCoordinates([1, 2, 'foo', 4]);
+    }
+
+    public function testFromCoordinatesThrowsExceptionForMissingNorthEastYCoordinate()
+    {
+        $this->expectException(Exception\MissingCoordinateException::class);
+
+        BoundingBox::fromCoordinates([1, 2, 3]);
+    }
+
+    public function testFromCoordinatesThrowsExceptionForInvalidNorthEastYCoordinate()
+    {
+        $this->expectException(Exception\InvalidCoordinateException::class);
+
+        BoundingBox::fromCoordinates([1, 2, 3, 'foo']);
+    }
+
+    public function testToCoordinates()
+    {
+        $bbox = new BoundingBox(new Position(1, 2), new Position(3, 4));
+
+        $this->assertSame([1.0, 2.0, 3.0, 4.0], $bbox->toCoordinates());
+    }
+
+    public function testJsonSerialize()
+    {
+        $bbox = new BoundingBox(new Position(1.1, 2), new Position(3.3, 4));
+
+        $this->assertSame('[1.1,2,3.3,4]', \json_encode($bbox));
+    }
+
     public function testGetCenterShouldReturnAPositionObject()
     {
         $bbox = new BoundingBox(new Position(1.1234, 2.5678), new Position(3.1234, 4.5678));
