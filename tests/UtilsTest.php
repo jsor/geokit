@@ -9,17 +9,18 @@ class UtilsTest extends TestCase
      */
     public function testNormalizeLat($a, $b)
     {
-        $this->assertEquals(Utils::normalizeLat($a), $b);
+        $this->assertEquals($b, Utils::normalizeLat($a));
     }
 
     public function normalizeLatDataProvider()
     {
         return [
-            [-95, -90],
+            [-95, -85],
             [-90, -90],
             [5, 5],
             [90, 90],
-            [180, 90]
+            [100, 80],
+            [180, 0]
         ];
     }
 
@@ -28,7 +29,7 @@ class UtilsTest extends TestCase
      */
     public function testNormalizeLng($a, $b)
     {
-        $this->assertEquals(Utils::normalizeLng($a), $b);
+        $this->assertEquals($b, Utils::normalizeLng($a));
     }
 
     public function normalizeLngDataProvider()
@@ -36,8 +37,9 @@ class UtilsTest extends TestCase
         return [
             [-545, 175],
             [-365, -5],
+            [-360, 0],
             [-185, 175],
-            [-180, -180],
+            [-180, 180],
             [5, 5],
             [180, 180],
             [215, -145],

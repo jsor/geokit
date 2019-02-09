@@ -33,7 +33,7 @@ class PositionTest extends TestCase
         $this->assertSame(181.0, $position->x());
         $this->assertSame(91.0, $position->y());
         $this->assertSame(-179.0, $position->longitude());
-        $this->assertSame(90.0, $position->latitude());
+        $this->assertSame(89.0, $position->latitude());
     }
 
     public function testFromCoordinatesWithArray()
