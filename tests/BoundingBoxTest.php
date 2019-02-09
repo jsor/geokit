@@ -222,30 +222,35 @@ class BoundingBoxTest extends TestCase
         $bbox = $bbox->extend(new Position(-180, 90));
 
         $this->assertTrue($bbox->crossesAntimeridian());
-        $this->assertEquals(90, $bbox->span()->latitude());
+        $this->assertEquals(45, $bbox->span()->latitude());
         $this->assertEquals(2, $bbox->span()->longitude());
     }
 
     public function testExpand()
     {
-        $bbox = new BoundingBox(new Position(179, -45), new Position(-179, 45));
+        $bbox = new BoundingBox(
+            new Position(179, -45),
+            new Position(-179, 45)
+        );
 
-        $expandedBbox = $bbox->expand(new Distance(100));
+        $expandedBbox = $bbox->expand(
+            new Distance(100, Distance::UNIT_KILOMETERS)
+        );
 
         $this->assertEquals(
-            -45.00089932036373,
+            -45.89932036372454,
             $expandedBbox->southWest()->latitude()
         );
         $this->assertEquals(
-            178.99872816894472,
+            177.72811671076983,
             $expandedBbox->southWest()->longitude()
         );
         $this->assertEquals(
-            45.00089932036373,
+            45.89932036372454,
             $expandedBbox->northEast()->latitude()
         );
         $this->assertEquals(
-            -178.99872816894472,
+            -177.72811671076983,
             $expandedBbox->northEast()->longitude()
         );
     }
@@ -258,23 +263,23 @@ class BoundingBoxTest extends TestCase
         );
 
         $shrinkedBbox = $bbox->shrink(
-            new Distance(100)
+            new Distance(100, Distance::UNIT_KILOMETERS)
         );
 
         $this->assertEquals(
-            -44.999998994920404,
+            -44.10157795155959,
             $shrinkedBbox->southWest()->latitude()
         );
         $this->assertEquals(
-            179.00000144133816,
+            -179.7293671753848,
             $shrinkedBbox->southWest()->longitude()
         );
         $this->assertEquals(
-            44.999998994920404,
+            44.10157795155959,
             $shrinkedBbox->northEast()->latitude()
         );
         $this->assertEquals(
-            -179.00000144133816,
+            179.7293671753848,
             $shrinkedBbox->northEast()->longitude()
         );
     }

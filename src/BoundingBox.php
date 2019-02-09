@@ -203,22 +203,30 @@ final class BoundingBox implements \JsonSerializable
         ]);
     }
 
+    /**
+     * @see http://janmatuschek.de/LatitudeLongitudeBoundingCoordinates
+     */
     private static function transformBoundingBox(BoundingBox $bbox, float $distanceInMeters): BoundingBox
     {
-        $latSW = $bbox->southWest()->latitude();
-        $lngSW = $bbox->southWest()->longitude();
-        $latNE = $bbox->northEast()->latitude();
-        $lngNE = $bbox->northEast()->longitude();
+        $latSW = \deg2rad($bbox->southWest()->latitude());
+        $lngSW = \deg2rad($bbox->southWest()->longitude());
 
-        $positionSW = new Position(
-            self::lngDistance($latSW, $lngSW, $distanceInMeters),
-            self::latDistance($latSW, $distanceInMeters)
-        );
+        $latNE = \deg2rad($bbox->northEast()->latitude());
+        $lngNE = \deg2rad($bbox->northEast()->longitude());
 
-        $positionNE = new Position(
-            self::lngDistance($latNE, $lngNE, -$distanceInMeters),
-            self::latDistance($latNE, -$distanceInMeters)
-        );
+        $angularDistance = $distanceInMeters / Earth::RADIUS;
+
+        $minLat = $latSW - $angularDistance;
+        $maxLat = $latNE + $angularDistance;
+
+        $deltaLonSW = \asin(\sin($angularDistance) / \cos($latSW));
+        $deltaLonNE = \asin(\sin($angularDistance) / \cos($latNE));
+
+        $minLon = $lngSW - $deltaLonSW;
+        $maxLon = $lngNE + $deltaLonNE;
+
+        $positionSW = new Position(\rad2deg($minLon), \rad2deg($minLat));
+        $positionNE = new Position(\rad2deg($maxLon), \rad2deg($maxLat));
 
         // Check if we're shrinking too much
         if ($positionSW->latitude() > $positionNE->latitude()) {
@@ -228,28 +236,6 @@ final class BoundingBox implements \JsonSerializable
         }
 
         return new BoundingBox($positionSW, $positionNE);
-    }
-
-    private static function lngDistance(float $lat1, float $lng1, float $distanceInMeters): float
-    {
-        $radius = Earth::RADIUS;
-
-        $lat1 = \deg2rad($lat1);
-        $lng1 = \deg2rad($lng1);
-
-        $lng2 = ($radius * $lng1 * \cos($lat1) - $distanceInMeters) / ($radius * \cos($lat1));
-
-        return Utils::normalizeLng(\rad2deg($lng2));
-    }
-
-    private static function latDistance(float $lat1, float $distanceInMeters): float
-    {
-        $radius = Earth::RADIUS;
-
-        $lat1 = \deg2rad($lat1);
-        $lat2 = ($radius * $lat1 - $distanceInMeters) / $radius;
-
-        return Utils::normalizeLat(\rad2deg($lat2));
     }
 
     private function containsLng(float $lng): bool
