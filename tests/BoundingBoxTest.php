@@ -93,25 +93,11 @@ class BoundingBoxTest extends TestCase
         BoundingBox::fromCoordinates([]);
     }
 
-    public function testFromCoordinatesThrowsExceptionForInvalidSouthWestXCoordinate()
-    {
-        $this->expectException(Exception\InvalidCoordinateException::class);
-
-        BoundingBox::fromCoordinates(['foo', 2]);
-    }
-
     public function testFromCoordinatesThrowsExceptionForMissingSouthWestYCoordinate()
     {
         $this->expectException(Exception\MissingCoordinateException::class);
 
         BoundingBox::fromCoordinates([1]);
-    }
-
-    public function testFromCoordinatesThrowsExceptionForInvalidSouthWestYCoordinate()
-    {
-        $this->expectException(Exception\InvalidCoordinateException::class);
-
-        BoundingBox::fromCoordinates([1, 'foo']);
     }
 
     public function testFromCoordinatesThrowsExceptionForMissingNorthEastXCoordinate()
@@ -121,25 +107,11 @@ class BoundingBoxTest extends TestCase
         BoundingBox::fromCoordinates([1, 2]);
     }
 
-    public function testFromCoordinatesThrowsExceptionForInvalidNorthEastXCoordinate()
-    {
-        $this->expectException(Exception\InvalidCoordinateException::class);
-
-        BoundingBox::fromCoordinates([1, 2, 'foo', 4]);
-    }
-
     public function testFromCoordinatesThrowsExceptionForMissingNorthEastYCoordinate()
     {
         $this->expectException(Exception\MissingCoordinateException::class);
 
         BoundingBox::fromCoordinates([1, 2, 3]);
-    }
-
-    public function testFromCoordinatesThrowsExceptionForInvalidNorthEastYCoordinate()
-    {
-        $this->expectException(Exception\InvalidCoordinateException::class);
-
-        BoundingBox::fromCoordinates([1, 2, 3, 'foo']);
     }
 
     public function testToCoordinates()

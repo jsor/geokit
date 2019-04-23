@@ -76,25 +76,11 @@ class PositionTest extends TestCase
         Position::fromCoordinates([]);
     }
 
-    public function testFromCoordinatesThrowsExceptionForInvalidXCoordinate()
-    {
-        $this->expectException(Exception\InvalidCoordinateException::class);
-
-        Position::fromCoordinates(['foo', 2]);
-    }
-
     public function testFromCoordinatesThrowsExceptionForMissingYCoordinate()
     {
         $this->expectException(Exception\MissingCoordinateException::class);
 
         Position::fromCoordinates([1]);
-    }
-
-    public function testFromCoordinatesThrowsExceptionForInvalidYCoordinate()
-    {
-        $this->expectException(Exception\InvalidCoordinateException::class);
-
-        Position::fromCoordinates([1, 'foo']);
     }
 
     public function testToCoordinates()

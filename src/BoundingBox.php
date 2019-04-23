@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Geokit;
 
-use Geokit\Exception\InvalidCoordinateException;
 use Geokit\Exception\MissingCoordinateException;
 
 final class BoundingBox implements \JsonSerializable
@@ -44,28 +43,12 @@ final class BoundingBox implements \JsonSerializable
             throw MissingCoordinateException::create('south', 1);
         }
 
-        if (!\is_int($array[0]) && !\is_float($array[0])) {
-            throw InvalidCoordinateException::create('west', $array[0]);
-        }
-
-        if (!\is_int($array[1]) && !\is_float($array[1])) {
-            throw InvalidCoordinateException::create('south', $array[1]);
-        }
-
         if (!\array_key_exists(2, $array)) {
             throw MissingCoordinateException::create('east', 0);
         }
 
         if (!\array_key_exists(3, $array)) {
             throw MissingCoordinateException::create('north', 1);
-        }
-
-        if (!\is_int($array[2]) && !\is_float($array[2])) {
-            throw InvalidCoordinateException::create('east', $array[0]);
-        }
-
-        if (!\is_int($array[3]) && !\is_float($array[3])) {
-            throw InvalidCoordinateException::create('north', $array[1]);
         }
 
         return new self(

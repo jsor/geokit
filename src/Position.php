@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Geokit;
 
-use Geokit\Exception\InvalidCoordinateException;
 use Geokit\Exception\MissingCoordinateException;
 
 final class Position implements \JsonSerializable
@@ -36,14 +35,6 @@ final class Position implements \JsonSerializable
 
         if (!\array_key_exists(1, $array)) {
             throw MissingCoordinateException::create('y', 1);
-        }
-
-        if (!\is_int($array[0]) && !\is_float($array[0])) {
-            throw InvalidCoordinateException::create('x', $array[0]);
-        }
-
-        if (!\is_int($array[1]) && !\is_float($array[1])) {
-            throw InvalidCoordinateException::create('y', $array[1]);
         }
 
         return new self($array[0], $array[1]);
