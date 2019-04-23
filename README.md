@@ -129,24 +129,24 @@ $distance = Geokit\Distance::fromString('234nm');
 ### Position
 
 A `Position` is a fundamental construct representing a geographical position in
-`x`/`y` or `longitude`/`latitude` coordinates.
+`x` (or `longitude`) and `y` (or `latitude`) coordinates.
 
 Note, that `x`/`y` coordinates are kept as is, while `longitude`/`latitude` are
-wrapped.
+normalized.
 
 * Longitudes range between -180 and 180 degrees, inclusive. Longitudes above 180
-  or below -180 are wrapped. For example, 480, 840 and 1200 will all be wrapped
-  to 120 degrees.
+  or below -180 are normalized. For example, 480, 840 and 1200 will all be
+  normalized to 120 degrees.
 * Latitudes range between -90 and 90 degrees, inclusive. Latitudes above 90 or
-  below -90 are wrapped. For example, 100 will be capped to 90 degrees.
+  below -90 are normalized. For example, 100 will be normalized to 80 degrees.
 
 ```php
 $position = new Geokit\Position(181, 91);
 
 $x = $position->x(); // Returns 181.0
 $y = $position->y(); // Returns 91.0
-$longitude = $position->longitude(); // Returns -179.0, wrapped
-$latitude = $position->latitude(); // Returns 90.0, capped
+$longitude = $position->longitude(); // Returns -179.0, normalized
+$latitude = $position->latitude(); // Returns 89.0, normalized
 ```
 
 ### BoundingBox
