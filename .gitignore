@@ -1,7 +1,8 @@
 build/
+vendor/
+.php_cs.cache
+.phpunit.result.cache
 composer.lock
 composer.phar
 phpunit.xml
 php-cs-fixer*.phar
-.php_cs.cache
-vendor/
