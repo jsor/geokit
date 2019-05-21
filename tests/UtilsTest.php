@@ -15,12 +15,15 @@ class UtilsTest extends TestCase
     public function normalizeLatDataProvider(): array
     {
         return [
+            [-365, -5],
+            [-185, 5],
             [-95, -85],
             [-90, -90],
             [5, 5],
             [90, 90],
             [100, 80],
-            [180, 0]
+            [185, -5],
+            [365, 5]
         ];
     }
 
