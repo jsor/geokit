@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 class PositionTest extends TestCase
 {
-    public function testConstructor()
+    public function testConstructor(): void
     {
         $position = new Position(1.0, 2.0);
 
@@ -16,7 +16,7 @@ class PositionTest extends TestCase
         $this->assertSame(2.0, $position->latitude());
     }
 
-    public function testConstructorWithInts()
+    public function testConstructorWithInts(): void
     {
         $position = new Position(1, 2);
 
@@ -26,7 +26,7 @@ class PositionTest extends TestCase
         $this->assertSame(2.0, $position->latitude());
     }
 
-    public function testNormalizesLatitudeAndLongitude()
+    public function testNormalizesLatitudeAndLongitude(): void
     {
         $position = new Position(181, 91);
 
@@ -36,7 +36,7 @@ class PositionTest extends TestCase
         $this->assertSame(89.0, $position->latitude());
     }
 
-    public function testFromCoordinatesWithArray()
+    public function testFromCoordinatesWithArray(): void
     {
         $position = Position::fromCoordinates([1, 2]);
 
@@ -46,7 +46,7 @@ class PositionTest extends TestCase
         $this->assertSame(2.0, $position->latitude());
     }
 
-    public function testFromCoordinatesWithIterator()
+    public function testFromCoordinatesWithIterator(): void
     {
         $position = Position::fromCoordinates(new \ArrayIterator([1, 2]));
 
@@ -56,9 +56,9 @@ class PositionTest extends TestCase
         $this->assertSame(2.0, $position->latitude());
     }
 
-    public function testFromCoordinatesWithGenerator()
+    public function testFromCoordinatesWithGenerator(): void
     {
-        $position = Position::fromCoordinates((function () {
+        $position = Position::fromCoordinates((/** @return \Generator<float> */ static function (): \Generator {
             yield 1;
             yield 2;
         })());
@@ -69,28 +69,28 @@ class PositionTest extends TestCase
         $this->assertSame(2.0, $position->latitude());
     }
 
-    public function testFromCoordinatesThrowsExceptionForMissingXCoordinate()
+    public function testFromCoordinatesThrowsExceptionForMissingXCoordinate(): void
     {
         $this->expectException(Exception\MissingCoordinateException::class);
 
         Position::fromCoordinates([]);
     }
 
-    public function testFromCoordinatesThrowsExceptionForMissingYCoordinate()
+    public function testFromCoordinatesThrowsExceptionForMissingYCoordinate(): void
     {
         $this->expectException(Exception\MissingCoordinateException::class);
 
         Position::fromCoordinates([1]);
     }
 
-    public function testToCoordinates()
+    public function testToCoordinates(): void
     {
         $position = new Position(1, 2);
 
         $this->assertSame([1.0, 2.0], $position->toCoordinates());
     }
 
-    public function testJsonSerialize()
+    public function testJsonSerialize(): void
     {
         $position = new Position(1.1, 2);
 

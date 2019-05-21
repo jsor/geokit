@@ -8,7 +8,14 @@ use Geokit\Exception\MissingCoordinateException;
 
 final class Position implements \JsonSerializable
 {
+    /**
+     * @var float
+     */
     private $x;
+
+    /**
+     * @var float
+     */
     private $y;
 
     public function __construct(float $x, float $y)
@@ -17,6 +24,9 @@ final class Position implements \JsonSerializable
         $this->y = $y;
     }
 
+    /**
+     * @param iterable<float> $iterable
+     */
     public static function fromCoordinates(iterable $iterable): Position
     {
         $array = [];
@@ -60,6 +70,9 @@ final class Position implements \JsonSerializable
         return Utils::normalizeLat($this->y);
     }
 
+    /**
+     * @return iterable<float>
+     */
     public function toCoordinates(): iterable
     {
         return [$this->x, $this->y];

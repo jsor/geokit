@@ -19,6 +19,9 @@ final class Distance
 
     public const DEFAULT_UNIT = self::UNIT_METERS;
 
+    /**
+     * @var array<float>
+     */
     private static $units = [
         self::UNIT_METERS => 1.0,
         self::UNIT_KILOMETERS => 1000.0,
@@ -29,6 +32,9 @@ final class Distance
         self::UNIT_NAUTICAL => 1852.0,
     ];
 
+    /**
+     * @var array<string>
+     */
     private static $aliases = [
         'meter' => self::UNIT_METERS,
         'metre' => self::UNIT_METERS,
@@ -52,6 +58,9 @@ final class Distance
         'nauticalmiles' => self::UNIT_NAUTICAL,
     ];
 
+    /**
+     * @var float
+     */
     private $value;
 
     public function __construct(float $value, string $unit = self::DEFAULT_UNIT)

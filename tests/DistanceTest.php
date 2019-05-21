@@ -4,91 +4,91 @@ namespace Geokit;
 
 class DistanceTest extends TestCase
 {
-    public function testShouldConvertToMeters()
+    public function testShouldConvertToMeters(): void
     {
         $distance = new Distance(1000);
         $this->assertSame(1000.0, $distance->meters());
     }
 
-    public function testShouldConvertToMetersWithAlias()
+    public function testShouldConvertToMetersWithAlias(): void
     {
         $distance = new Distance(1000);
         $this->assertSame(1000.0, $distance->m());
     }
 
-    public function testShouldConvertToKilometers()
+    public function testShouldConvertToKilometers(): void
     {
         $distance = new Distance(1000);
         $this->assertSame(1.0, $distance->kilometers());
     }
 
-    public function testShouldConvertToKilometersWithAlias()
+    public function testShouldConvertToKilometersWithAlias(): void
     {
         $distance = new Distance(1000);
         $this->assertSame(1.0, $distance->km());
     }
 
-    public function testShouldConvertToMiles()
+    public function testShouldConvertToMiles(): void
     {
         $distance = new Distance(1000);
         $this->assertSame(0.62137119223733395, $distance->miles());
     }
 
-    public function testShouldConvertToMilesWithAlias()
+    public function testShouldConvertToMilesWithAlias(): void
     {
         $distance = new Distance(1000);
         $this->assertSame(0.62137119223733395, $distance->mi());
     }
 
-    public function testShouldConvertToYards()
+    public function testShouldConvertToYards(): void
     {
         $distance = new Distance(1000);
         $this->assertSame(1093.6132983377079, $distance->yards());
     }
 
-    public function testShouldConvertToYardsWithAlias()
+    public function testShouldConvertToYardsWithAlias(): void
     {
         $distance = new Distance(1000);
         $this->assertSame(1093.6132983377079, $distance->yd());
     }
 
-    public function testShouldConvertToFeet()
+    public function testShouldConvertToFeet(): void
     {
         $distance = new Distance(1000);
         $this->assertSame(3280.8398950131232, $distance->feet());
     }
 
-    public function testShouldConvertToFeetWithAlias()
+    public function testShouldConvertToFeetWithAlias(): void
     {
         $distance = new Distance(1000);
         $this->assertSame(3280.8398950131232, $distance->ft());
     }
 
-    public function testShouldConvertToInches()
+    public function testShouldConvertToInches(): void
     {
         $distance = new Distance(1000);
         $this->assertSame(39370.078740157485, $distance->inches());
     }
 
-    public function testShouldConvertToInchesWithAlias()
+    public function testShouldConvertToInchesWithAlias(): void
     {
         $distance = new Distance(1000);
         $this->assertSame(39370.078740157485, $distance->in());
     }
 
-    public function testShouldConvertToNauticalMiles()
+    public function testShouldConvertToNauticalMiles(): void
     {
         $distance = new Distance(1000);
         $this->assertSame(0.5399568034557235, $distance->nautical());
     }
 
-    public function testShouldConvertToNauticalWithAlias()
+    public function testShouldConvertToNauticalWithAlias(): void
     {
         $distance = new Distance(1000);
         $this->assertSame(0.5399568034557235, $distance->nm());
     }
 
-    public function testShouldThrowExceptionForInvalidUnit()
+    public function testShouldThrowExceptionForInvalidUnit(): void
     {
         $this->expectException(Exception\InvalidArgumentException::class);
         new Distance(1000, 'foo');
@@ -97,13 +97,13 @@ class DistanceTest extends TestCase
     /**
      * @dataProvider fromStringDataProvider
      */
-    public function testFromString($value, $unit)
+    public function testFromString(float $value, string $unit): void
     {
         $this->assertEquals(1000, Distance::fromString(\sprintf('%.15F%s', $value, $unit))->meters());
         $this->assertEquals(1000, Distance::fromString(\sprintf('%.15F %s', $value, $unit))->meters(), 'With space');
     }
 
-    public function fromStringDataProvider()
+    public function fromStringDataProvider(): array
     {
         return [
             [
@@ -221,7 +221,7 @@ class DistanceTest extends TestCase
         ];
     }
 
-    public function testFromStringThrowsExceptionForInvalidInput()
+    public function testFromStringThrowsExceptionForInvalidInput(): void
     {
         $this->expectException(Exception\InvalidArgumentException::class);
         Distance::fromString('1000foo');

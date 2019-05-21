@@ -7,7 +7,7 @@ class MathTest extends TestCase
     /**
      * @dataProvider distanceHaversineDataProvider
      */
-    public function testDistanceHaversine($pos1, $pos2, $distance)
+    public function testDistanceHaversine(Position $pos1, Position $pos2, float $distance): void
     {
         $math = new Math();
 
@@ -18,7 +18,7 @@ class MathTest extends TestCase
         );
     }
 
-    public static function distanceHaversineDataProvider()
+    public static function distanceHaversineDataProvider(): array
     {
         return [
             [
@@ -62,7 +62,7 @@ class MathTest extends TestCase
     /**
      * @dataProvider distanceVincentyDataProvider
      */
-    public function testDistanceVincenty($pos1, $pos2, $distance)
+    public function testDistanceVincenty(Position $pos1, Position $pos2, float $distance): void
     {
         $math = new Math();
 
@@ -73,7 +73,7 @@ class MathTest extends TestCase
         );
     }
 
-    public static function distanceVincentyDataProvider()
+    public static function distanceVincentyDataProvider(): array
     {
         return [
             [
@@ -114,7 +114,7 @@ class MathTest extends TestCase
         ];
     }
 
-    public function testDistanceHaversineCoIncidentPoints()
+    public function testDistanceHaversineCoIncidentPoints(): void
     {
         $math = new Math();
 
@@ -124,7 +124,7 @@ class MathTest extends TestCase
         );
     }
 
-    public function testDistanceHaversineShouldNotConvergeForHalfTripAroundEquator()
+    public function testDistanceHaversineShouldNotConvergeForHalfTripAroundEquator(): void
     {
         $this->expectException(Exception\RuntimeException::class);
         $this->expectExceptionMessage('Vincenty formula failed to converge.');
@@ -133,7 +133,7 @@ class MathTest extends TestCase
         $math->distanceVincenty(new Position(0, 0), new Position(180, 0));
     }
 
-    public function testHeading()
+    public function testHeading(): void
     {
         $math = new Math();
 
@@ -143,7 +143,7 @@ class MathTest extends TestCase
         $this->assertEquals(180, $math->heading(new Position(0, 0), new Position(0, -1)));
     }
 
-    public function testMidpoint()
+    public function testMidpoint(): void
     {
         $math = new Math();
 
@@ -162,7 +162,7 @@ class MathTest extends TestCase
         );
     }
 
-    public function testEndpoint()
+    public function testEndpoint(): void
     {
         $math = new Math();
 
@@ -182,7 +182,7 @@ class MathTest extends TestCase
         );
     }
 
-    public function testCircle()
+    public function testCircle(): void
     {
         $math = new Math();
 

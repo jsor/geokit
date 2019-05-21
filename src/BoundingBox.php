@@ -8,7 +8,14 @@ use Geokit\Exception\MissingCoordinateException;
 
 final class BoundingBox implements \JsonSerializable
 {
+    /**
+     * @var Position
+     */
     private $southWest;
+
+    /**
+     * @var Position
+     */
     private $northEast;
 
     public function __construct(Position $southWest, Position $northEast)
@@ -23,6 +30,9 @@ final class BoundingBox implements \JsonSerializable
         }
     }
 
+    /**
+     * @param iterable<float> $iterable
+     */
     public static function fromCoordinates(iterable $iterable): BoundingBox
     {
         $array = [];
@@ -57,6 +67,9 @@ final class BoundingBox implements \JsonSerializable
         );
     }
 
+    /**
+     * @return iterable<float>
+     */
     public function toCoordinates(): iterable
     {
         return [
@@ -67,6 +80,9 @@ final class BoundingBox implements \JsonSerializable
         ];
     }
 
+    /**
+     * @return array<float>
+     */
     public function jsonSerialize(): array
     {
         return [
