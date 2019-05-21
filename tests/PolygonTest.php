@@ -28,6 +28,7 @@ class PolygonTest extends TestCase
         $this->expectException(Exception\InvalidArgumentException::class);
         $this->expectExceptionMessage('Position at index 0 is not an instance of Geokit\Position.');
 
+        /** @psalm-suppress InvalidArgument */
         new Polygon(['foo']);
     }
 

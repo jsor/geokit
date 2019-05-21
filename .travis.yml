@@ -22,6 +22,7 @@ install:
 
 script:
   - ./vendor/bin/phpunit -v --coverage-text --coverage-clover=./build/logs/clover.xml
+  - ./vendor/bin/psalm
 
 after_success:
   - if [ -f ./build/logs/clover.xml ]; then wget https://github.com/php-coveralls/php-coveralls/releases/download/v2.1.0/php-coveralls.phar; fi

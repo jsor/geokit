@@ -17,6 +17,7 @@ final class Polygon implements \Countable, \IteratorAggregate
     public function __construct(array $positions = [])
     {
         foreach ($positions as $index => $position) {
+            /** @psalm-suppress RedundantConditionGivenDocblockType */
             if ($position instanceof Position) {
                 continue;
             }
