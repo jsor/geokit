@@ -79,7 +79,7 @@ final class Distance
 
     public static function fromString(string $input): self
     {
-        if (\preg_match('/(\-?\d+\.?\d*)\s*((kilo)?met[er]+s?|m|km|miles?|mi|yards?|yd|feet|foot|ft|in(ch(es)?)?|″|nautical(mile)?s?|nm)?$/u', $input, $match)) {
+        if ((bool) \preg_match('/(\-?\d+\.?\d*)\s*((kilo)?met[er]+s?|m|km|miles?|mi|yards?|yd|feet|foot|ft|in(ch(es)?)?|″|nautical(mile)?s?|nm)?$/u', $input, $match)) {
             $unit = self::DEFAULT_UNIT;
 
             if (isset($match[2])) {
