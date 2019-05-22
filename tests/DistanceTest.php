@@ -7,85 +7,85 @@ class DistanceTest extends TestCase
     public function testShouldConvertToMeters(): void
     {
         $distance = new Distance(1000);
-        $this->assertSame(1000.0, $distance->meters());
+        self::assertSame(1000.0, $distance->meters());
     }
 
     public function testShouldConvertToMetersWithAlias(): void
     {
         $distance = new Distance(1000);
-        $this->assertSame(1000.0, $distance->m());
+        self::assertSame(1000.0, $distance->m());
     }
 
     public function testShouldConvertToKilometers(): void
     {
         $distance = new Distance(1000);
-        $this->assertSame(1.0, $distance->kilometers());
+        self::assertSame(1.0, $distance->kilometers());
     }
 
     public function testShouldConvertToKilometersWithAlias(): void
     {
         $distance = new Distance(1000);
-        $this->assertSame(1.0, $distance->km());
+        self::assertSame(1.0, $distance->km());
     }
 
     public function testShouldConvertToMiles(): void
     {
         $distance = new Distance(1000);
-        $this->assertSame(0.62137119223733395, $distance->miles());
+        self::assertSame(0.62137119223733395, $distance->miles());
     }
 
     public function testShouldConvertToMilesWithAlias(): void
     {
         $distance = new Distance(1000);
-        $this->assertSame(0.62137119223733395, $distance->mi());
+        self::assertSame(0.62137119223733395, $distance->mi());
     }
 
     public function testShouldConvertToYards(): void
     {
         $distance = new Distance(1000);
-        $this->assertSame(1093.6132983377079, $distance->yards());
+        self::assertSame(1093.6132983377079, $distance->yards());
     }
 
     public function testShouldConvertToYardsWithAlias(): void
     {
         $distance = new Distance(1000);
-        $this->assertSame(1093.6132983377079, $distance->yd());
+        self::assertSame(1093.6132983377079, $distance->yd());
     }
 
     public function testShouldConvertToFeet(): void
     {
         $distance = new Distance(1000);
-        $this->assertSame(3280.8398950131232, $distance->feet());
+        self::assertSame(3280.8398950131232, $distance->feet());
     }
 
     public function testShouldConvertToFeetWithAlias(): void
     {
         $distance = new Distance(1000);
-        $this->assertSame(3280.8398950131232, $distance->ft());
+        self::assertSame(3280.8398950131232, $distance->ft());
     }
 
     public function testShouldConvertToInches(): void
     {
         $distance = new Distance(1000);
-        $this->assertSame(39370.078740157485, $distance->inches());
+        self::assertSame(39370.078740157485, $distance->inches());
     }
 
     public function testShouldConvertToInchesWithAlias(): void
     {
         $distance = new Distance(1000);
-        $this->assertSame(39370.078740157485, $distance->in());
+        self::assertSame(39370.078740157485, $distance->in());
     }
 
     public function testShouldConvertToNauticalMiles(): void
     {
         $distance = new Distance(1000);
-        $this->assertSame(0.5399568034557235, $distance->nautical());
+        self::assertSame(0.5399568034557235, $distance->nautical());
     }
 
     public function testShouldConvertToNauticalWithAlias(): void
     {
         $distance = new Distance(1000);
-        $this->assertSame(0.5399568034557235, $distance->nm());
+        self::assertSame(0.5399568034557235, $distance->nm());
     }
 
     public function testShouldThrowExceptionForInvalidUnit(): void
@@ -99,8 +99,8 @@ class DistanceTest extends TestCase
      */
     public function testFromString(float $value, string $unit): void
     {
-        $this->assertEquals(1000, Distance::fromString(\sprintf('%.15F%s', $value, $unit))->meters());
-        $this->assertEquals(1000, Distance::fromString(\sprintf('%.15F %s', $value, $unit))->meters(), 'With space');
+        self::assertEquals(1000, Distance::fromString(\sprintf('%.15F%s', $value, $unit))->meters());
+        self::assertEquals(1000, Distance::fromString(\sprintf('%.15F %s', $value, $unit))->meters(), 'With space');
     }
 
     public function fromStringDataProvider(): array

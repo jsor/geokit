@@ -9,7 +9,7 @@ class UtilsTest extends TestCase
      */
     public function testNormalizeLat(float $a, float $b): void
     {
-        $this->assertEquals($b, Utils::normalizeLat($a));
+        self::assertEquals($b, Utils::normalizeLat($a));
     }
 
     public function normalizeLatDataProvider(): array
@@ -32,7 +32,7 @@ class UtilsTest extends TestCase
      */
     public function testNormalizeLng(float $a, float $b): void
     {
-        $this->assertEquals($b, Utils::normalizeLng($a));
+        self::assertEquals($b, Utils::normalizeLng($a));
     }
 
     public function normalizeLngDataProvider(): array

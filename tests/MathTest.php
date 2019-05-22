@@ -11,7 +11,7 @@ class MathTest extends TestCase
     {
         $math = new Math();
 
-        $this->assertEqualsWithDelta(
+        self::assertEqualsWithDelta(
             $distance,
             $math->distanceHaversine($pos1, $pos2)->meters(),
             0.0001
@@ -66,7 +66,7 @@ class MathTest extends TestCase
     {
         $math = new Math();
 
-        $this->assertEqualsWithDelta(
+        self::assertEqualsWithDelta(
             $distance,
             $math->distanceVincenty($pos1, $pos2)->meters(),
             0.0001
@@ -118,7 +118,7 @@ class MathTest extends TestCase
     {
         $math = new Math();
 
-        $this->assertEquals(
+        self::assertEquals(
             0,
             $math->distanceVincenty(new Position(90, 90), new Position(90, 90))->meters()
         );
@@ -137,10 +137,10 @@ class MathTest extends TestCase
     {
         $math = new Math();
 
-        $this->assertEquals(90, $math->heading(new Position(0, 0), new Position(1, 0)));
-        $this->assertEquals(0, $math->heading(new Position(0, 0), new Position(0, 1)));
-        $this->assertEquals(270, $math->heading(new Position(0, 0), new Position(-1, 0)));
-        $this->assertEquals(180, $math->heading(new Position(0, 0), new Position(0, -1)));
+        self::assertEquals(90, $math->heading(new Position(0, 0), new Position(1, 0)));
+        self::assertEquals(0, $math->heading(new Position(0, 0), new Position(0, 1)));
+        self::assertEquals(270, $math->heading(new Position(0, 0), new Position(-1, 0)));
+        self::assertEquals(180, $math->heading(new Position(0, 0), new Position(0, -1)));
     }
 
     public function testMidpoint(): void
@@ -152,11 +152,11 @@ class MathTest extends TestCase
             new Position(-96.990159, 32.969527)
         );
 
-        $this->assertEquals(
+        self::assertEquals(
             32.94406100147102,
             $midpoint->latitude()
         );
-        $this->assertEquals(
+        self::assertEquals(
             -96.974296932499726,
             $midpoint->longitude()
         );
@@ -172,11 +172,11 @@ class MathTest extends TestCase
             new Distance(6389.09568)
         );
 
-        $this->assertEquals(
+        self::assertEquals(
             32.96932167481445,
             $endpoint->latitude()
         );
-        $this->assertEquals(
+        self::assertEquals(
             -96.99059694331415,
             $endpoint->longitude()
         );
@@ -195,13 +195,13 @@ class MathTest extends TestCase
             32
         );
 
-        $this->assertTrue($circle->isClosed());
-        $this->assertCount(33, $circle);
+        self::assertTrue($circle->isClosed());
+        self::assertCount(33, $circle);
 
-        $this->assertTrue($circle->contains($center));
+        self::assertTrue($circle->contains($center));
 
         foreach ($circle as $point) {
-            $this->assertEqualsWithDelta(
+            self::assertEqualsWithDelta(
                 $distance->meters(),
                 $math->distanceHaversine($center, $point)->meters(),
                 0.001

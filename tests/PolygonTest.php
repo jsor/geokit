@@ -17,10 +17,10 @@ class PolygonTest extends TestCase
         /** @var Position[] $array */
         $array = \iterator_to_array($polygon);
 
-        $this->assertEquals($points[0], $array[0]);
-        $this->assertEquals(0, $array[0]->latitude());
-        $this->assertEquals(1, $array[1]->latitude());
-        $this->assertEquals(1, $array['key']->latitude());
+        self::assertEquals($points[0], $array[0]);
+        self::assertEquals(0, $array[0]->latitude());
+        self::assertEquals(1, $array[1]->latitude());
+        self::assertEquals(1, $array['key']->latitude());
     }
 
     public function testConstructorThrowsExceptionForInvalidPosition(): void
@@ -36,7 +36,7 @@ class PolygonTest extends TestCase
     {
         $polygon = new Polygon();
 
-        $this->assertFalse($polygon->isClosed());
+        self::assertFalse($polygon->isClosed());
 
         $polygon = new Polygon([
             new Position(0, 0),
@@ -45,7 +45,7 @@ class PolygonTest extends TestCase
             new Position(1, 0)
         ]);
 
-        $this->assertFalse($polygon->isClosed());
+        self::assertFalse($polygon->isClosed());
 
         $polygon = new Polygon([
             new Position(0, 0),
@@ -55,7 +55,7 @@ class PolygonTest extends TestCase
             new Position(0, 0)
         ]);
 
-        $this->assertTrue($polygon->isClosed());
+        self::assertTrue($polygon->isClosed());
     }
 
     public function testCloseOpenPolygon(): void
@@ -71,7 +71,7 @@ class PolygonTest extends TestCase
 
         $array = \iterator_to_array($closedPolygon);
 
-        $this->assertEquals(new Position(0, 0), $array[\count($closedPolygon) - 1]);
+        self::assertEquals(new Position(0, 0), $array[\count($closedPolygon) - 1]);
     }
 
     public function testCloseEmptyPolygon(): void
@@ -80,7 +80,7 @@ class PolygonTest extends TestCase
 
         $closedPolygon = $polygon->close();
 
-        $this->assertCount(0, $closedPolygon);
+        self::assertCount(0, $closedPolygon);
     }
 
     public function testCloseAlreadyClosedPolygon(): void
@@ -97,7 +97,7 @@ class PolygonTest extends TestCase
 
         $array = \iterator_to_array($closedPolygon);
 
-        $this->assertEquals(new Position(0, 0), $array[\count($closedPolygon) - 1]);
+        self::assertEquals(new Position(0, 0), $array[\count($closedPolygon) - 1]);
     }
 
     /**
@@ -108,7 +108,7 @@ class PolygonTest extends TestCase
     {
         $polygon = new Polygon($polygonPositions);
 
-        $this->assertEquals($expected, $polygon->contains($position));
+        self::assertEquals($expected, $polygon->contains($position));
     }
 
     public function containsDataProvider(): array
@@ -260,10 +260,10 @@ class PolygonTest extends TestCase
 
         $bbox = $polygon->toBoundingBox();
 
-        $this->assertEquals(0, $bbox->southWest()->latitude());
-        $this->assertEquals(0, $bbox->southWest()->longitude());
-        $this->assertEquals(1, $bbox->northEast()->latitude());
-        $this->assertEquals(1, $bbox->northEast()->longitude());
+        self::assertEquals(0, $bbox->southWest()->latitude());
+        self::assertEquals(0, $bbox->southWest()->longitude());
+        self::assertEquals(1, $bbox->northEast()->latitude());
+        self::assertEquals(1, $bbox->northEast()->longitude());
     }
 
     public function testToBoundingBoxThrowsExceptionForEmptyPolygon(): void
@@ -284,11 +284,11 @@ class PolygonTest extends TestCase
 
         $polygon = new Polygon($points);
 
-        $this->assertCount(1, $polygon);
+        self::assertCount(1, $polygon);
     }
 
     public function testIterable(): void
     {
-        $this->assertIsIterable(new Polygon());
+        self::assertIsIterable(new Polygon());
     }
 }
