@@ -163,12 +163,12 @@ $northEast = new Geokit\Position(2, 1);
 
 $boundingBox = new Geokit\BoundingBox($southWest, $northEast);
 
-$southWestPosition = $boundingBox->getSouthWest();
-$northEastPosition = $boundingBox->getNorthEast();
+$southWestPosition = $boundingBox->southWest();
+$northEastPosition = $boundingBox->northEast();
 
-$center = $boundingBox->getCenter();
+$center = $boundingBox->center();
 
-$span = $boundingBox->getSpan();
+$span = $boundingBox->span();
 
 $boolean = $boundingBox->contains($position);
 
