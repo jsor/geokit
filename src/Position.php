@@ -37,11 +37,11 @@ final class Position implements JsonSerializable
             }
         }
 
-        if (! array_key_exists(0, $array)) {
+        if (!array_key_exists(0, $array)) {
             throw MissingCoordinateException::create('x', 0);
         }
 
-        if (! array_key_exists(1, $array)) {
+        if (!array_key_exists(1, $array)) {
             throw MissingCoordinateException::create('y', 1);
         }
 

@@ -64,7 +64,7 @@ final class Polygon implements Countable, IteratorAggregate
 
         $positions = $this->positions;
 
-        if (! $this->isClosed()) {
+        if (!$this->isClosed()) {
             $positions[] = clone reset($this->positions);
         }
 
@@ -104,7 +104,7 @@ final class Polygon implements Countable, IteratorAggregate
             if (($y1 > $y) !== ($y0 > $y) &&
                 ($x < ($x0 - $x1) * ($y - $y1) / ($y0 - $y1) + $x1)
             ) {
-                $inside = ! $inside;
+                $inside = !$inside;
             }
 
             $x0 = $x1;

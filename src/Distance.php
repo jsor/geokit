@@ -63,7 +63,7 @@ final class Distance
 
     public function __construct(float $value, string $unit = self::DEFAULT_UNIT)
     {
-        if (! isset(self::$units[$unit])) {
+        if (!isset(self::$units[$unit])) {
             throw new Exception\InvalidArgumentException(
                 sprintf(
                     'Invalid unit %s.',
@@ -83,7 +83,7 @@ final class Distance
             if (isset($match[2])) {
                 $unit = $match[2];
 
-                if (! isset(self::$units[$unit])) {
+                if (!isset(self::$units[$unit])) {
                     $unit = self::$aliases[$unit];
                 }
             }

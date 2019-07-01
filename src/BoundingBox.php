@@ -50,19 +50,19 @@ final class BoundingBox implements JsonSerializable
             }
         }
 
-        if (! array_key_exists(0, $array)) {
+        if (!array_key_exists(0, $array)) {
             throw MissingCoordinateException::create('west', 0);
         }
 
-        if (! array_key_exists(1, $array)) {
+        if (!array_key_exists(1, $array)) {
             throw MissingCoordinateException::create('south', 1);
         }
 
-        if (! array_key_exists(2, $array)) {
+        if (!array_key_exists(2, $array)) {
             throw MissingCoordinateException::create('east', 0);
         }
 
-        if (! array_key_exists(3, $array)) {
+        if (!array_key_exists(3, $array)) {
             throw MissingCoordinateException::create('north', 1);
         }
 
@@ -162,7 +162,7 @@ final class BoundingBox implements JsonSerializable
         $newWest = $this->southWest->longitude();
         $newEast = $this->northEast->longitude();
 
-        if (! $this->containsLng($position->longitude())) {
+        if (!$this->containsLng($position->longitude())) {
             // try extending east and try extending west, and use the one that
             // has the smaller longitudinal span
             $extendEastLngSpan = $this->lngSpan($newWest, $position->longitude());
