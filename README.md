@@ -8,7 +8,7 @@ Geokit is a PHP toolkit to solve geo-related tasks like:
 * Rectangular bounding box calculations.
 
 [![Build Status](https://travis-ci.org/jsor/geokit.svg?branch=master)](http://travis-ci.org/jsor/geokit?branch=master)
-[![Coverage Status](https://img.shields.io/coveralls/jsor/geokit.svg?style=flat)](https://coveralls.io/r/jsor/geokit?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/jsor/geokit/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/jsor/geokit/?branch=master)
 
 * [Installation](#installation)
 * [Reference](#reference)
