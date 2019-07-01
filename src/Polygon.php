@@ -4,11 +4,19 @@ declare(strict_types=1);
 
 namespace Geokit;
 
-final class Polygon implements \Countable, \IteratorAggregate
+use Countable;
+use Generator;
+use IteratorAggregate;
+use function array_shift;
+use function count;
+use function end;
+use function json_encode;
+use function reset;
+use function sprintf;
+
+final class Polygon implements Countable, IteratorAggregate
 {
-    /**
-     * @var array<Position>
-     */
+    /** @var array<Position> */
     private $positions;
 
     /**
@@ -23,9 +31,9 @@ final class Polygon implements \Countable, \IteratorAggregate
             }
 
             throw new Exception\InvalidArgumentException(
-                \sprintf(
+                sprintf(
                     'Position at index %s is not an instance of Geokit\Position.',
-                    \json_encode($index)
+                    json_encode($index)
                 )
             );
         }
@@ -33,36 +41,34 @@ final class Polygon implements \Countable, \IteratorAggregate
         $this->positions = $positions;
     }
 
-    public function isClosed(): bool
+    public function isClosed() : bool
     {
-        if (0 === \count($this->positions)) {
+        if (count($this->positions) === 0) {
             return false;
         }
 
         /** @var Position $lastPosition */
-        $lastPosition = \end($this->positions);
+        $lastPosition = end($this->positions);
         /** @var Position $firstPosition */
-        $firstPosition = \reset($this->positions);
+        $firstPosition = reset($this->positions);
 
-        return (
-            $lastPosition->latitude() === $firstPosition->latitude() &&
-            $lastPosition->longitude() === $firstPosition->longitude()
-        );
+        return $lastPosition->latitude() === $firstPosition->latitude() &&
+            $lastPosition->longitude() === $firstPosition->longitude();
     }
 
-    public function close(): self
+    public function close() : self
     {
-        if (0 === \count($this->positions)) {
+        if (count($this->positions) === 0) {
             return new self();
         }
 
         $positions = $this->positions;
 
-        if (!$this->isClosed()) {
-            $positions[] = clone \reset($this->positions);
+        if (! $this->isClosed()) {
+            $positions[] = clone reset($this->positions);
         }
 
-        $polygon = new self();
+        $polygon            = new self();
         $polygon->positions = $positions;
 
         return $polygon;
@@ -71,9 +77,9 @@ final class Polygon implements \Countable, \IteratorAggregate
     /**
      * @see https://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
      */
-    public function contains(Position $position): bool
+    public function contains(Position $position) : bool
     {
-        if (0 === \count($this->positions)) {
+        if (count($this->positions) === 0) {
             return false;
         }
 
@@ -83,7 +89,7 @@ final class Polygon implements \Countable, \IteratorAggregate
         $y = $position->latitude();
 
         /** @var Position $p */
-        $p = \end($positions);
+        $p = end($positions);
 
         $x0 = $p->longitude();
         $y0 = $p->latitude();
@@ -95,11 +101,10 @@ final class Polygon implements \Countable, \IteratorAggregate
             $x1 = $pos->longitude();
             $y1 = $pos->latitude();
 
-            if (
-                (($y1 > $y) !== ($y0 > $y)) &&
+            if (($y1 > $y) !== ($y0 > $y) &&
                 ($x < ($x0 - $x1) * ($y - $y1) / ($y0 - $y1) + $x1)
             ) {
-                $inside = !$inside;
+                $inside = ! $inside;
             }
 
             $x0 = $x1;
@@ -109,16 +114,16 @@ final class Polygon implements \Countable, \IteratorAggregate
         return $inside;
     }
 
-    public function toBoundingBox(): BoundingBox
+    public function toBoundingBox() : BoundingBox
     {
-        if (0 === \count($this->positions)) {
+        if (count($this->positions) === 0) {
             throw new Exception\LogicException('Cannot create a BoundingBox from empty Polygon.');
         }
 
         $positions = $this->positions;
 
         /** @var Position $start */
-        $start = \array_shift($positions);
+        $start = array_shift($positions);
 
         $bbox = new BoundingBox($start, $start);
 
@@ -130,15 +135,12 @@ final class Polygon implements \Countable, \IteratorAggregate
         return $bbox;
     }
 
-    public function count(): int
+    public function count() : int
     {
-        return \count($this->positions);
+        return count($this->positions);
     }
 
-    /**
-     * @return \Generator<Position>
-     */
-    public function getIterator(): \Generator
+    public function getIterator() : Generator
     {
         yield from $this->positions;
     }

@@ -22,6 +22,7 @@ install:
 
 script:
   - ./vendor/bin/phpunit -v --coverage-text --coverage-clover=./build/logs/clover.xml
+  - ./vendor/bin/phpcs
   - ./vendor/bin/psalm
 
 after_success:

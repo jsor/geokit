@@ -1,12 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Geokit;
 
+use ArrayIterator;
+use Generator;
 use PHPUnit\Framework\TestCase;
+use function json_encode;
 
 class PositionTest extends TestCase
 {
-    public function testConstructor(): void
+    public function testConstructor() : void
     {
         $position = new Position(1.0, 2.0);
 
@@ -16,7 +21,7 @@ class PositionTest extends TestCase
         self::assertSame(2.0, $position->latitude());
     }
 
-    public function testConstructorWithInts(): void
+    public function testConstructorWithInts() : void
     {
         $position = new Position(1, 2);
 
@@ -26,7 +31,7 @@ class PositionTest extends TestCase
         self::assertSame(2.0, $position->latitude());
     }
 
-    public function testNormalizesLatitudeAndLongitude(): void
+    public function testNormalizesLatitudeAndLongitude() : void
     {
         $position = new Position(181, 91);
 
@@ -36,7 +41,7 @@ class PositionTest extends TestCase
         self::assertSame(89.0, $position->latitude());
     }
 
-    public function testFromCoordinatesWithArray(): void
+    public function testFromCoordinatesWithArray() : void
     {
         $position = Position::fromCoordinates([1, 2]);
 
@@ -46,9 +51,9 @@ class PositionTest extends TestCase
         self::assertSame(2.0, $position->latitude());
     }
 
-    public function testFromCoordinatesWithIterator(): void
+    public function testFromCoordinatesWithIterator() : void
     {
-        $position = Position::fromCoordinates(new \ArrayIterator([1, 2]));
+        $position = Position::fromCoordinates(new ArrayIterator([1, 2]));
 
         self::assertSame(1.0, $position->x());
         self::assertSame(2.0, $position->y());
@@ -56,9 +61,9 @@ class PositionTest extends TestCase
         self::assertSame(2.0, $position->latitude());
     }
 
-    public function testFromCoordinatesWithGenerator(): void
+    public function testFromCoordinatesWithGenerator() : void
     {
-        $position = Position::fromCoordinates((/** @return \Generator<float> */ static function (): \Generator {
+        $position = Position::fromCoordinates((/** @return Generator<float> */ static function () : Generator {
             yield 1;
             yield 2;
         })());
@@ -69,31 +74,31 @@ class PositionTest extends TestCase
         self::assertSame(2.0, $position->latitude());
     }
 
-    public function testFromCoordinatesThrowsExceptionForMissingXCoordinate(): void
+    public function testFromCoordinatesThrowsExceptionForMissingXCoordinate() : void
     {
         $this->expectException(Exception\MissingCoordinateException::class);
 
         Position::fromCoordinates([]);
     }
 
-    public function testFromCoordinatesThrowsExceptionForMissingYCoordinate(): void
+    public function testFromCoordinatesThrowsExceptionForMissingYCoordinate() : void
     {
         $this->expectException(Exception\MissingCoordinateException::class);
 
         Position::fromCoordinates([1]);
     }
 
-    public function testToCoordinates(): void
+    public function testToCoordinates() : void
     {
         $position = new Position(1, 2);
 
         self::assertSame([1.0, 2.0], $position->toCoordinates());
     }
 
-    public function testJsonSerialize(): void
+    public function testJsonSerialize() : void
     {
         $position = new Position(1.1, 2);
 
-        self::assertSame('[1.1,2]', \json_encode($position));
+        self::assertSame('[1.1,2]', json_encode($position));
     }
 }

@@ -5,17 +5,15 @@ declare(strict_types=1);
 namespace Geokit;
 
 use Geokit\Exception\MissingCoordinateException;
+use JsonSerializable;
+use function array_key_exists;
 
-final class Position implements \JsonSerializable
+final class Position implements JsonSerializable
 {
-    /**
-     * @var float
-     */
+    /** @var float */
     private $x;
 
-    /**
-     * @var float
-     */
+    /** @var float */
     private $y;
 
     public function __construct(float $x, float $y)
@@ -27,7 +25,7 @@ final class Position implements \JsonSerializable
     /**
      * @param iterable<float> $iterable
      */
-    public static function fromCoordinates(iterable $iterable): Position
+    public static function fromCoordinates(iterable $iterable) : Position
     {
         $array = [];
 
@@ -39,33 +37,33 @@ final class Position implements \JsonSerializable
             }
         }
 
-        if (!\array_key_exists(0, $array)) {
+        if (! array_key_exists(0, $array)) {
             throw MissingCoordinateException::create('x', 0);
         }
 
-        if (!\array_key_exists(1, $array)) {
+        if (! array_key_exists(1, $array)) {
             throw MissingCoordinateException::create('y', 1);
         }
 
         return new self($array[0], $array[1]);
     }
 
-    public function x(): float
+    public function x() : float
     {
         return $this->x;
     }
 
-    public function y(): float
+    public function y() : float
     {
         return $this->y;
     }
 
-    public function longitude(): float
+    public function longitude() : float
     {
         return Utils::normalizeLng($this->x);
     }
 
-    public function latitude(): float
+    public function latitude() : float
     {
         return Utils::normalizeLat($this->y);
     }
@@ -73,12 +71,15 @@ final class Position implements \JsonSerializable
     /**
      * @return iterable<float>
      */
-    public function toCoordinates(): iterable
+    public function toCoordinates() : iterable
     {
         return [$this->x, $this->y];
     }
 
-    public function jsonSerialize(): array
+    /**
+     * @return array<float>
+     */
+    public function jsonSerialize() : array
     {
         return [$this->x, $this->y];
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Geokit;
 
 class UtilsTest extends TestCase
@@ -7,12 +9,15 @@ class UtilsTest extends TestCase
     /**
      * @dataProvider normalizeLatDataProvider
      */
-    public function testNormalizeLat(float $a, float $b): void
+    public function testNormalizeLat(float $a, float $b) : void
     {
         self::assertEquals($b, Utils::normalizeLat($a));
     }
 
-    public function normalizeLatDataProvider(): array
+    /**
+     * @return array<array<float>>
+     */
+    public function normalizeLatDataProvider() : array
     {
         return [
             [-365, -5],
@@ -23,19 +28,22 @@ class UtilsTest extends TestCase
             [90, 90],
             [100, 80],
             [185, -5],
-            [365, 5]
+            [365, 5],
         ];
     }
 
     /**
      * @dataProvider normalizeLngDataProvider
      */
-    public function testNormalizeLng(float $a, float $b): void
+    public function testNormalizeLng(float $a, float $b) : void
     {
         self::assertEquals($b, Utils::normalizeLng($a));
     }
 
-    public function normalizeLngDataProvider(): array
+    /**
+     * @return array<array<float>>
+     */
+    public function normalizeLngDataProvider() : array
     {
         return [
             [-545, 175],
@@ -48,7 +56,7 @@ class UtilsTest extends TestCase
             [215, -145],
             [360, 0],
             [395, 35],
-            [540, 180]
+            [540, 180],
         ];
     }
 }

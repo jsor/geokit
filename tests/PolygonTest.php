@@ -1,21 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Geokit;
+
+use function count;
+use function iterator_to_array;
 
 class PolygonTest extends TestCase
 {
-    public function testConstructorShouldAcceptArrayOfLatLngs(): void
+    public function testConstructorShouldAcceptArrayOfLatLngs() : void
     {
         $points = [
-            new Position(0, 0),
-            new Position(1, 1),
-            'key' => new Position(0, 1)
+            0 => new Position(0, 0),
+            1 => new Position(1, 1),
+            'key' => new Position(0, 1),
         ];
 
         $polygon = new Polygon($points);
 
         /** @var Position[] $array */
-        $array = \iterator_to_array($polygon);
+        $array = iterator_to_array($polygon);
 
         self::assertEquals($points[0], $array[0]);
         self::assertEquals(0, $array[0]->latitude());
@@ -23,7 +28,7 @@ class PolygonTest extends TestCase
         self::assertEquals(1, $array['key']->latitude());
     }
 
-    public function testConstructorThrowsExceptionForInvalidPosition(): void
+    public function testConstructorThrowsExceptionForInvalidPosition() : void
     {
         $this->expectException(Exception\InvalidArgumentException::class);
         $this->expectExceptionMessage('Position at index 0 is not an instance of Geokit\Position.');
@@ -32,7 +37,7 @@ class PolygonTest extends TestCase
         new Polygon(['foo']);
     }
 
-    public function testIsClose(): void
+    public function testIsClose() : void
     {
         $polygon = new Polygon();
 
@@ -42,7 +47,7 @@ class PolygonTest extends TestCase
             new Position(0, 0),
             new Position(1, 0),
             new Position(1, 1),
-            new Position(1, 0)
+            new Position(1, 0),
         ]);
 
         self::assertFalse($polygon->isClosed());
@@ -52,29 +57,29 @@ class PolygonTest extends TestCase
             new Position(1, 0),
             new Position(1, 1),
             new Position(1, 0),
-            new Position(0, 0)
+            new Position(0, 0),
         ]);
 
         self::assertTrue($polygon->isClosed());
     }
 
-    public function testCloseOpenPolygon(): void
+    public function testCloseOpenPolygon() : void
     {
         $polygon = new Polygon([
             new Position(0, 0),
             new Position(1, 0),
             new Position(1, 1),
-            new Position(1, 0)
+            new Position(1, 0),
         ]);
 
         $closedPolygon = $polygon->close();
 
-        $array = \iterator_to_array($closedPolygon);
+        $array = iterator_to_array($closedPolygon);
 
-        self::assertEquals(new Position(0, 0), $array[\count($closedPolygon) - 1]);
+        self::assertEquals(new Position(0, 0), $array[count($closedPolygon) - 1]);
     }
 
-    public function testCloseEmptyPolygon(): void
+    public function testCloseEmptyPolygon() : void
     {
         $polygon = new Polygon();
 
@@ -83,35 +88,39 @@ class PolygonTest extends TestCase
         self::assertCount(0, $closedPolygon);
     }
 
-    public function testCloseAlreadyClosedPolygon(): void
+    public function testCloseAlreadyClosedPolygon() : void
     {
         $polygon = new Polygon([
             new Position(0, 0),
             new Position(1, 0),
             new Position(1, 1),
             new Position(1, 0),
-            new Position(0, 0)
+            new Position(0, 0),
         ]);
 
         $closedPolygon = $polygon->close();
 
-        $array = \iterator_to_array($closedPolygon);
+        $array = iterator_to_array($closedPolygon);
 
-        self::assertEquals(new Position(0, 0), $array[\count($closedPolygon) - 1]);
+        self::assertEquals(new Position(0, 0), $array[count($closedPolygon) - 1]);
     }
 
     /**
      * @param array<Position> $polygonPositions
+     *
      * @dataProvider containsDataProvider
      */
-    public function testContains(array $polygonPositions, Position $position, bool $expected): void
+    public function testContains(array $polygonPositions, Position $position, bool $expected) : void
     {
         $polygon = new Polygon($polygonPositions);
 
         self::assertEquals($expected, $polygon->contains($position));
     }
 
-    public function containsDataProvider(): array
+    /**
+     * @return array<array<array|Position|bool>>
+     */
+    public function containsDataProvider() : array
     {
         return [
             // Closed counterclockwise polygons
@@ -121,10 +130,10 @@ class PolygonTest extends TestCase
                     new Position(0, 1),
                     new Position(1, 1),
                     new Position(1, 0),
-                    new Position(0, 0)
+                    new Position(0, 0),
                 ],
                 new Position(0.5, 0.5),
-                true
+                true,
             ],
             [
                 [
@@ -132,10 +141,10 @@ class PolygonTest extends TestCase
                     new Position(0, 1),
                     new Position(1, 1),
                     new Position(1, 0),
-                    new Position(0, 0)
+                    new Position(0, 0),
                 ],
                 new Position(1.5, 0.5),
-                false
+                false,
             ],
             [
                 [
@@ -143,10 +152,10 @@ class PolygonTest extends TestCase
                     new Position(0, 1),
                     new Position(1, 1),
                     new Position(1, 0),
-                    new Position(0, 0)
+                    new Position(0, 0),
                 ],
                 new Position(-0.5, 0.5),
-                false
+                false,
             ],
             [
                 [
@@ -154,10 +163,10 @@ class PolygonTest extends TestCase
                     new Position(0, 1),
                     new Position(1, 1),
                     new Position(1, 0),
-                    new Position(0, 0)
+                    new Position(0, 0),
                 ],
                 new Position(0.5, 1.5),
-                false
+                false,
             ],
             [
                 [
@@ -165,10 +174,10 @@ class PolygonTest extends TestCase
                     new Position(0, 1),
                     new Position(1, 1),
                     new Position(1, 0),
-                    new Position(0, 0)
+                    new Position(0, 0),
                 ],
                 new Position(0.5, -0.5),
-                false
+                false,
             ],
 
             // Closed clockwise polygons
@@ -178,20 +187,20 @@ class PolygonTest extends TestCase
                     new Position(0, 1),
                     new Position(1, 1),
                     new Position(1, 0),
-                    new Position(0, 0)
+                    new Position(0, 0),
                 ],
                 new Position(0.5, 0.5),
-                true
+                true,
             ],
             [
                 [
                     new Position(1, 1),
                     new Position(3, 2),
                     new Position(2, 3),
-                    new Position(1, 1)
+                    new Position(1, 1),
                 ],
                 new Position(1.5, 1.5),
-                true
+                true,
             ],
 
             // Open counterclockwise polygons
@@ -200,10 +209,10 @@ class PolygonTest extends TestCase
                     new Position(0, 0),
                     new Position(0, 1),
                     new Position(1, 1),
-                    new Position(1, 0)
+                    new Position(1, 0),
                 ],
                 new Position(0.5, 0.5),
-                true
+                true,
             ],
 
             // Open clockwise polygons
@@ -212,26 +221,26 @@ class PolygonTest extends TestCase
                     new Position(0, 0),
                     new Position(0, 1),
                     new Position(1, 1),
-                    new Position(1, 0)
+                    new Position(1, 0),
                 ],
                 new Position(0.5, 0.5),
-                true
+                true,
             ],
             [
                 [
                     new Position(1, 1),
                     new Position(3, 2),
-                    new Position(2, 3)
+                    new Position(2, 3),
                 ],
                 new Position(1.5, 1.5),
-                true
+                true,
             ],
 
             // Empty polygon
             [
                 [],
                 new Position(0.5, 0.5),
-                false
+                false,
             ],
 
             // Assoc polygon
@@ -239,21 +248,21 @@ class PolygonTest extends TestCase
                 [
                     'polygon1' => new Position(1, 1),
                     'polygon2' => new Position(3, 2),
-                    'polygon3' => new Position(2, 3)
+                    'polygon3' => new Position(2, 3),
                 ],
                 new Position(1.5, 1.5),
-                true
+                true,
             ],
         ];
     }
 
-    public function testToBoundingBox(): void
+    public function testToBoundingBox() : void
     {
         $points = [
             new Position(0, 0),
             new Position(1, 0),
             new Position(1, 1),
-            new Position(1, 0)
+            new Position(1, 0),
         ];
 
         $polygon = new Polygon($points);
@@ -266,7 +275,7 @@ class PolygonTest extends TestCase
         self::assertEquals(1, $bbox->northEast()->longitude());
     }
 
-    public function testToBoundingBoxThrowsExceptionForEmptyPolygon(): void
+    public function testToBoundingBoxThrowsExceptionForEmptyPolygon() : void
     {
         $this->expectException(Exception\LogicException::class);
         $this->expectExceptionMessage('Cannot create a BoundingBox from empty Polygon.');
@@ -276,18 +285,16 @@ class PolygonTest extends TestCase
         $polygon->toBoundingBox();
     }
 
-    public function testCountable(): void
+    public function testCountable() : void
     {
-        $points = [
-            new Position(0, 0)
-        ];
+        $points = [new Position(0, 0)];
 
         $polygon = new Polygon($points);
 
         self::assertCount(1, $polygon);
     }
 
-    public function testIterable(): void
+    public function testIterable() : void
     {
         self::assertIsIterable(new Polygon());
     }
