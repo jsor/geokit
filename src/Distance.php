@@ -75,7 +75,7 @@ final class Distance
         $this->value = $value * self::$units[$unit];
     }
 
-    public static function fromString(string $input) : self
+    public static function fromString(string $input): self
     {
         if ((bool) preg_match('/(\-?\d+\.?\d*)\s*((kilo)?met[er]+s?|m|km|miles?|mi|yards?|yd|feet|foot|ft|in(ch(es)?)?|″|nautical(mile)?s?|nm)?$/u', $input, $match)) {
             $unit = self::DEFAULT_UNIT;
@@ -99,72 +99,72 @@ final class Distance
         );
     }
 
-    public function meters() : float
+    public function meters(): float
     {
         return $this->value / self::$units[self::UNIT_METERS];
     }
 
-    public function m() : float
+    public function m(): float
     {
         return $this->meters();
     }
 
-    public function kilometers() : float
+    public function kilometers(): float
     {
         return $this->value / self::$units[self::UNIT_KILOMETERS];
     }
 
-    public function km() : float
+    public function km(): float
     {
         return $this->kilometers();
     }
 
-    public function miles() : float
+    public function miles(): float
     {
         return $this->value / self::$units[self::UNIT_MILES];
     }
 
-    public function mi() : float
+    public function mi(): float
     {
         return $this->miles();
     }
 
-    public function yards() : float
+    public function yards(): float
     {
         return $this->value / self::$units[self::UNIT_YARDS];
     }
 
-    public function yd() : float
+    public function yd(): float
     {
         return $this->yards();
     }
 
-    public function feet() : float
+    public function feet(): float
     {
         return $this->value / self::$units[self::UNIT_FEET];
     }
 
-    public function ft() : float
+    public function ft(): float
     {
         return $this->feet();
     }
 
-    public function inches() : float
+    public function inches(): float
     {
         return $this->value / self::$units[self::UNIT_INCHES];
     }
 
-    public function in() : float
+    public function in(): float
     {
         return $this->inches();
     }
 
-    public function nautical() : float
+    public function nautical(): float
     {
         return $this->value / self::$units[self::UNIT_NAUTICAL];
     }
 
-    public function nm() : float
+    public function nm(): float
     {
         return $this->nautical();
     }

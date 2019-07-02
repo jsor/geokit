@@ -11,7 +11,7 @@ use function json_encode;
 
 class BoundingBoxTest extends TestCase
 {
-    protected function assertBoundingBox(BoundingBox $b, float $s, float $w, float $n, float $e) : void
+    protected function assertBoundingBox(BoundingBox $b, float $s, float $w, float $n, float $e): void
     {
         self::assertEquals($s, $b->southWest()->latitude());
         self::assertEquals($w, $b->southWest()->longitude());
@@ -19,7 +19,7 @@ class BoundingBoxTest extends TestCase
         self::assertEquals($e, $b->northEast()->longitude());
     }
 
-    public function testConstructorShouldAcceptPositionsAsFirstAndSecondArgument() : void
+    public function testConstructorShouldAcceptPositionsAsFirstAndSecondArgument(): void
     {
         $bbox = new BoundingBox(new Position(1.1234, 2.5678), new Position(3.1234, 4.5678));
 
@@ -30,13 +30,13 @@ class BoundingBoxTest extends TestCase
         self::assertEquals(4.5678, $bbox->northEast()->latitude());
     }
 
-    public function testConstructorShouldThrowExceptionForInvalidSouthCoordinate() : void
+    public function testConstructorShouldThrowExceptionForInvalidSouthCoordinate(): void
     {
         $this->expectException(Exception\LogicException::class);
         new BoundingBox(new Position(90, 1), new Position(90, 0));
     }
 
-    public function testFromCoordinatesWithArray() : void
+    public function testFromCoordinatesWithArray(): void
     {
         $bbox = BoundingBox::fromCoordinates([1, 2, 3, 4]);
 
@@ -51,7 +51,7 @@ class BoundingBoxTest extends TestCase
         self::assertSame(4.0, $bbox->northEast()->latitude());
     }
 
-    public function testFromCoordinatesWithIterator() : void
+    public function testFromCoordinatesWithIterator(): void
     {
         $bbox = BoundingBox::fromCoordinates(new ArrayIterator([1, 2, 3, 4]));
 
@@ -66,9 +66,9 @@ class BoundingBoxTest extends TestCase
         self::assertSame(4.0, $bbox->northEast()->latitude());
     }
 
-    public function testFromCoordinatesWithGenerator() : void
+    public function testFromCoordinatesWithGenerator(): void
     {
-        $bbox = BoundingBox::fromCoordinates((/** @return Generator<float> */ static function () : Generator {
+        $bbox = BoundingBox::fromCoordinates((/** @return Generator<float> */ static function (): Generator {
             yield 1;
             yield 2;
             yield 3;
@@ -86,49 +86,49 @@ class BoundingBoxTest extends TestCase
         self::assertSame(4.0, $bbox->northEast()->latitude());
     }
 
-    public function testFromCoordinatesThrowsExceptionForMissingSouthWestXCoordinate() : void
+    public function testFromCoordinatesThrowsExceptionForMissingSouthWestXCoordinate(): void
     {
         $this->expectException(Exception\MissingCoordinateException::class);
 
         BoundingBox::fromCoordinates([]);
     }
 
-    public function testFromCoordinatesThrowsExceptionForMissingSouthWestYCoordinate() : void
+    public function testFromCoordinatesThrowsExceptionForMissingSouthWestYCoordinate(): void
     {
         $this->expectException(Exception\MissingCoordinateException::class);
 
         BoundingBox::fromCoordinates([1]);
     }
 
-    public function testFromCoordinatesThrowsExceptionForMissingNorthEastXCoordinate() : void
+    public function testFromCoordinatesThrowsExceptionForMissingNorthEastXCoordinate(): void
     {
         $this->expectException(Exception\MissingCoordinateException::class);
 
         BoundingBox::fromCoordinates([1, 2]);
     }
 
-    public function testFromCoordinatesThrowsExceptionForMissingNorthEastYCoordinate() : void
+    public function testFromCoordinatesThrowsExceptionForMissingNorthEastYCoordinate(): void
     {
         $this->expectException(Exception\MissingCoordinateException::class);
 
         BoundingBox::fromCoordinates([1, 2, 3]);
     }
 
-    public function testToCoordinates() : void
+    public function testToCoordinates(): void
     {
         $bbox = new BoundingBox(new Position(1, 2), new Position(3, 4));
 
         self::assertSame([1.0, 2.0, 3.0, 4.0], $bbox->toCoordinates());
     }
 
-    public function testJsonSerialize() : void
+    public function testJsonSerialize(): void
     {
         $bbox = new BoundingBox(new Position(1.1, 2), new Position(3.3, 4));
 
         self::assertSame('[1.1,2,3.3,4]', json_encode($bbox));
     }
 
-    public function testGetCenterShouldReturnAPositionObject() : void
+    public function testGetCenterShouldReturnAPositionObject(): void
     {
         $bbox   = new BoundingBox(new Position(1.1234, 2.5678), new Position(3.1234, 4.5678));
         $center = new Position(2.1234, 3.5678);
@@ -141,7 +141,7 @@ class BoundingBoxTest extends TestCase
         self::assertEquals($center, $bbox->center());
     }
 
-    public function testGetSpanShouldReturnAPositionObject() : void
+    public function testGetSpanShouldReturnAPositionObject(): void
     {
         $bbox = new BoundingBox(new Position(1.1234, 2.5678), new Position(3.1234, 4.5678));
 
@@ -150,7 +150,7 @@ class BoundingBoxTest extends TestCase
         self::assertEquals($span, $bbox->span());
     }
 
-    public function testContains() : void
+    public function testContains(): void
     {
         $bbox = new BoundingBox(new Position(37, -122), new Position(38, -123));
 
@@ -160,7 +160,7 @@ class BoundingBoxTest extends TestCase
         self::assertFalse($bbox->contains(new Position(-12, -70)));
     }
 
-    public function testExtendInACircle() : void
+    public function testExtendInACircle(): void
     {
         $bbox = new BoundingBox(new Position(0, 0), new Position(0, 0));
         $bbox = $bbox->extend(new Position(1, 0));
@@ -170,7 +170,7 @@ class BoundingBoxTest extends TestCase
         self::assertBoundingBox($bbox, -1, -1, 1, 1);
     }
 
-    public function testUnion() : void
+    public function testUnion(): void
     {
         $bbox = new BoundingBox(new Position(-122, 37), new Position(-122, 37));
 
@@ -178,7 +178,7 @@ class BoundingBoxTest extends TestCase
         self::assertBoundingBox($bbox, -38, 123, 38, -122);
     }
 
-    public function testCrossesAntimeridian() : void
+    public function testCrossesAntimeridian(): void
     {
         $bbox = new BoundingBox(new Position(179, -45), new Position(-179, 45));
 
@@ -187,7 +187,7 @@ class BoundingBoxTest extends TestCase
         self::assertEquals(2, $bbox->span()->longitude());
     }
 
-    public function testCrossesAntimeridianViaExtend() : void
+    public function testCrossesAntimeridianViaExtend(): void
     {
         $bbox = new BoundingBox(new Position(179, -45), new Position(-179, 45));
 
@@ -198,7 +198,7 @@ class BoundingBoxTest extends TestCase
         self::assertEquals(2, $bbox->span()->longitude());
     }
 
-    public function testExpand() : void
+    public function testExpand(): void
     {
         $bbox = new BoundingBox(
             new Position(179, -45),
@@ -227,7 +227,7 @@ class BoundingBoxTest extends TestCase
         );
     }
 
-    public function testShrink() : void
+    public function testShrink(): void
     {
         $bbox = new BoundingBox(
             new Position(178.99872959034192, -45.000898315284132),
@@ -256,7 +256,7 @@ class BoundingBoxTest extends TestCase
         );
     }
 
-    public function testShrinkTooMuch() : void
+    public function testShrinkTooMuch(): void
     {
         $bbox = new BoundingBox(
             new Position(1, 1),
@@ -285,7 +285,7 @@ class BoundingBoxTest extends TestCase
         );
     }
 
-    public function testToPolygon() : void
+    public function testToPolygon(): void
     {
         $bbox = new BoundingBox(
             new Position(0, 0),

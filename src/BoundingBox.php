@@ -38,7 +38,7 @@ final class BoundingBox implements JsonSerializable
     /**
      * @param iterable<float> $iterable
      */
-    public static function fromCoordinates(iterable $iterable) : BoundingBox
+    public static function fromCoordinates(iterable $iterable): BoundingBox
     {
         $array = [];
 
@@ -75,7 +75,7 @@ final class BoundingBox implements JsonSerializable
     /**
      * @return iterable<float>
      */
-    public function toCoordinates() : iterable
+    public function toCoordinates(): iterable
     {
         return [
             $this->southWest->x(),
@@ -88,7 +88,7 @@ final class BoundingBox implements JsonSerializable
     /**
      * @return array<float>
      */
-    public function jsonSerialize() : array
+    public function jsonSerialize(): array
     {
         return [
             $this->southWest->x(),
@@ -98,17 +98,17 @@ final class BoundingBox implements JsonSerializable
         ];
     }
 
-    public function southWest() : Position
+    public function southWest(): Position
     {
         return $this->southWest;
     }
 
-    public function northEast() : Position
+    public function northEast(): Position
     {
         return $this->northEast;
     }
 
-    public function center() : Position
+    public function center(): Position
     {
         if ($this->crossesAntimeridian()) {
             $span = $this->lngSpan(
@@ -126,7 +126,7 @@ final class BoundingBox implements JsonSerializable
         );
     }
 
-    public function span() : Position
+    public function span(): Position
     {
         return new Position(
             $this->lngSpan($this->southWest->longitude(), $this->northEast->longitude()),
@@ -134,12 +134,12 @@ final class BoundingBox implements JsonSerializable
         );
     }
 
-    public function crossesAntimeridian() : bool
+    public function crossesAntimeridian(): bool
     {
         return $this->southWest->longitude() > $this->northEast->longitude();
     }
 
-    public function contains(Position $position) : bool
+    public function contains(Position $position): bool
     {
         $lat = $position->latitude();
 
@@ -154,7 +154,7 @@ final class BoundingBox implements JsonSerializable
         return $this->containsLng($position->longitude());
     }
 
-    public function extend(Position $position) : self
+    public function extend(Position $position): self
     {
         $newSouth = min($this->southWest->latitude(), $position->latitude());
         $newNorth = max($this->northEast->latitude(), $position->latitude());
@@ -178,24 +178,24 @@ final class BoundingBox implements JsonSerializable
         return new self(new Position($newWest, $newSouth), new Position($newEast, $newNorth));
     }
 
-    public function union(BoundingBox $bbox) : self
+    public function union(BoundingBox $bbox): self
     {
         $newBbox = $this->extend($bbox->southWest());
 
         return $newBbox->extend($bbox->northEast());
     }
 
-    public function expand(Distance $distance) : BoundingBox
+    public function expand(Distance $distance): BoundingBox
     {
         return self::transformBoundingBox($this, $distance->meters());
     }
 
-    public function shrink(Distance $distance) : BoundingBox
+    public function shrink(Distance $distance): BoundingBox
     {
         return self::transformBoundingBox($this, -$distance->meters());
     }
 
-    public function toPolygon() : Polygon
+    public function toPolygon(): Polygon
     {
         return new Polygon([
             new Position($this->southWest->longitude(), $this->southWest->latitude()),
@@ -209,7 +209,7 @@ final class BoundingBox implements JsonSerializable
     /**
      * @see http://janmatuschek.de/LatitudeLongitudeBoundingCoordinates
      */
-    private static function transformBoundingBox(BoundingBox $bbox, float $distanceInMeters) : BoundingBox
+    private static function transformBoundingBox(BoundingBox $bbox, float $distanceInMeters): BoundingBox
     {
         $latSW = deg2rad($bbox->southWest()->latitude());
         $lngSW = deg2rad($bbox->southWest()->longitude());
@@ -241,7 +241,7 @@ final class BoundingBox implements JsonSerializable
         return new BoundingBox($positionSW, $positionNE);
     }
 
-    private function containsLng(float $lng) : bool
+    private function containsLng(float $lng): bool
     {
         if ($this->crossesAntimeridian()) {
             return $lng <= $this->northEast->longitude() ||
@@ -252,7 +252,7 @@ final class BoundingBox implements JsonSerializable
             $lng <= $this->northEast->longitude();
     }
 
-    private function lngSpan(float $west, float $east) : float
+    private function lngSpan(float $west, float $east): float
     {
         return $west > $east ? ($east + 360 - $west) : ($east - $west);
     }

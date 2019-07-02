@@ -8,7 +8,7 @@ use function sprintf;
 
 final class MissingCoordinateException extends InvalidArgumentException
 {
-    public static function create(string $coordinate, int $position) : self
+    public static function create(string $coordinate, int $position): self
     {
         return new self(
             sprintf(

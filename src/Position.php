@@ -25,7 +25,7 @@ final class Position implements JsonSerializable
     /**
      * @param iterable<float> $iterable
      */
-    public static function fromCoordinates(iterable $iterable) : Position
+    public static function fromCoordinates(iterable $iterable): Position
     {
         $array = [];
 
@@ -48,22 +48,22 @@ final class Position implements JsonSerializable
         return new self($array[0], $array[1]);
     }
 
-    public function x() : float
+    public function x(): float
     {
         return $this->x;
     }
 
-    public function y() : float
+    public function y(): float
     {
         return $this->y;
     }
 
-    public function longitude() : float
+    public function longitude(): float
     {
         return Utils::normalizeLng($this->x);
     }
 
-    public function latitude() : float
+    public function latitude(): float
     {
         return Utils::normalizeLat($this->y);
     }
@@ -71,7 +71,7 @@ final class Position implements JsonSerializable
     /**
      * @return iterable<float>
      */
-    public function toCoordinates() : iterable
+    public function toCoordinates(): iterable
     {
         return [$this->x, $this->y];
     }
@@ -79,7 +79,7 @@ final class Position implements JsonSerializable
     /**
      * @return array<float>
      */
-    public function jsonSerialize() : array
+    public function jsonSerialize(): array
     {
         return [$this->x, $this->y];
     }

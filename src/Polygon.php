@@ -41,7 +41,7 @@ final class Polygon implements Countable, IteratorAggregate
         $this->positions = $positions;
     }
 
-    public function isClosed() : bool
+    public function isClosed(): bool
     {
         if (count($this->positions) === 0) {
             return false;
@@ -56,7 +56,7 @@ final class Polygon implements Countable, IteratorAggregate
             $lastPosition->longitude() === $firstPosition->longitude();
     }
 
-    public function close() : self
+    public function close(): self
     {
         if (count($this->positions) === 0) {
             return new self();
@@ -77,7 +77,7 @@ final class Polygon implements Countable, IteratorAggregate
     /**
      * @see https://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
      */
-    public function contains(Position $position) : bool
+    public function contains(Position $position): bool
     {
         if (count($this->positions) === 0) {
             return false;
@@ -114,7 +114,7 @@ final class Polygon implements Countable, IteratorAggregate
         return $inside;
     }
 
-    public function toBoundingBox() : BoundingBox
+    public function toBoundingBox(): BoundingBox
     {
         if (count($this->positions) === 0) {
             throw new Exception\LogicException('Cannot create a BoundingBox from empty Polygon.');
@@ -135,12 +135,12 @@ final class Polygon implements Countable, IteratorAggregate
         return $bbox;
     }
 
-    public function count() : int
+    public function count(): int
     {
         return count($this->positions);
     }
 
-    public function getIterator() : Generator
+    public function getIterator(): Generator
     {
         yield from $this->positions;
     }

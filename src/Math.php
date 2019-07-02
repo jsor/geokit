@@ -25,7 +25,7 @@ final class Math
      * @see http://en.wikipedia.org/wiki/Haversine_formula
      * @see http://www.movable-type.co.uk/scripts/latlong.html
      */
-    public function distanceHaversine(Position $from, Position $to) : Distance
+    public function distanceHaversine(Position $from, Position $to): Distance
     {
         $lat1 = deg2rad($from->latitude());
         $lng1 = deg2rad($from->longitude());
@@ -51,7 +51,7 @@ final class Math
      * @see http://en.wikipedia.org/wiki/Vincenty%27s_formulae
      * @see http://www.movable-type.co.uk/scripts/latlong-vincenty.html
      */
-    public function distanceVincenty(Position $from, Position $to) : Distance
+    public function distanceVincenty(Position $from, Position $to): Distance
     {
         $lat1 = $from->latitude();
         $lng1 = $from->longitude();
@@ -120,7 +120,7 @@ final class Math
      * Calculates the (initial) heading from the first point to the second point
      * in degrees.
      */
-    public function heading(Position $from, Position $to) : float
+    public function heading(Position $from, Position $to): float
     {
         $lat1 = $from->latitude();
         $lng1 = $from->longitude();
@@ -146,7 +146,7 @@ final class Math
      *
      * @see http://www.movable-type.co.uk/scripts/latlong.html
      */
-    public function midpoint(Position $from, Position $to) : Position
+    public function midpoint(Position $from, Position $to): Position
     {
         $lat1 = $from->latitude();
         $lng1 = $from->longitude();
@@ -175,7 +175,7 @@ final class Math
      *
      * @see http://www.movable-type.co.uk/scripts/latlong.html
      */
-    public function endpoint(Position $start, float $heading, Distance $distance) : Position
+    public function endpoint(Position $start, float $heading, Distance $distance): Position
     {
         $lat = deg2rad($start->latitude());
         $lng = deg2rad($start->longitude());
@@ -199,7 +199,7 @@ final class Math
         Position $center,
         Distance $radius,
         int $steps
-    ) : Polygon {
+    ): Polygon {
         $points = [];
 
         for ($i = 0; $i <= $steps; $i++) {

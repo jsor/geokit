@@ -8,91 +8,91 @@ use function sprintf;
 
 class DistanceTest extends TestCase
 {
-    public function testShouldConvertToMeters() : void
+    public function testShouldConvertToMeters(): void
     {
         $distance = new Distance(1000);
         self::assertSame(1000.0, $distance->meters());
     }
 
-    public function testShouldConvertToMetersWithAlias() : void
+    public function testShouldConvertToMetersWithAlias(): void
     {
         $distance = new Distance(1000);
         self::assertSame(1000.0, $distance->m());
     }
 
-    public function testShouldConvertToKilometers() : void
+    public function testShouldConvertToKilometers(): void
     {
         $distance = new Distance(1000);
         self::assertSame(1.0, $distance->kilometers());
     }
 
-    public function testShouldConvertToKilometersWithAlias() : void
+    public function testShouldConvertToKilometersWithAlias(): void
     {
         $distance = new Distance(1000);
         self::assertSame(1.0, $distance->km());
     }
 
-    public function testShouldConvertToMiles() : void
+    public function testShouldConvertToMiles(): void
     {
         $distance = new Distance(1000);
         self::assertSame(0.62137119223733395, $distance->miles());
     }
 
-    public function testShouldConvertToMilesWithAlias() : void
+    public function testShouldConvertToMilesWithAlias(): void
     {
         $distance = new Distance(1000);
         self::assertSame(0.62137119223733395, $distance->mi());
     }
 
-    public function testShouldConvertToYards() : void
+    public function testShouldConvertToYards(): void
     {
         $distance = new Distance(1000);
         self::assertSame(1093.6132983377079, $distance->yards());
     }
 
-    public function testShouldConvertToYardsWithAlias() : void
+    public function testShouldConvertToYardsWithAlias(): void
     {
         $distance = new Distance(1000);
         self::assertSame(1093.6132983377079, $distance->yd());
     }
 
-    public function testShouldConvertToFeet() : void
+    public function testShouldConvertToFeet(): void
     {
         $distance = new Distance(1000);
         self::assertSame(3280.8398950131232, $distance->feet());
     }
 
-    public function testShouldConvertToFeetWithAlias() : void
+    public function testShouldConvertToFeetWithAlias(): void
     {
         $distance = new Distance(1000);
         self::assertSame(3280.8398950131232, $distance->ft());
     }
 
-    public function testShouldConvertToInches() : void
+    public function testShouldConvertToInches(): void
     {
         $distance = new Distance(1000);
         self::assertSame(39370.078740157485, $distance->inches());
     }
 
-    public function testShouldConvertToInchesWithAlias() : void
+    public function testShouldConvertToInchesWithAlias(): void
     {
         $distance = new Distance(1000);
         self::assertSame(39370.078740157485, $distance->in());
     }
 
-    public function testShouldConvertToNauticalMiles() : void
+    public function testShouldConvertToNauticalMiles(): void
     {
         $distance = new Distance(1000);
         self::assertSame(0.5399568034557235, $distance->nautical());
     }
 
-    public function testShouldConvertToNauticalWithAlias() : void
+    public function testShouldConvertToNauticalWithAlias(): void
     {
         $distance = new Distance(1000);
         self::assertSame(0.5399568034557235, $distance->nm());
     }
 
-    public function testShouldThrowExceptionForInvalidUnit() : void
+    public function testShouldThrowExceptionForInvalidUnit(): void
     {
         $this->expectException(Exception\InvalidArgumentException::class);
         new Distance(1000, 'foo');
@@ -101,7 +101,7 @@ class DistanceTest extends TestCase
     /**
      * @dataProvider fromStringDataProvider
      */
-    public function testFromString(float $value, string $unit) : void
+    public function testFromString(float $value, string $unit): void
     {
         self::assertEquals(1000, Distance::fromString(sprintf('%.15F%s', $value, $unit))->meters());
         self::assertEquals(1000, Distance::fromString(sprintf('%.15F %s', $value, $unit))->meters(), 'With space');
@@ -110,7 +110,7 @@ class DistanceTest extends TestCase
     /**
      * @return array<array<float|string>>
      */
-    public function fromStringDataProvider() : array
+    public function fromStringDataProvider(): array
     {
         return [
             [
@@ -228,7 +228,7 @@ class DistanceTest extends TestCase
         ];
     }
 
-    public function testFromStringThrowsExceptionForInvalidInput() : void
+    public function testFromStringThrowsExceptionForInvalidInput(): void
     {
         $this->expectException(Exception\InvalidArgumentException::class);
         Distance::fromString('1000foo');

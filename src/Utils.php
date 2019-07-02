@@ -15,7 +15,7 @@ abstract class Utils
      * Normalize a latitude into the range (-90, 90) (upper and lower bound
      * included).
      */
-    public static function normalizeLat(float $lat) : float
+    public static function normalizeLat(float $lat): float
     {
         return asin(sin(($lat / 180) * M_PI)) * (180 / M_PI);
     }
@@ -24,7 +24,7 @@ abstract class Utils
      * Normalize a longitude into the range (-180, 180) (lower bound excluded,
      * upper bound included).
      */
-    public static function normalizeLng(float $lng) : float
+    public static function normalizeLng(float $lng): float
     {
         $mod = fmod($lng, 360);
 
