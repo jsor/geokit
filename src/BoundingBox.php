@@ -197,13 +197,13 @@ final class BoundingBox implements JsonSerializable
 
     public function toPolygon(): Polygon
     {
-        return new Polygon([
+        return new Polygon(
             new Position($this->southWest->longitude(), $this->southWest->latitude()),
             new Position($this->northEast->longitude(), $this->southWest->latitude()),
             new Position($this->northEast->longitude(), $this->northEast->latitude()),
             new Position($this->southWest->longitude(), $this->northEast->latitude()),
-            new Position($this->southWest->longitude(), $this->southWest->latitude()),
-        ]);
+            new Position($this->southWest->longitude(), $this->southWest->latitude())
+        );
     }
 
     /**

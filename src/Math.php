@@ -210,6 +210,6 @@ final class Math
             );
         }
 
-        return new Polygon($points);
+        return new Polygon(...$points);
     }
 }

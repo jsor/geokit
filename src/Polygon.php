@@ -10,34 +10,15 @@ use IteratorAggregate;
 use function array_shift;
 use function count;
 use function end;
-use function json_encode;
 use function reset;
-use function sprintf;
 
 final class Polygon implements Countable, IteratorAggregate
 {
     /** @var array<Position> */
     private $positions;
 
-    /**
-     * @param array<Position> $positions
-     */
-    public function __construct(array $positions = [])
+    public function __construct(Position ...$positions)
     {
-        foreach ($positions as $index => $position) {
-            /** @psalm-suppress RedundantConditionGivenDocblockType */
-            if ($position instanceof Position) {
-                continue;
-            }
-
-            throw new Exception\InvalidArgumentException(
-                sprintf(
-                    'Position at index %s is not an instance of Geokit\Position.',
-                    json_encode($index)
-                )
-            );
-        }
-
         $this->positions = $positions;
     }
 
