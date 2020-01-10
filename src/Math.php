@@ -102,7 +102,7 @@ final class Math
                 ($sigma + $C * $sinSigma * ($cos2SigmaM + $C * $cosSigma * (-1 + 2 * $cos2SigmaM * $cos2SigmaM)));
         } while (abs($lambda - $lambdaP) > 1e-12 && --$iterLimit > 0);
 
-        if ($iterLimit === 0) {
+        if ($iterLimit <= 0) {
             throw new Exception\RuntimeException('Vincenty formula failed to converge.');
         }
 
