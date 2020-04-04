@@ -223,7 +223,7 @@ $boundingBox = $polygon->toBoundingBox();
 License
 -------
 
-Copyright (c) 2011-2019 Jan Sorgalla. 
+Copyright (c) 2011-2020 Jan Sorgalla.
 Released under the [MIT License](LICENSE).
 
 Credits
