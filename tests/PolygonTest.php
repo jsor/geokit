@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Geokit;
 
+use ArrayIterator;
+use Generator;
 use function count;
 use function iterator_to_array;
 
@@ -26,6 +28,30 @@ class PolygonTest extends TestCase
         self::assertEquals(0, $array[0]->latitude());
         self::assertEquals(1, $array[1]->latitude());
         self::assertEquals(1, $array[2]->latitude());
+    }
+
+    public function testFromCoordinatesWithArray(): void
+    {
+        $polygon = Polygon::fromCoordinates([[1, 2], [2, 3]]);
+
+        self::assertCount(2, $polygon);
+    }
+
+    public function testFromCoordinatesWithIterator(): void
+    {
+        $polygon = Polygon::fromCoordinates(new ArrayIterator([[1, 2], [2, 3]]));
+
+        self::assertCount(2, $polygon);
+    }
+
+    public function testFromCoordinatesWithGenerator(): void
+    {
+        $polygon = Polygon::fromCoordinates((/** @return Generator<float> */ static function (): Generator {
+            yield [1, 2];
+            yield [2, 3];
+        })());
+
+        self::assertCount(2, $polygon);
     }
 
     public function testIsClose(): void

@@ -22,6 +22,20 @@ final class Polygon implements Countable, IteratorAggregate
         $this->positions = $positions;
     }
 
+    /**
+     * @param iterable<iterable<float>> $iterable
+     */
+    public static function fromCoordinates(iterable $iterable): Polygon
+    {
+        $positions = [];
+
+        foreach ($iterable as $position) {
+            $positions[] = Position::fromCoordinates($position);
+        }
+
+        return new self(...$positions);
+    }
+
     public function isClosed(): bool
     {
         if (count($this->positions) === 0) {
