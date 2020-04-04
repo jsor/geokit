@@ -70,7 +70,7 @@ final class Polygon implements Countable, IteratorAggregate
     }
 
     /**
-     * @see https://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
+     * @see https://wrf.ecse.rpi.edu/Research/Short_Notes/pnpoly.html
      */
     public function contains(Position $position): bool
     {
