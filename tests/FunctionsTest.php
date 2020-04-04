@@ -4,18 +4,16 @@ declare(strict_types=1);
 
 namespace Geokit;
 
-class MathTest extends TestCase
+class FunctionsTest extends TestCase
 {
     /**
      * @dataProvider distanceHaversineDataProvider
      */
     public function testDistanceHaversine(Position $pos1, Position $pos2, float $distance): void
     {
-        $math = new Math();
-
         self::assertEqualsWithDelta(
             $distance,
-            $math->distanceHaversine($pos1, $pos2)->meters(),
+            distanceHaversine($pos1, $pos2)->meters(),
             0.0001
         );
     }
@@ -69,11 +67,9 @@ class MathTest extends TestCase
      */
     public function testDistanceVincenty(Position $pos1, Position $pos2, float $distance): void
     {
-        $math = new Math();
-
         self::assertEqualsWithDelta(
             $distance,
-            $math->distanceVincenty($pos1, $pos2)->meters(),
+            distanceVincenty($pos1, $pos2)->meters(),
             0.0001
         );
     }
@@ -124,11 +120,9 @@ class MathTest extends TestCase
 
     public function testDistanceHaversineCoIncidentPoints(): void
     {
-        $math = new Math();
-
         self::assertEquals(
             0,
-            $math->distanceVincenty(new Position(90, 90), new Position(90, 90))->meters()
+            distanceVincenty(new Position(90, 90), new Position(90, 90))->meters()
         );
     }
 
@@ -137,25 +131,20 @@ class MathTest extends TestCase
         $this->expectException(Exception\RuntimeException::class);
         $this->expectExceptionMessage('Vincenty formula failed to converge.');
 
-        $math = new Math();
-        $math->distanceVincenty(new Position(0, 0), new Position(180, 0));
+        distanceVincenty(new Position(0, 0), new Position(180, 0));
     }
 
     public function testHeading(): void
     {
-        $math = new Math();
-
-        self::assertEquals(90, $math->heading(new Position(0, 0), new Position(1, 0)));
-        self::assertEquals(0, $math->heading(new Position(0, 0), new Position(0, 1)));
-        self::assertEquals(270, $math->heading(new Position(0, 0), new Position(-1, 0)));
-        self::assertEquals(180, $math->heading(new Position(0, 0), new Position(0, -1)));
+        self::assertEquals(90, heading(new Position(0, 0), new Position(1, 0)));
+        self::assertEquals(0, heading(new Position(0, 0), new Position(0, 1)));
+        self::assertEquals(270, heading(new Position(0, 0), new Position(-1, 0)));
+        self::assertEquals(180, heading(new Position(0, 0), new Position(0, -1)));
     }
 
     public function testMidpoint(): void
     {
-        $math = new Math();
-
-        $midpoint = $math->midpoint(
+        $midpoint = midpoint(
             new Position(-96.958444, 32.918593),
             new Position(-96.990159, 32.969527)
         );
@@ -172,9 +161,7 @@ class MathTest extends TestCase
 
     public function testEndpoint(): void
     {
-        $math = new Math();
-
-        $endpoint = $math->endpoint(
+        $endpoint = endpoint(
             new Position(-96.958444, 32.918593),
             332,
             new Distance(6389.09568)
@@ -192,12 +179,10 @@ class MathTest extends TestCase
 
     public function testCircle(): void
     {
-        $math = new Math();
-
         $center   = new Position(-75.343, 39.984);
         $distance = Distance::fromString('50km');
 
-        $circle = $math->circle(
+        $circle = circle(
             $center,
             $distance,
             32
@@ -212,9 +197,63 @@ class MathTest extends TestCase
         foreach ($circle as $point) {
             self::assertEqualsWithDelta(
                 $distance->meters(),
-                $math->distanceHaversine($center, $point)->meters(),
+                distanceHaversine($center, $point)->meters(),
                 0.001
             );
         }
+    }
+
+    /**
+     * @dataProvider normalizeLatDataProvider
+     */
+    public function testNormalizeLat(float $a, float $b): void
+    {
+        self::assertEquals($b, normalizeLatitude($a));
+    }
+
+    /**
+     * @return array<array<float>>
+     */
+    public function normalizeLatDataProvider(): array
+    {
+        return [
+            [-365, -5],
+            [-185, 5],
+            [-95, -85],
+            [-90, -90],
+            [5, 5],
+            [90, 90],
+            [100, 80],
+            [185, -5],
+            [365, 5],
+        ];
+    }
+
+    /**
+     * @dataProvider normalizeLngDataProvider
+     */
+    public function testNormalizeLng(float $a, float $b): void
+    {
+        self::assertEquals($b, normalizeLongitude($a));
+    }
+
+    /**
+     * @return array<array<float>>
+     */
+    public function normalizeLngDataProvider(): array
+    {
+        return [
+            [-545, 175],
+            [-365, -5],
+            [-360, 0],
+            [-185, 175],
+            [-180, 180],
+            [5, 5],
+            [180, 180],
+            [215, -145],
+            [360, 0],
+            [395, 35],
+            [540, 180],
+        ];
     }
 }

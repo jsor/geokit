@@ -60,12 +60,12 @@ final class Position implements JsonSerializable
 
     public function longitude(): float
     {
-        return Utils::normalizeLng($this->x);
+        return normalizeLongitude($this->x);
     }
 
     public function latitude(): float
     {
-        return Utils::normalizeLat($this->y);
+        return normalizeLatitude($this->y);
     }
 
     /**

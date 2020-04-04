@@ -12,14 +12,14 @@ Geokit is a PHP toolkit to solve geo-related tasks like:
 
 * [Installation](#installation)
 * [Reference](#reference)
-    * [Math](#math)
-        * [Distance calculations](#distance-calculations)
-        * [Transformations](#transformations)
-        * [Other calculations](#other-calculations)
     * [Distance](#distance)
     * [Position](#position)
     * [BoundingBox](#boundingbox)
     * [Polygon](#polygon)
+    * [Functions](#functions)
+        * [Distance calculations](#distance-calculations)
+        * [Transformations](#transformations)
+        * [Other calculations](#other-calculations)
 * [License](#license)
 * [Credits](#credits)
 
@@ -37,62 +37,6 @@ available versions.
 
 Reference
 ---------
-
-### Math
-
-A Math instance can be used to perform geographic calculations on Position and 
-BoundingBox instances.
-
-The [World Geodetic System 1984](http://en.wikipedia.org/wiki/World_Geodetic_System) 
-(WGS84) is exclusively used as the coordinate reference system.
-
-```php
-$math = new Geokit\Math();
-```
-
-#### Distance calculations
-
-A math instance provides two methods to calculate the distance between 2 points
-on the Earth's surface:
-
-* `distanceHaversine(Geokit\Position $from, Geokit\Position $to)`: Calculates the
-  approximate sea level great circle (Earth) distance between two points using
-  the Haversine formula.
-* `distanceVincenty(Geokit\Position $from, Geokit\Position $to)`: Calculates the
-  geodetic distance between two points using the Vincenty inverse formula for
-  ellipsoids.
-
-```php
-$distance1 = $math->distanceHaversine($from, $to);
-$distance2 = $math->distanceVincenty($from, $to);
-```
-
-Both methods return a [Distance](#distance) instance.
-
-#### Transformations
-
-The `circle()` method calculates a closed circle Polygon given a center, radius
-and steps for precision.
-
-```php
-$circlePolygon = $math->circle(
-    new Geokit\Position(8.50207515, 49.50042565), 
-    Geokit\Distance::fromString('5km'),
-    32
-);
-```
-
-#### Other calculations
-
-Other useful methods are:
-
-* `heading(Geokit\Position $from, Geokit\Position $to)`: Calculates the
-  (initial) heading from the first point to the second point in degrees.
-* `midpoint(Geokit\Position $from, Geokit\Position $to)`: Calculates an
-  intermediate point on the geodesic between the two given points.
-* `endpoint(Geokit\Position $start, float $heading, Geokit\Distance $distance)`:
-  Calculates the destination point along a geodesic, given an initial heading
-  and distance, from the given start point.
 
 ### Distance
 
@@ -219,6 +163,54 @@ $polygon->contains(Geokit\Position(0.5, 0.5)); // true
 /** @var Geokit\BoundingBox $boundingBox */
 $boundingBox = $polygon->toBoundingBox();
 ```
+
+### Functions
+
+Geokit provides several functions to perform geographic calculations.
+
+The [World Geodetic System 1984](http://en.wikipedia.org/wiki/World_Geodetic_System) 
+(WGS84) is exclusively used as the coordinate reference system.
+
+#### Distance calculations
+
+* `Geokit\distanceHaversine(Geokit\Position $from, Geokit\Position $to)`:
+  Calculates the approximate sea level great circle (Earth) distance between two
+  points using the Haversine formula.
+* `Geokit\distanceVincenty(Geokit\Position $from, Geokit\Position $to)`:
+  Calculates the geodetic distance between two points using the Vincenty inverse
+  formula for ellipsoids.
+
+```php
+$distance1 = Geokit\distanceHaversine($from, $to);
+$distance2 = Geokit\distanceVincenty($from, $to);
+```
+
+Both functions return a [Distance](#distance) instance.
+
+#### Transformations
+
+The `circle()` function calculates a closed circle Polygon given a center,
+radius and steps for precision.
+
+```php
+$circlePolygon = Geokit\circle(
+    new Geokit\Position(8.50207515, 49.50042565), 
+    Geokit\Distance::fromString('5km'),
+    32
+);
+```
+
+#### Other calculations
+
+Other useful functions are:
+
+* `Geokit\heading(Geokit\Position $from, Geokit\Position $to)`: Calculates the
+  (initial) heading from the first point to the second point in degrees.
+* `Geokit\midpoint(Geokit\Position $from, Geokit\Position $to)`: Calculates an
+  intermediate point on the geodesic between the two given points.
+* `Geokit\endpoint(Geokit\Position $start, float $heading, Geokit\Distance $distance)`:
+  Calculates the destination point along a geodesic, given an initial heading
+  and distance, from the given start point.
 
 License
 -------
