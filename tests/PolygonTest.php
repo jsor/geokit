@@ -54,7 +54,7 @@ class PolygonTest extends TestCase
         self::assertCount(2, $polygon);
     }
 
-    public function testIsClose(): void
+    public function testIsClosed(): void
     {
         $polygon = new Polygon();
 
