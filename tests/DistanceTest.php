@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Geokit;
 
+use Generator;
 use function sprintf;
 
 class DistanceTest extends TestCase
@@ -107,124 +108,146 @@ class DistanceTest extends TestCase
         self::assertEquals(1000, Distance::fromString(sprintf('%.15F %s', $value, $unit))->meters(), 'With space');
     }
 
-    /**
-     * @return array<array<float|string>>
-     */
-    public function fromStringDataProvider(): array
+    public function fromStringDataProvider(): Generator
     {
-        return [
-            [
-                1000,
-                '',
-            ],
-            [
-                1000,
-                'm',
-            ],
-            [
-                1000,
-                'meter',
-            ],
-            [
-                1000,
-                'meters',
-            ],
-            [
-                1000,
-                'metre',
-            ],
-            [
-                1000,
-                'metres',
-            ],
-            [
-                1,
-                'km',
-            ],
-            [
-                1,
-                'kilometer',
-            ],
-            [
-                1,
-                'kilometers',
-            ],
-            [
-                1,
-                'kilometre',
-            ],
-            [
-                1,
-                'kilometres',
-            ],
-            [
-                0.62137119223733,
-                'mi',
-            ],
-            [
-                0.62137119223733,
-                'mile',
-            ],
-            [
-                0.62137119223733,
-                'miles',
-            ],
-            [
-                1093.6132983377079,
-                'yd',
-            ],
-            [
-                1093.6132983377079,
-                'yard',
-            ],
-            [
-                1093.6132983377079,
-                'yards',
-            ],
-            [
-                3280.83989501312336,
-                'ft',
-            ],
-            [
-                3280.83989501312336,
-                'foot',
-            ],
-            [
-                3280.83989501312336,
-                'feet',
-            ],
-            [
-                39370.078740157485,
-                '″',
-            ],
-            [
-                39370.0787401574856,
-                'in',
-            ],
-            [
-                39370.0787401574856,
-                'inch',
-            ],
-            [
-                39370.078740157485,
-                'inches',
-            ],
-            [
-                0.53995680345572,
-                'nm',
-            ],
-            [
-                0.53995680345572,
-                'nautical',
-            ],
-            [
-                0.53995680345572,
-                'nauticalmile',
-            ],
-            [
-                0.53995680345572,
-                'nauticalmiles',
-            ],
+        yield [
+            1000,
+            '',
+        ];
+
+        yield [
+            1000,
+            'm',
+        ];
+
+        yield [
+            1000,
+            'meter',
+        ];
+
+        yield [
+            1000,
+            'meters',
+        ];
+
+        yield [
+            1000,
+            'metre',
+        ];
+
+        yield [
+            1000,
+            'metres',
+        ];
+
+        yield [
+            1,
+            'km',
+        ];
+
+        yield [
+            1,
+            'kilometer',
+        ];
+
+        yield [
+            1,
+            'kilometers',
+        ];
+
+        yield [
+            1,
+            'kilometre',
+        ];
+
+        yield [
+            1,
+            'kilometres',
+        ];
+
+        yield [
+            0.62137119223733,
+            'mi',
+        ];
+
+        yield [
+            0.62137119223733,
+            'mile',
+        ];
+
+        yield [
+            0.62137119223733,
+            'miles',
+        ];
+
+        yield [
+            1093.6132983377079,
+            'yd',
+        ];
+
+        yield [
+            1093.6132983377079,
+            'yard',
+        ];
+
+        yield [
+            1093.6132983377079,
+            'yards',
+        ];
+
+        yield [
+            3280.83989501312336,
+            'ft',
+        ];
+
+        yield [
+            3280.83989501312336,
+            'foot',
+        ];
+
+        yield [
+            3280.83989501312336,
+            'feet',
+        ];
+
+        yield [
+            39370.078740157485,
+            '″',
+        ];
+
+        yield [
+            39370.0787401574856,
+            'in',
+        ];
+
+        yield [
+            39370.0787401574856,
+            'inch',
+        ];
+
+        yield [
+            39370.078740157485,
+            'inches',
+        ];
+
+        yield [
+            0.53995680345572,
+            'nm',
+        ];
+
+        yield [
+            0.53995680345572,
+            'nautical',
+        ];
+
+        yield [
+            0.53995680345572,
+            'nauticalmile',
+        ];
+
+        yield [
+            0.53995680345572,
+            'nauticalmiles',
         ];
     }
 

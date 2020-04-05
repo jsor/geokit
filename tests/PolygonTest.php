@@ -134,131 +134,132 @@ class PolygonTest extends TestCase
         self::assertEquals($expected, $polygon->contains($position));
     }
 
-    /**
-     * @return array<array<array|Position|bool>>
-     */
-    public function containsDataProvider(): array
+    public function containsDataProvider(): Generator
     {
-        return [
-            // Closed counterclockwise polygons
+        // Closed counterclockwise polygons
+        yield [
             [
-                [
-                    new Position(0, 0),
-                    new Position(0, 1),
-                    new Position(1, 1),
-                    new Position(1, 0),
-                    new Position(0, 0),
-                ],
-                new Position(0.5, 0.5),
-                true,
+                new Position(0, 0),
+                new Position(0, 1),
+                new Position(1, 1),
+                new Position(1, 0),
+                new Position(0, 0),
             ],
-            [
-                [
-                    new Position(0, 0),
-                    new Position(0, 1),
-                    new Position(1, 1),
-                    new Position(1, 0),
-                    new Position(0, 0),
-                ],
-                new Position(1.5, 0.5),
-                false,
-            ],
-            [
-                [
-                    new Position(0, 0),
-                    new Position(0, 1),
-                    new Position(1, 1),
-                    new Position(1, 0),
-                    new Position(0, 0),
-                ],
-                new Position(-0.5, 0.5),
-                false,
-            ],
-            [
-                [
-                    new Position(0, 0),
-                    new Position(0, 1),
-                    new Position(1, 1),
-                    new Position(1, 0),
-                    new Position(0, 0),
-                ],
-                new Position(0.5, 1.5),
-                false,
-            ],
-            [
-                [
-                    new Position(0, 0),
-                    new Position(0, 1),
-                    new Position(1, 1),
-                    new Position(1, 0),
-                    new Position(0, 0),
-                ],
-                new Position(0.5, -0.5),
-                false,
-            ],
+            new Position(0.5, 0.5),
+            true,
+        ];
 
-            // Closed clockwise polygons
+        yield [
             [
-                [
-                    new Position(0, 0),
-                    new Position(0, 1),
-                    new Position(1, 1),
-                    new Position(1, 0),
-                    new Position(0, 0),
-                ],
-                new Position(0.5, 0.5),
-                true,
+                new Position(0, 0),
+                new Position(0, 1),
+                new Position(1, 1),
+                new Position(1, 0),
+                new Position(0, 0),
             ],
-            [
-                [
-                    new Position(1, 1),
-                    new Position(3, 2),
-                    new Position(2, 3),
-                    new Position(1, 1),
-                ],
-                new Position(1.5, 1.5),
-                true,
-            ],
+            new Position(1.5, 0.5),
+            false,
+        ];
 
-            // Open counterclockwise polygons
+        yield [
             [
-                [
-                    new Position(0, 0),
-                    new Position(0, 1),
-                    new Position(1, 1),
-                    new Position(1, 0),
-                ],
-                new Position(0.5, 0.5),
-                true,
+                new Position(0, 0),
+                new Position(0, 1),
+                new Position(1, 1),
+                new Position(1, 0),
+                new Position(0, 0),
             ],
+            new Position(-0.5, 0.5),
+            false,
+        ];
 
-            // Open clockwise polygons
+        yield [
             [
-                [
-                    new Position(0, 0),
-                    new Position(0, 1),
-                    new Position(1, 1),
-                    new Position(1, 0),
-                ],
-                new Position(0.5, 0.5),
-                true,
+                new Position(0, 0),
+                new Position(0, 1),
+                new Position(1, 1),
+                new Position(1, 0),
+                new Position(0, 0),
             ],
-            [
-                [
-                    new Position(1, 1),
-                    new Position(3, 2),
-                    new Position(2, 3),
-                ],
-                new Position(1.5, 1.5),
-                true,
-            ],
+            new Position(0.5, 1.5),
+            false,
+        ];
 
-            // Empty polygon
+        yield [
             [
-                [],
-                new Position(0.5, 0.5),
-                false,
+                new Position(0, 0),
+                new Position(0, 1),
+                new Position(1, 1),
+                new Position(1, 0),
+                new Position(0, 0),
             ],
+            new Position(0.5, -0.5),
+            false,
+        ];
+
+        // Closed clockwise polygons
+        yield [
+            [
+                new Position(0, 0),
+                new Position(0, 1),
+                new Position(1, 1),
+                new Position(1, 0),
+                new Position(0, 0),
+            ],
+            new Position(0.5, 0.5),
+            true,
+        ];
+
+        yield [
+            [
+                new Position(1, 1),
+                new Position(3, 2),
+                new Position(2, 3),
+                new Position(1, 1),
+            ],
+            new Position(1.5, 1.5),
+            true,
+        ];
+
+        // Open counterclockwise polygons
+        yield [
+            [
+                new Position(0, 0),
+                new Position(0, 1),
+                new Position(1, 1),
+                new Position(1, 0),
+            ],
+            new Position(0.5, 0.5),
+            true,
+        ];
+
+        // Open clockwise polygons
+        yield [
+            [
+                new Position(0, 0),
+                new Position(0, 1),
+                new Position(1, 1),
+                new Position(1, 0),
+            ],
+            new Position(0.5, 0.5),
+            true,
+        ];
+
+        yield [
+            [
+                new Position(1, 1),
+                new Position(3, 2),
+                new Position(2, 3),
+            ],
+            new Position(1.5, 1.5),
+            true,
+        ];
+
+        // Empty polygon
+        yield [
+            [],
+            new Position(0.5, 0.5),
+            false,
         ];
     }
 
