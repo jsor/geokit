@@ -154,7 +154,7 @@ final class BoundingBox implements JsonSerializable
         return $this->containsLng($position->longitude());
     }
 
-    public function extend(Position $position): self
+    public function extend(Position $position): BoundingBox
     {
         $newSouth = min($this->southWest->latitude(), $position->latitude());
         $newNorth = max($this->northEast->latitude(), $position->latitude());
@@ -178,7 +178,7 @@ final class BoundingBox implements JsonSerializable
         return new self(new Position($newWest, $newSouth), new Position($newEast, $newNorth));
     }
 
-    public function union(BoundingBox $bbox): self
+    public function union(BoundingBox $bbox): BoundingBox
     {
         $newBbox = $this->extend($bbox->southWest());
 

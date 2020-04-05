@@ -75,7 +75,7 @@ final class Distance
         $this->value = $value * self::$units[$unit];
     }
 
-    public static function fromString(string $input): self
+    public static function fromString(string $input): Distance
     {
         if ((bool) preg_match('/(\-?\d+\.?\d*)\s*((kilo)?met[er]+s?|m|km|miles?|mi|yards?|yd|feet|foot|ft|in(ch(es)?)?|″|nautical(mile)?s?|nm)?$/u', $input, $match)) {
             $unit = self::DEFAULT_UNIT;

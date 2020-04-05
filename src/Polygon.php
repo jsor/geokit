@@ -51,7 +51,7 @@ final class Polygon implements Countable, IteratorAggregate
             $lastPosition->longitude() === $firstPosition->longitude();
     }
 
-    public function close(): self
+    public function close(): Polygon
     {
         if (count($this->positions) === 0) {
             return new self();
