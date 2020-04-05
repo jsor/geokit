@@ -46,7 +46,7 @@ class PolygonTest extends TestCase
 
     public function testFromCoordinatesWithGenerator(): void
     {
-        $polygon = Polygon::fromCoordinates((/** @return Generator<float> */ static function (): Generator {
+        $polygon = Polygon::fromCoordinates((/** @return Generator<array<float>> */ static function (): Generator {
             yield [1, 2];
             yield [2, 3];
         })());
