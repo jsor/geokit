@@ -54,32 +54,6 @@ class PolygonTest extends TestCase
         self::assertCount(2, $polygon);
     }
 
-    public function testIsClosed(): void
-    {
-        $polygon = new Polygon();
-
-        self::assertFalse($polygon->isClosed());
-
-        $polygon = new Polygon(
-            new Position(0, 0),
-            new Position(1, 0),
-            new Position(1, 1),
-            new Position(1, 0)
-        );
-
-        self::assertFalse($polygon->isClosed());
-
-        $polygon = new Polygon(
-            new Position(0, 0),
-            new Position(1, 0),
-            new Position(1, 1),
-            new Position(1, 0),
-            new Position(0, 0)
-        );
-
-        self::assertTrue($polygon->isClosed());
-    }
-
     public function testCloseOpenPolygon(): void
     {
         $polygon = new Polygon(

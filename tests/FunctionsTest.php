@@ -192,7 +192,6 @@ class FunctionsTest extends TestCase
             32
         );
 
-        self::assertTrue($circle->isClosed());
         self::assertCount(33, $circle);
 
         self::assertTrue($circle->contains($center));

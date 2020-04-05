@@ -295,7 +295,6 @@ class BoundingBoxTest extends TestCase
         $polygon = $bbox->toPolygon();
 
         self::assertCount(5, $polygon);
-        self::assertTrue($polygon->isClosed());
 
         /** @var Position[] $array */
         $array = iterator_to_array($polygon);

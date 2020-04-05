@@ -36,21 +36,6 @@ final class Polygon implements Countable, IteratorAggregate
         return new self(...$positions);
     }
 
-    public function isClosed(): bool
-    {
-        if (count($this->positions) === 0) {
-            return false;
-        }
-
-        /** @var Position $lastPosition */
-        $lastPosition = end($this->positions);
-        /** @var Position $firstPosition */
-        $firstPosition = reset($this->positions);
-
-        return $lastPosition->latitude() === $firstPosition->latitude() &&
-            $lastPosition->longitude() === $firstPosition->longitude();
-    }
-
     public function close(): Polygon
     {
         if (count($this->positions) === 0) {
@@ -59,7 +44,18 @@ final class Polygon implements Countable, IteratorAggregate
 
         $positions = $this->positions;
 
-        if (!$this->isClosed()) {
+        /** @var Position $lastPosition */
+        $lastPosition = end($positions);
+
+        /** @var Position $firstPosition */
+        $firstPosition = reset($positions);
+
+        $isClosed = (
+            $lastPosition->latitude() === $firstPosition->latitude() &&
+            $lastPosition->longitude() === $firstPosition->longitude()
+        );
+
+        if (!$isClosed) {
             $positions[] = clone reset($this->positions);
         }
 
