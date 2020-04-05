@@ -217,14 +217,3 @@ License
 
 Copyright (c) 2011-2020 Jan Sorgalla.
 Released under the [MIT License](LICENSE).
-
-Credits
--------
-
-Geokit has been inspired and/or contains ported code from the following
-libraries:
-
-* [OpenLayers](https://github.com/openlayers/openlayers)
-* [GeoPy](https://github.com/geopy/geopy)
-* [scalaz-geo](https://github.com/scalaz/scalaz-geo)
-* [geojs](http://code.google.com/p/geojs)
