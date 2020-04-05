@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Geokit;
 
-use const M_PI;
 use function abs;
 use function asin;
 use function atan;
@@ -215,7 +214,17 @@ function circle(Position $center, Distance $radius, int $steps): Polygon
  */
 function normalizeLatitude(float $lat): float
 {
-    return asin(sin(($lat / 180) * M_PI)) * (180 / M_PI);
+    $mod = fmod($lat, 360);
+
+    if ($mod < -90) {
+        $mod = -180 - $mod;
+    }
+
+    if ($mod > 90) {
+        $mod = 180 - $mod;
+    }
+
+    return $mod;
 }
 
 /**
