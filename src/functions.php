@@ -164,7 +164,7 @@ function midpoint(Position $from, Position $to): Position
     );
     $lon3 = deg2rad($lng1) + atan2($By, cos($lat1) + $Bx);
 
-    return new Position(rad2deg($lon3), rad2deg($lat3));
+    return Position::fromXY(rad2deg($lon3), rad2deg($lat3));
 }
 
 /**
@@ -190,7 +190,7 @@ function endpoint(Position $start, float $heading, Distance $distance): Position
         cos($angularDistance) - sin($lat) * sin($lat2)
     );
 
-    return new Position(rad2deg($lon2), rad2deg($lat2));
+    return Position::fromXY(rad2deg($lon2), rad2deg($lat2));
 }
 
 function circle(Position $center, Distance $radius, int $steps): Polygon
@@ -205,7 +205,7 @@ function circle(Position $center, Distance $radius, int $steps): Polygon
         );
     }
 
-    return new Polygon(...$points);
+    return Polygon::fromPositions(...$points);
 }
 
 /**

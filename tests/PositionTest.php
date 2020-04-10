@@ -13,7 +13,7 @@ class PositionTest extends TestCase
 {
     public function testConstructor(): void
     {
-        $position = new Position(1.0, 2.0);
+        $position = Position::fromXY(1.0, 2.0);
 
         self::assertSame(1.0, $position->x());
         self::assertSame(2.0, $position->y());
@@ -23,22 +23,12 @@ class PositionTest extends TestCase
 
     public function testConstructorWithInts(): void
     {
-        $position = new Position(1, 2);
+        $position = Position::fromXY(1, 2);
 
         self::assertSame(1.0, $position->x());
         self::assertSame(2.0, $position->y());
         self::assertSame(1.0, $position->longitude());
         self::assertSame(2.0, $position->latitude());
-    }
-
-    public function testNormalizesLatitudeAndLongitude(): void
-    {
-        $position = new Position(181, 91);
-
-        self::assertSame(181.0, $position->x());
-        self::assertSame(91.0, $position->y());
-        self::assertSame(-179.0, $position->longitude());
-        self::assertSame(89.0, $position->latitude());
     }
 
     public function testFromCoordinatesWithArray(): void
@@ -90,14 +80,14 @@ class PositionTest extends TestCase
 
     public function testToCoordinates(): void
     {
-        $position = new Position(1, 2);
+        $position = Position::fromXY(1, 2);
 
         self::assertSame([1.0, 2.0], $position->toCoordinates());
     }
 
     public function testJsonSerialize(): void
     {
-        $position = new Position(1.1, 2);
+        $position = Position::fromXY(1.1, 2);
 
         self::assertSame('[1.1,2]', json_encode($position));
     }

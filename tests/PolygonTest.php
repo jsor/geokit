@@ -14,12 +14,12 @@ class PolygonTest extends TestCase
     public function testConstructorAcceptsPositions(): void
     {
         $points = [
-            new Position(0, 0),
-            new Position(1, 1),
-            new Position(0, 1),
+            Position::fromXY(0, 0),
+            Position::fromXY(1, 1),
+            Position::fromXY(0, 1),
         ];
 
-        $polygon = new Polygon(...$points);
+        $polygon = Polygon::fromPositions(...$points);
 
         /** @var Position[] $array */
         $array = iterator_to_array($polygon);
@@ -56,23 +56,23 @@ class PolygonTest extends TestCase
 
     public function testCloseOpenPolygon(): void
     {
-        $polygon = new Polygon(
-            new Position(0, 0),
-            new Position(1, 0),
-            new Position(1, 1),
-            new Position(1, 0)
+        $polygon = Polygon::fromPositions(
+            Position::fromXY(0, 0),
+            Position::fromXY(1, 0),
+            Position::fromXY(1, 1),
+            Position::fromXY(1, 0)
         );
 
         $closedPolygon = $polygon->close();
 
         $array = iterator_to_array($closedPolygon);
 
-        self::assertEquals(new Position(0, 0), $array[count($closedPolygon) - 1]);
+        self::assertEquals(Position::fromXY(0, 0), $array[count($closedPolygon) - 1]);
     }
 
     public function testCloseEmptyPolygon(): void
     {
-        $polygon = new Polygon();
+        $polygon = Polygon::fromPositions();
 
         $closedPolygon = $polygon->close();
 
@@ -81,19 +81,19 @@ class PolygonTest extends TestCase
 
     public function testCloseAlreadyClosedPolygon(): void
     {
-        $polygon = new Polygon(
-            new Position(0, 0),
-            new Position(1, 0),
-            new Position(1, 1),
-            new Position(1, 0),
-            new Position(0, 0)
+        $polygon = Polygon::fromPositions(
+            Position::fromXY(0, 0),
+            Position::fromXY(1, 0),
+            Position::fromXY(1, 1),
+            Position::fromXY(1, 0),
+            Position::fromXY(0, 0)
         );
 
         $closedPolygon = $polygon->close();
 
         $array = iterator_to_array($closedPolygon);
 
-        self::assertEquals(new Position(0, 0), $array[count($closedPolygon) - 1]);
+        self::assertEquals(Position::fromXY(0, 0), $array[count($closedPolygon) - 1]);
     }
 
     /**
@@ -103,7 +103,7 @@ class PolygonTest extends TestCase
      */
     public function testContains(array $polygonPositions, Position $position, bool $expected): void
     {
-        $polygon = new Polygon(...$polygonPositions);
+        $polygon = Polygon::fromPositions(...$polygonPositions);
 
         self::assertEquals($expected, $polygon->contains($position));
     }
@@ -113,137 +113,137 @@ class PolygonTest extends TestCase
         // Closed counterclockwise polygons
         yield [
             [
-                new Position(0, 0),
-                new Position(0, 1),
-                new Position(1, 1),
-                new Position(1, 0),
-                new Position(0, 0),
+                Position::fromXY(0, 0),
+                Position::fromXY(0, 1),
+                Position::fromXY(1, 1),
+                Position::fromXY(1, 0),
+                Position::fromXY(0, 0),
             ],
-            new Position(0.5, 0.5),
+            Position::fromXY(0.5, 0.5),
             true,
         ];
 
         yield [
             [
-                new Position(0, 0),
-                new Position(0, 1),
-                new Position(1, 1),
-                new Position(1, 0),
-                new Position(0, 0),
+                Position::fromXY(0, 0),
+                Position::fromXY(0, 1),
+                Position::fromXY(1, 1),
+                Position::fromXY(1, 0),
+                Position::fromXY(0, 0),
             ],
-            new Position(1.5, 0.5),
+            Position::fromXY(1.5, 0.5),
             false,
         ];
 
         yield [
             [
-                new Position(0, 0),
-                new Position(0, 1),
-                new Position(1, 1),
-                new Position(1, 0),
-                new Position(0, 0),
+                Position::fromXY(0, 0),
+                Position::fromXY(0, 1),
+                Position::fromXY(1, 1),
+                Position::fromXY(1, 0),
+                Position::fromXY(0, 0),
             ],
-            new Position(-0.5, 0.5),
+            Position::fromXY(-0.5, 0.5),
             false,
         ];
 
         yield [
             [
-                new Position(0, 0),
-                new Position(0, 1),
-                new Position(1, 1),
-                new Position(1, 0),
-                new Position(0, 0),
+                Position::fromXY(0, 0),
+                Position::fromXY(0, 1),
+                Position::fromXY(1, 1),
+                Position::fromXY(1, 0),
+                Position::fromXY(0, 0),
             ],
-            new Position(0.5, 1.5),
+            Position::fromXY(0.5, 1.5),
             false,
         ];
 
         yield [
             [
-                new Position(0, 0),
-                new Position(0, 1),
-                new Position(1, 1),
-                new Position(1, 0),
-                new Position(0, 0),
+                Position::fromXY(0, 0),
+                Position::fromXY(0, 1),
+                Position::fromXY(1, 1),
+                Position::fromXY(1, 0),
+                Position::fromXY(0, 0),
             ],
-            new Position(0.5, -0.5),
+            Position::fromXY(0.5, -0.5),
             false,
         ];
 
         // Closed clockwise polygons
         yield [
             [
-                new Position(0, 0),
-                new Position(0, 1),
-                new Position(1, 1),
-                new Position(1, 0),
-                new Position(0, 0),
+                Position::fromXY(0, 0),
+                Position::fromXY(0, 1),
+                Position::fromXY(1, 1),
+                Position::fromXY(1, 0),
+                Position::fromXY(0, 0),
             ],
-            new Position(0.5, 0.5),
+            Position::fromXY(0.5, 0.5),
             true,
         ];
 
         yield [
             [
-                new Position(1, 1),
-                new Position(3, 2),
-                new Position(2, 3),
-                new Position(1, 1),
+                Position::fromXY(1, 1),
+                Position::fromXY(3, 2),
+                Position::fromXY(2, 3),
+                Position::fromXY(1, 1),
             ],
-            new Position(1.5, 1.5),
+            Position::fromXY(1.5, 1.5),
             true,
         ];
 
         // Open counterclockwise polygons
         yield [
             [
-                new Position(0, 0),
-                new Position(0, 1),
-                new Position(1, 1),
-                new Position(1, 0),
+                Position::fromXY(0, 0),
+                Position::fromXY(0, 1),
+                Position::fromXY(1, 1),
+                Position::fromXY(1, 0),
             ],
-            new Position(0.5, 0.5),
+            Position::fromXY(0.5, 0.5),
             true,
         ];
 
         // Open clockwise polygons
         yield [
             [
-                new Position(0, 0),
-                new Position(0, 1),
-                new Position(1, 1),
-                new Position(1, 0),
+                Position::fromXY(0, 0),
+                Position::fromXY(0, 1),
+                Position::fromXY(1, 1),
+                Position::fromXY(1, 0),
             ],
-            new Position(0.5, 0.5),
+            Position::fromXY(0.5, 0.5),
             true,
         ];
 
         yield [
             [
-                new Position(1, 1),
-                new Position(3, 2),
-                new Position(2, 3),
+                Position::fromXY(1, 1),
+                Position::fromXY(3, 2),
+                Position::fromXY(2, 3),
             ],
-            new Position(1.5, 1.5),
+            Position::fromXY(1.5, 1.5),
             true,
         ];
 
         // Empty polygon
         yield [
             [],
-            new Position(0.5, 0.5),
+            Position::fromXY(0.5, 0.5),
             false,
         ];
     }
 
     public function testToBoundingBox(): void
     {
-        $polygon = new Polygon(
-            new Position(0, 0),
-            new Position(1, 0),
-            new Position(1, 1),
-            new Position(1, 0)
+        $polygon = Polygon::fromPositions(
+            Position::fromXY(0, 0),
+            Position::fromXY(1, 0),
+            Position::fromXY(1, 1),
+            Position::fromXY(1, 0)
         );
 
         $bbox = $polygon->toBoundingBox();
@@ -259,15 +259,15 @@ class PolygonTest extends TestCase
         $this->expectException(Exception\LogicException::class);
         $this->expectExceptionMessage('Cannot create a BoundingBox from empty Polygon.');
 
-        $polygon = new Polygon();
+        $polygon = Polygon::fromPositions();
 
         $polygon->toBoundingBox();
     }
 
     public function testCountable(): void
     {
-        $polygon = new Polygon(
-            new Position(0, 0)
+        $polygon = Polygon::fromPositions(
+            Position::fromXY(0, 0)
         );
 
         self::assertCount(1, $polygon);
@@ -275,6 +275,6 @@ class PolygonTest extends TestCase
 
     public function testIterable(): void
     {
-        self::assertIsIterable(new Polygon());
+        self::assertIsIterable(Polygon::fromPositions());
     }
 }

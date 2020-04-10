@@ -17,9 +17,14 @@ final class Polygon implements Countable, IteratorAggregate
     /** @var array<Position> */
     private $positions;
 
-    public function __construct(Position ...$positions)
+    private function __construct(Position ...$positions)
     {
         $this->positions = $positions;
+    }
+
+    public static function fromPositions(Position ...$positions): Polygon
+    {
+        return new self(...$positions);
     }
 
     /**
@@ -59,10 +64,7 @@ final class Polygon implements Countable, IteratorAggregate
             $positions[] = clone reset($this->positions);
         }
 
-        $polygon            = new self();
-        $polygon->positions = $positions;
-
-        return $polygon;
+        return new self(...$positions);
     }
 
     /**
@@ -116,7 +118,7 @@ final class Polygon implements Countable, IteratorAggregate
         /** @var Position $start */
         $start = array_shift($positions);
 
-        $bbox = new BoundingBox($start, $start);
+        $bbox = BoundingBox::fromCornerPositions($start, $start);
 
         /** @var Position $position */
         foreach ($positions as $position) {

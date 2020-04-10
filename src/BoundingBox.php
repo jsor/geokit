@@ -23,7 +23,7 @@ final class BoundingBox implements JsonSerializable
     /** @var Position */
     private $northEast;
 
-    public function __construct(Position $southWest, Position $northEast)
+    private function __construct(Position $southWest, Position $northEast)
     {
         $this->southWest = $southWest;
         $this->northEast = $northEast;
@@ -33,6 +33,13 @@ final class BoundingBox implements JsonSerializable
                 'Bounding Box south-west coordinate cannot be north of the north-east coordinate'
             );
         }
+    }
+
+    public static function fromCornerPositions(
+        Position $southWest,
+        Position $northEast
+    ): BoundingBox {
+        return new self($southWest, $northEast);
     }
 
     /**
@@ -67,8 +74,8 @@ final class BoundingBox implements JsonSerializable
         }
 
         return new self(
-            new Position($array[0], $array[1]),
-            new Position($array[2], $array[3])
+            Position::fromXY($array[0], $array[1]),
+            Position::fromXY($array[2], $array[3])
         );
     }
 
@@ -120,7 +127,7 @@ final class BoundingBox implements JsonSerializable
             $lng = ($this->southWest->longitude() + $this->northEast->longitude()) / 2;
         }
 
-        return new Position(
+        return Position::fromXY(
             $lng,
             ($this->southWest->latitude() + $this->northEast->latitude()) / 2
         );
@@ -128,7 +135,7 @@ final class BoundingBox implements JsonSerializable
 
     public function span(): Position
     {
-        return new Position(
+        return Position::fromXY(
             $this->lngSpan($this->southWest->longitude(), $this->northEast->longitude()),
             $this->northEast->latitude() - $this->southWest->latitude()
         );
@@ -175,7 +182,7 @@ final class BoundingBox implements JsonSerializable
             }
         }
 
-        return new self(new Position($newWest, $newSouth), new Position($newEast, $newNorth));
+        return new self(Position::fromXY($newWest, $newSouth), Position::fromXY($newEast, $newNorth));
     }
 
     public function union(BoundingBox $bbox): BoundingBox
@@ -197,12 +204,12 @@ final class BoundingBox implements JsonSerializable
 
     public function toPolygon(): Polygon
     {
-        return new Polygon(
-            new Position($this->southWest->longitude(), $this->southWest->latitude()),
-            new Position($this->northEast->longitude(), $this->southWest->latitude()),
-            new Position($this->northEast->longitude(), $this->northEast->latitude()),
-            new Position($this->southWest->longitude(), $this->northEast->latitude()),
-            new Position($this->southWest->longitude(), $this->southWest->latitude())
+        return Polygon::fromPositions(
+            Position::fromXY($this->southWest->longitude(), $this->southWest->latitude()),
+            Position::fromXY($this->northEast->longitude(), $this->southWest->latitude()),
+            Position::fromXY($this->northEast->longitude(), $this->northEast->latitude()),
+            Position::fromXY($this->southWest->longitude(), $this->northEast->latitude()),
+            Position::fromXY($this->southWest->longitude(), $this->southWest->latitude())
         );
     }
 
@@ -228,17 +235,17 @@ final class BoundingBox implements JsonSerializable
         $minLon = $lngSW - $deltaLonSW;
         $maxLon = $lngNE + $deltaLonNE;
 
-        $positionSW = new Position(rad2deg($minLon), rad2deg($minLat));
-        $positionNE = new Position(rad2deg($maxLon), rad2deg($maxLat));
+        $positionSW = Position::fromXY(rad2deg($minLon), rad2deg($minLat));
+        $positionNE = Position::fromXY(rad2deg($maxLon), rad2deg($maxLat));
 
         // Check if we're shrinking too much
         if ($positionSW->latitude() > $positionNE->latitude()) {
             $center = $bbox->center();
 
-            return new BoundingBox($center, $center);
+            return self::fromCornerPositions($center, $center);
         }
 
-        return new BoundingBox($positionSW, $positionNE);
+        return self::fromCornerPositions($positionSW, $positionNE);
     }
 
     private function containsLng(float $lng): bool

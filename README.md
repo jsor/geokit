@@ -44,9 +44,11 @@ A Distance instance allows for a convenient representation of a distance unit of
 measure.
 
 ```php
-$distance = new Geokit\Distance(1000); // Defaults to meters
+use Geokit\Distance;
+
+$distance = new Distance(1000); // Defaults to meters
 // or
-$distance = new Geokit\Distance(1, Geokit\Distance::UNIT_KILOMETERS);
+$distance = new Distance(1, Distance::UNIT_KILOMETERS);
 
 $meters = $distance->meters();
 $kilometers = $distance->kilometers();
@@ -60,14 +62,16 @@ $nauticalMiles = $distance->nautical();
 A Distance can also be created from a string with an optional unit.
 
 ```php
-$distance = Geokit\Distance::fromString('1000'); // Defaults to meters
-$distance = Geokit\Distance::fromString('1000m');
-$distance = Geokit\Distance::fromString('1km');
-$distance = Geokit\Distance::fromString('100 miles');
-$distance = Geokit\Distance::fromString('100 yards');
-$distance = Geokit\Distance::fromString('1 foot');
-$distance = Geokit\Distance::fromString('1 inch');
-$distance = Geokit\Distance::fromString('234nm');
+use Geokit\Distance;
+
+$distance = Distance::fromString('1000'); // Defaults to meters
+$distance = Distance::fromString('1000m');
+$distance = Distance::fromString('1km');
+$distance = Distance::fromString('100 miles');
+$distance = Distance::fromString('100 yards');
+$distance = Distance::fromString('1 foot');
+$distance = Distance::fromString('1 inch');
+$distance = Distance::fromString('234nm');
 ```
 
 ### Position
@@ -85,12 +89,12 @@ normalized.
   below -90 are normalized. For example, 100 will be normalized to 80 degrees.
 
 ```php
-$position = new Geokit\Position(181, 91);
+use Geokit\Position;
 
-$x = $position->x(); // Returns 181.0
-$y = $position->y(); // Returns 91.0
-$longitude = $position->longitude(); // Returns -179.0, normalized
-$latitude = $position->latitude(); // Returns 89.0, normalized
+$position = Position::fromXY(181, 91);
+
+$x = $position->x(); // Returns -179.0, normalized
+$y = $position->y(); // Returns 89.0, normalized
 ```
 
 ### BoundingBox
@@ -102,10 +106,13 @@ It is constructed from its left-bottom (south-west) and right-top (north-east)
 corner points.
 
 ```php
-$southWest = new Geokit\Position(2, 1);
-$northEast = new Geokit\Position(2, 1);
+use Geokit\BoundingBox;
+use Geokit\Position;
 
-$boundingBox = new Geokit\BoundingBox($southWest, $northEast);
+$southWest = Position::fromXY(2, 1);
+$northEast = Position::fromXY(2, 1);
+
+$boundingBox = BoundingBox::fromCornerPositions($southWest, $northEast);
 
 $southWestPosition = $boundingBox->southWest();
 $northEastPosition = $boundingBox->northEast();
@@ -124,12 +131,14 @@ With the `expand()` and `shrink()` methods, you can expand or shrink a
 BoundingBox instance by a distance.
 
 ```php
+use Geokit\Distance;
+
 $expandedBoundingBox = $boundingBox->expand(
-    Geokit\Distance::fromString('10km')
+    Distance::fromString('10km')
 );
 
 $shrinkedBoundingBox = $boundingBox->shrink(
-    Geokit\Distance::fromString('10km')
+    Distance::fromString('10km')
 );
 ```
 
@@ -146,21 +155,25 @@ A Polygon instance represents a two-dimensional shape of connected line segments
 and may either be closed (the first and last point are the same) or open.
 
 ```php
-$polygon = new Geokit\Polygon([
-    new Geokit\Position(0, 0),
-    new Geokit\Position(1, 0),
-    new Geokit\Position(1, 1)
-]);
+use Geokit\BoundingBox;
+use Geokit\Polygon;
+use Geokit\Position;
+
+$polygon = Polygon::fromPositions(
+    Position::fromXY(0, 0),
+    Position::fromXY(1, 0),
+    Position::fromXY(1, 1)
+);
 
 $closedPolygon = $polygon->close();
 
-/** @var Geokit\Position $position */
+/** @var Position $position */
 foreach ($polygon as $position) {
 }
 
-$polygon->contains(Geokit\Position(0.5, 0.5)); // true
+$polygon->contains(Position::fromXY(0.5, 0.5)); // true
 
-/** @var Geokit\BoundingBox $boundingBox */
+/** @var BoundingBox $boundingBox */
 $boundingBox = $polygon->toBoundingBox();
 ```
 
@@ -168,21 +181,21 @@ $boundingBox = $polygon->toBoundingBox();
 
 Geokit provides several functions to perform geographic calculations.
 
-The [World Geodetic System 1984](http://en.wikipedia.org/wiki/World_Geodetic_System) 
-(WGS84) is exclusively used as the coordinate reference system.
-
 #### Distance calculations
 
-* `Geokit\distanceHaversine(Geokit\Position $from, Geokit\Position $to)`:
+* `distanceHaversine(Position $from, Position $to)`:
   Calculates the approximate sea level great circle (Earth) distance between two
   points using the Haversine formula.
-* `Geokit\distanceVincenty(Geokit\Position $from, Geokit\Position $to)`:
+* `distanceVincenty(Position $from, Position $to)`:
   Calculates the geodetic distance between two points using the Vincenty inverse
   formula for ellipsoids.
 
 ```php
-$distance1 = Geokit\distanceHaversine($from, $to);
-$distance2 = Geokit\distanceVincenty($from, $to);
+use function Geokit\distanceHaversine;
+use function Geokit\distanceVincenty;
+
+$distance1 = distanceHaversine($from, $to);
+$distance2 = distanceVincenty($from, $to);
 ```
 
 Both functions return a [Distance](#distance) instance.
@@ -193,9 +206,13 @@ The `circle()` function calculates a closed circle Polygon given a center,
 radius and steps for precision.
 
 ```php
-$circlePolygon = Geokit\circle(
-    new Geokit\Position(8.50207515, 49.50042565), 
-    Geokit\Distance::fromString('5km'),
+use Geokit\Distance;
+use Geokit\Position;
+use function Geokit\circle;
+
+$circlePolygon = circle(
+    Position::fromXY(8.50207515, 49.50042565), 
+    Distance::fromString('5km'),
     32
 );
 ```
@@ -204,11 +221,11 @@ $circlePolygon = Geokit\circle(
 
 Other useful functions are:
 
-* `Geokit\heading(Geokit\Position $from, Geokit\Position $to)`: Calculates the
-  (initial) heading from the first point to the second point in degrees.
-* `Geokit\midpoint(Geokit\Position $from, Geokit\Position $to)`: Calculates an
-  intermediate point on the geodesic between the two given points.
-* `Geokit\endpoint(Geokit\Position $start, float $heading, Geokit\Distance $distance)`:
+* `heading(Position $from, Position $to)`: Calculates the (initial) heading from
+  the first point to the second point in degrees.
+* `midpoint(Position $from, Position $to)`: Calculates an intermediate point on
+  the geodesic between the two given points.
+* `endpoint(Position $start, float $heading, Geokit\Distance $distance)`:
   Calculates the destination point along a geodesic, given an initial heading
   and distance, from the given start point.
 

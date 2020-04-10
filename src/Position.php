@@ -16,10 +16,15 @@ final class Position implements JsonSerializable
     /** @var float */
     private $y;
 
-    public function __construct(float $x, float $y)
+    private function __construct(float $x, float $y)
     {
         $this->x = $x;
         $this->y = $y;
+    }
+
+    public static function fromXY(float $x, float $y): Position
+    {
+        return new self($x, $y);
     }
 
     /**

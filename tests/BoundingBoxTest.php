@@ -21,7 +21,7 @@ class BoundingBoxTest extends TestCase
 
     public function testConstructorShouldAcceptPositionsAsFirstAndSecondArgument(): void
     {
-        $bbox = new BoundingBox(new Position(1.1234, 2.5678), new Position(3.1234, 4.5678));
+        $bbox = BoundingBox::fromCornerPositions(Position::fromXY(1.1234, 2.5678), Position::fromXY(3.1234, 4.5678));
 
         self::assertEquals(1.1234, $bbox->southWest()->longitude());
         self::assertEquals(2.5678, $bbox->southWest()->latitude());
@@ -33,20 +33,20 @@ class BoundingBoxTest extends TestCase
     public function testConstructorShouldThrowExceptionForInvalidSouthCoordinate(): void
     {
         $this->expectException(Exception\LogicException::class);
-        new BoundingBox(new Position(90, 1), new Position(90, 0));
+        BoundingBox::fromCornerPositions(Position::fromXY(90, 1), Position::fromXY(90, 0));
     }
 
     public function testFromCoordinatesWithArray(): void
     {
         $bbox = BoundingBox::fromCoordinates([1, 2, 3, 4]);
 
-        self::assertSame(1.0, $bbox->southWest()->x());
-        self::assertSame(2.0, $bbox->southWest()->y());
+        self::assertSame(1.0, $bbox->southWest()->longitude());
+        self::assertSame(2.0, $bbox->southWest()->latitude());
         self::assertSame(1.0, $bbox->southWest()->longitude());
         self::assertSame(2.0, $bbox->southWest()->latitude());
 
-        self::assertSame(3.0, $bbox->northEast()->x());
-        self::assertSame(4.0, $bbox->northEast()->y());
+        self::assertSame(3.0, $bbox->northEast()->longitude());
+        self::assertSame(4.0, $bbox->northEast()->latitude());
         self::assertSame(3.0, $bbox->northEast()->longitude());
         self::assertSame(4.0, $bbox->northEast()->latitude());
     }
@@ -55,13 +55,13 @@ class BoundingBoxTest extends TestCase
     {
         $bbox = BoundingBox::fromCoordinates(new ArrayIterator([1, 2, 3, 4]));
 
-        self::assertSame(1.0, $bbox->southWest()->x());
-        self::assertSame(2.0, $bbox->southWest()->y());
+        self::assertSame(1.0, $bbox->southWest()->longitude());
+        self::assertSame(2.0, $bbox->southWest()->latitude());
         self::assertSame(1.0, $bbox->southWest()->longitude());
         self::assertSame(2.0, $bbox->southWest()->latitude());
 
-        self::assertSame(3.0, $bbox->northEast()->x());
-        self::assertSame(4.0, $bbox->northEast()->y());
+        self::assertSame(3.0, $bbox->northEast()->longitude());
+        self::assertSame(4.0, $bbox->northEast()->latitude());
         self::assertSame(3.0, $bbox->northEast()->longitude());
         self::assertSame(4.0, $bbox->northEast()->latitude());
     }
@@ -75,13 +75,13 @@ class BoundingBoxTest extends TestCase
             yield 4;
         })());
 
-        self::assertSame(1.0, $bbox->southWest()->x());
-        self::assertSame(2.0, $bbox->southWest()->y());
+        self::assertSame(1.0, $bbox->southWest()->longitude());
+        self::assertSame(2.0, $bbox->southWest()->latitude());
         self::assertSame(1.0, $bbox->southWest()->longitude());
         self::assertSame(2.0, $bbox->southWest()->latitude());
 
-        self::assertSame(3.0, $bbox->northEast()->x());
-        self::assertSame(4.0, $bbox->northEast()->y());
+        self::assertSame(3.0, $bbox->northEast()->longitude());
+        self::assertSame(4.0, $bbox->northEast()->latitude());
         self::assertSame(3.0, $bbox->northEast()->longitude());
         self::assertSame(4.0, $bbox->northEast()->latitude());
     }
@@ -116,71 +116,71 @@ class BoundingBoxTest extends TestCase
 
     public function testToCoordinates(): void
     {
-        $bbox = new BoundingBox(new Position(1, 2), new Position(3, 4));
+        $bbox = BoundingBox::fromCornerPositions(Position::fromXY(1, 2), Position::fromXY(3, 4));
 
         self::assertSame([1.0, 2.0, 3.0, 4.0], $bbox->toCoordinates());
     }
 
     public function testJsonSerialize(): void
     {
-        $bbox = new BoundingBox(new Position(1.1, 2), new Position(3.3, 4));
+        $bbox = BoundingBox::fromCornerPositions(Position::fromXY(1.1, 2), Position::fromXY(3.3, 4));
 
         self::assertSame('[1.1,2,3.3,4]', json_encode($bbox));
     }
 
     public function testGetCenterShouldReturnAPositionObject(): void
     {
-        $bbox   = new BoundingBox(new Position(1.1234, 2.5678), new Position(3.1234, 4.5678));
-        $center = new Position(2.1234, 3.5678);
+        $bbox   = BoundingBox::fromCornerPositions(Position::fromXY(1.1234, 2.5678), Position::fromXY(3.1234, 4.5678));
+        $center = Position::fromXY(2.1234, 3.5678);
 
         self::assertEquals($center, $bbox->center());
 
-        $bbox   = new BoundingBox(new Position(179, -45), new Position(-179, 45));
-        $center = new Position(180, 0);
+        $bbox   = BoundingBox::fromCornerPositions(Position::fromXY(179, -45), Position::fromXY(-179, 45));
+        $center = Position::fromXY(180, 0);
 
         self::assertEquals($center, $bbox->center());
     }
 
     public function testGetSpanShouldReturnAPositionObject(): void
     {
-        $bbox = new BoundingBox(new Position(1.1234, 2.5678), new Position(3.1234, 4.5678));
+        $bbox = BoundingBox::fromCornerPositions(Position::fromXY(1.1234, 2.5678), Position::fromXY(3.1234, 4.5678));
 
-        $span = new Position(2, 2);
+        $span = Position::fromXY(2, 2);
 
         self::assertEquals($span, $bbox->span());
     }
 
     public function testContains(): void
     {
-        $bbox = new BoundingBox(new Position(37, -122), new Position(38, -123));
+        $bbox = BoundingBox::fromCornerPositions(Position::fromXY(37, -122), Position::fromXY(38, -123));
 
-        self::assertTrue($bbox->contains(new Position(37, -122)));
-        self::assertTrue($bbox->contains(new Position(38, -123)));
+        self::assertTrue($bbox->contains(Position::fromXY(37, -122)));
+        self::assertTrue($bbox->contains(Position::fromXY(38, -123)));
 
-        self::assertFalse($bbox->contains(new Position(-12, -70)));
+        self::assertFalse($bbox->contains(Position::fromXY(-12, -70)));
     }
 
     public function testExtendInACircle(): void
     {
-        $bbox = new BoundingBox(new Position(0, 0), new Position(0, 0));
-        $bbox = $bbox->extend(new Position(1, 0));
-        $bbox = $bbox->extend(new Position(0, 1));
-        $bbox = $bbox->extend(new Position(-1, 0));
-        $bbox = $bbox->extend(new Position(0, -1));
+        $bbox = BoundingBox::fromCornerPositions(Position::fromXY(0, 0), Position::fromXY(0, 0));
+        $bbox = $bbox->extend(Position::fromXY(1, 0));
+        $bbox = $bbox->extend(Position::fromXY(0, 1));
+        $bbox = $bbox->extend(Position::fromXY(-1, 0));
+        $bbox = $bbox->extend(Position::fromXY(0, -1));
         self::assertBoundingBox($bbox, -1, -1, 1, 1);
     }
 
     public function testUnion(): void
     {
-        $bbox = new BoundingBox(new Position(-122, 37), new Position(-122, 37));
+        $bbox = BoundingBox::fromCornerPositions(Position::fromXY(-122, 37), Position::fromXY(-122, 37));
 
-        $bbox = $bbox->union(new BoundingBox(new Position(123, -38), new Position(-123, 38)));
+        $bbox = $bbox->union(BoundingBox::fromCornerPositions(Position::fromXY(123, -38), Position::fromXY(-123, 38)));
         self::assertBoundingBox($bbox, -38, 123, 38, -122);
     }
 
     public function testCrossesAntimeridian(): void
     {
-        $bbox = new BoundingBox(new Position(179, -45), new Position(-179, 45));
+        $bbox = BoundingBox::fromCornerPositions(Position::fromXY(179, -45), Position::fromXY(-179, 45));
 
         self::assertTrue($bbox->crossesAntimeridian());
         self::assertEquals(90, $bbox->span()->latitude());
@@ -189,9 +189,9 @@ class BoundingBoxTest extends TestCase
 
     public function testCrossesAntimeridianViaExtend(): void
     {
-        $bbox = new BoundingBox(new Position(179, -45), new Position(-179, 45));
+        $bbox = BoundingBox::fromCornerPositions(Position::fromXY(179, -45), Position::fromXY(-179, 45));
 
-        $bbox = $bbox->extend(new Position(-180, 90));
+        $bbox = $bbox->extend(Position::fromXY(-180, 90));
 
         self::assertTrue($bbox->crossesAntimeridian());
         self::assertEquals(45, $bbox->span()->latitude());
@@ -200,9 +200,9 @@ class BoundingBoxTest extends TestCase
 
     public function testExpand(): void
     {
-        $bbox = new BoundingBox(
-            new Position(179, -45),
-            new Position(-179, 45)
+        $bbox = BoundingBox::fromCornerPositions(
+            Position::fromXY(179, -45),
+            Position::fromXY(-179, 45)
         );
 
         $expandedBbox = $bbox->expand(
@@ -229,9 +229,9 @@ class BoundingBoxTest extends TestCase
 
     public function testShrink(): void
     {
-        $bbox = new BoundingBox(
-            new Position(178.99872959034192, -45.000898315284132),
-            new Position(-178.99872959034192, 45.000898315284132)
+        $bbox = BoundingBox::fromCornerPositions(
+            Position::fromXY(178.99872959034192, -45.000898315284132),
+            Position::fromXY(-178.99872959034192, 45.000898315284132)
         );
 
         $shrinkedBbox = $bbox->shrink(
@@ -258,9 +258,9 @@ class BoundingBoxTest extends TestCase
 
     public function testShrinkTooMuch(): void
     {
-        $bbox = new BoundingBox(
-            new Position(1, 1),
-            new Position(1, 1)
+        $bbox = BoundingBox::fromCornerPositions(
+            Position::fromXY(1, 1),
+            Position::fromXY(1, 1)
         );
 
         $shrinkedBbox = $bbox->shrink(
@@ -287,9 +287,9 @@ class BoundingBoxTest extends TestCase
 
     public function testToPolygon(): void
     {
-        $bbox = new BoundingBox(
-            new Position(0, 0),
-            new Position(10, 10)
+        $bbox = BoundingBox::fromCornerPositions(
+            Position::fromXY(0, 0),
+            Position::fromXY(10, 10)
         );
 
         $polygon = $bbox->toPolygon();
