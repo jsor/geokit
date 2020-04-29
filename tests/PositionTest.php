@@ -91,4 +91,11 @@ class PositionTest extends TestCase
 
         self::assertSame('[1.1,2]', json_encode($position));
     }
+
+    public function testToWKT(): void
+    {
+        $position = Position::fromXY(1.1, 2.2);
+
+        self::assertSame('POINT(1.1 2.2)', $position->toWKT());
+    }
 }

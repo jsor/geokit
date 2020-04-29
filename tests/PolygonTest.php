@@ -54,6 +54,38 @@ class PolygonTest extends TestCase
         self::assertCount(2, $polygon);
     }
 
+    public function testClosedPolygonIsClosed(): void
+    {
+        $polygon = Polygon::fromPositions(
+            Position::fromXY(0, 0),
+            Position::fromXY(1, 0),
+            Position::fromXY(1, 1),
+            Position::fromXY(1, 0),
+            Position::fromXY(0, 0)
+        );
+
+        self::assertTrue($polygon->isClosed());
+    }
+
+    public function testOpenPolygonIsNotClosed(): void
+    {
+        $polygon = Polygon::fromPositions(
+            Position::fromXY(0, 0),
+            Position::fromXY(1, 0),
+            Position::fromXY(1, 1),
+            Position::fromXY(1, 0)
+        );
+
+        self::assertFalse($polygon->isClosed());
+    }
+
+    public function testEmptyPolygonIsNotClosed(): void
+    {
+        $polygon = Polygon::fromPositions();
+
+        self::assertNull($polygon->isClosed());
+    }
+
     public function testCloseOpenPolygon(): void
     {
         $polygon = Polygon::fromPositions(
@@ -276,5 +308,17 @@ class PolygonTest extends TestCase
     public function testIterable(): void
     {
         self::assertIsIterable(Polygon::fromPositions());
+    }
+
+    public function testToWKT(): void
+    {
+        $polygon = Polygon::fromPositions(
+            Position::fromXY(0, 0),
+            Position::fromXY(1, 0),
+            Position::fromXY(1, 1),
+            Position::fromXY(1, 0)
+        );
+
+        self::assertSame('POLYGON((0 0, 1 0, 1 1, 1 0, 0 0))', $polygon->toWKT());
     }
 }
