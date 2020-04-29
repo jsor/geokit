@@ -67,7 +67,7 @@ final class Polygon implements Countable, IteratorAggregate
             return new self();
         }
 
-        if (!$this->isClosed()) {
+        if ($this->isClosed()===false) {
             $positions = $this->positions;
             $positions[] = clone reset($this->positions);
             return new self(...$positions);
@@ -160,7 +160,7 @@ final class Polygon implements Countable, IteratorAggregate
         foreach ($this->positions as $position) {
             $xyPairs[] = $position->x() . ' ' . $position->y();
         }
-        if (!$this->isClosed()) {
+        if ($this->isClosed()===false) {
             $position = $this->positions[0];
             $xyPairs[] = $position->x() . ' ' . $position->y();
         }
