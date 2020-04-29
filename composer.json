@@ -12,24 +12,23 @@
         }
     ],
     "require": {
-        "php": ">=5.3.3"
+        "php": "^7.1",
+        "ext-json": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "~4.8.35 || ~5.7 || ~6.4"
+        "phpunit/phpunit": "^7.5",
+        "vimeo/psalm": "^3.3",
+        "doctrine/coding-standard": "^6.0"
     },
     "autoload": {
         "psr-4": {
             "Geokit\\": "src/"
-        }
+        },
+        "files": ["src/functions_include.php"]
     },
     "autoload-dev": {
         "psr-4": {
             "Geokit\\": "tests/"
-        }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.0-dev"
         }
     }
 }

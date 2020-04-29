@@ -1,29 +1,41 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Geokit;
+
+use function json_encode;
+use function preg_match;
+use function sprintf;
 
 /**
  * Inspired by GeoPy's distance class (https://github.com/geopy/geopy)
  */
-class Distance
+final class Distance
 {
-    const UNIT_METERS = 'meters';
-    const UNIT_KILOMETERS = 'kilometers';
-    const UNIT_MILES = 'miles';
-    const UNIT_FEET = 'feet';
-    const UNIT_NAUTICAL = 'nautical';
+    public const UNIT_METERS     = 'meters';
+    public const UNIT_KILOMETERS = 'kilometers';
+    public const UNIT_MILES      = 'miles';
+    public const UNIT_YARDS      = 'yards';
+    public const UNIT_FEET       = 'feet';
+    public const UNIT_INCHES     = 'inches';
+    public const UNIT_NAUTICAL   = 'nautical';
 
-    const DEFAULT_UNIT = self::UNIT_METERS;
+    public const DEFAULT_UNIT = self::UNIT_METERS;
 
-    private static $units = array(
+    /** @var array<float> */
+    private static $units = [
         self::UNIT_METERS => 1.0,
         self::UNIT_KILOMETERS => 1000.0,
         self::UNIT_MILES => 1609.344,
+        self::UNIT_YARDS => 0.9144,
         self::UNIT_FEET => 0.3048,
+        self::UNIT_INCHES => 0.0254,
         self::UNIT_NAUTICAL => 1852.0,
-    );
+    ];
 
-    private static $aliases = array(
+    /** @var array<string> */
+    private static $aliases = [
         'meter' => self::UNIT_METERS,
         'metre' => self::UNIT_METERS,
         'metres' => self::UNIT_METERS,
@@ -34,159 +46,126 @@ class Distance
         'km' => self::UNIT_KILOMETERS,
         'mile' => self::UNIT_MILES,
         'mi' => self::UNIT_MILES,
+        'yard' => self::UNIT_YARDS,
+        'yd' => self::UNIT_YARDS,
         'foot' => self::UNIT_FEET,
         'ft' => self::UNIT_FEET,
         'nm' => self::UNIT_NAUTICAL,
+        'inch' => self::UNIT_INCHES,
+        'in' => self::UNIT_INCHES,
+        '″' => self::UNIT_INCHES,
         'nauticalmile' => self::UNIT_NAUTICAL,
         'nauticalmiles' => self::UNIT_NAUTICAL,
-    );
+    ];
 
+    /** @var float */
     private $value;
 
-    /**
-     * @param  integer|float             $value
-     * @param  string                    $unit
-     * @throws \InvalidArgumentException
-     */
-    public function __construct($value, $unit = self::DEFAULT_UNIT)
+    public function __construct(float $value, string $unit = self::DEFAULT_UNIT)
     {
         if (!isset(self::$units[$unit])) {
-            throw new \InvalidArgumentException(sprintf('Invalid unit %s.', json_encode($unit)));
+            throw new Exception\InvalidArgumentException(
+                sprintf(
+                    'Invalid unit %s.',
+                    json_encode($unit)
+                )
+            );
         }
 
         $this->value = $value * self::$units[$unit];
     }
 
-    /**
-     * @return float
-     */
-    public function meters()
+    public static function fromString(string $input): Distance
     {
-        return $this->value / self::$units[self::UNIT_METERS];
-    }
+        if ((bool) preg_match('/(\-?\d+\.?\d*)\s*((kilo)?met[er]+s?|m|km|miles?|mi|yards?|yd|feet|foot|ft|in(ch(es)?)?|″|nautical(mile)?s?|nm)?$/u', $input, $match)) {
+            $unit = self::DEFAULT_UNIT;
 
-    /**
-     * @return float
-     */
-    public function m()
-    {
-        return $this->meters();
-    }
+            if (isset($match[2])) {
+                $unit = $match[2];
 
-    /**
-     * @return float
-     */
-    public function kilometers()
-    {
-        return $this->value / self::$units[self::UNIT_KILOMETERS];
-    }
-
-    /**
-     * @return float
-     */
-    public function km()
-    {
-        return $this->kilometers();
-    }
-
-    /**
-     * @return float
-     */
-    public function miles()
-    {
-        return $this->value / self::$units[self::UNIT_MILES];
-    }
-
-    /**
-     * @return float
-     */
-    public function mi()
-    {
-        return $this->miles();
-    }
-
-    /**
-     * @return float
-     */
-    public function feet()
-    {
-        return $this->value / self::$units[self::UNIT_FEET];
-    }
-
-    /**
-     * @return float
-     */
-    public function ft()
-    {
-        return $this->feet();
-    }
-
-    /**
-     * @return float
-     */
-    public function nautical()
-    {
-        return $this->value / self::$units[self::UNIT_NAUTICAL];
-    }
-
-    /**
-     * @return float
-     */
-    public function nm()
-    {
-        return $this->nautical();
-    }
-
-    /**
-     * Takes anything which looks like a distance and generates a Distance
-     * object from it.
-     *
-     * $input can be either a string, a float/integer or a Distance object.
-     *
-     * If $input is a string, it can be a number followed by a unit, eg. "100m".
-     *
-     * If $input is a float/integer, it uses the default unit (meters).
-     *
-     * If $input is a Distance object, it is just passed through.
-     *
-     * @param  mixed                     $input
-     * @return Distance
-     * @throws \InvalidArgumentException
-     */
-    public static function normalize($input)
-    {
-        if ($input instanceof self) {
-            return $input;
-        }
-
-        if (is_numeric($input)) {
-            return new self($input);
-        }
-
-        if (is_string($input) && preg_match('/(\-?\d+\.?\d*)\s*((kilo)?met[er]+s?|m|km|miles?|mi|feet|foot|ft|nautical(mile)?s?|nm)$/', $input, $match)) {
-            $unit = $match[2];
-
-            if (!isset(self::$units[$unit])) {
-                $unit = self::resolveUnitAlias($unit);
+                if (!isset(self::$units[$unit])) {
+                    $unit = self::$aliases[$unit];
+                }
             }
 
             return new self((float) $match[1], $unit);
         }
 
-        throw new \InvalidArgumentException(sprintf('Cannot normalize Distance from input %s.', json_encode($input)));
+        throw new Exception\InvalidArgumentException(
+            sprintf(
+                'Cannot create Distance from string %s.',
+                json_encode($input)
+            )
+        );
     }
 
-    /**
-     * @param  string                    $alias
-     * @return string
-     * @throws \InvalidArgumentException
-     */
-    public static function resolveUnitAlias($alias)
+    public function meters(): float
     {
-        if (isset(self::$aliases[$alias])) {
-            return self::$aliases[$alias];
-        }
+        return $this->value / self::$units[self::UNIT_METERS];
+    }
 
-        throw new \InvalidArgumentException(sprintf('Cannot resolve unit alias %s.', json_encode($alias)));
+    public function m(): float
+    {
+        return $this->meters();
+    }
+
+    public function kilometers(): float
+    {
+        return $this->value / self::$units[self::UNIT_KILOMETERS];
+    }
+
+    public function km(): float
+    {
+        return $this->kilometers();
+    }
+
+    public function miles(): float
+    {
+        return $this->value / self::$units[self::UNIT_MILES];
+    }
+
+    public function mi(): float
+    {
+        return $this->miles();
+    }
+
+    public function yards(): float
+    {
+        return $this->value / self::$units[self::UNIT_YARDS];
+    }
+
+    public function yd(): float
+    {
+        return $this->yards();
+    }
+
+    public function feet(): float
+    {
+        return $this->value / self::$units[self::UNIT_FEET];
+    }
+
+    public function ft(): float
+    {
+        return $this->feet();
+    }
+
+    public function inches(): float
+    {
+        return $this->value / self::$units[self::UNIT_INCHES];
+    }
+
+    public function in(): float
+    {
+        return $this->inches();
+    }
+
+    public function nautical(): float
+    {
+        return $this->value / self::$units[self::UNIT_NAUTICAL];
+    }
+
+    public function nm(): float
+    {
+        return $this->nautical();
     }
 }

@@ -1,77 +1,100 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Geokit;
 
-class Polygon implements \Countable, \ArrayAccess, \IteratorAggregate
+use Countable;
+use Generator;
+use IteratorAggregate;
+use function array_shift;
+use function count;
+use function end;
+use function reset;
+
+final class Polygon implements Countable, IteratorAggregate
 {
-    private $points;
+    /** @var array<Position> */
+    private $positions;
 
-    public function __construct(array $points = array())
+    private function __construct(Position ...$positions)
     {
-        $this->points = array_map(function ($latLng) {
-            return LatLng::normalize($latLng);
-        }, $points);
+        $this->positions = $positions;
     }
 
-    public function isClosed()
+    public static function fromPositions(Position ...$positions): Polygon
     {
-        if (0 === count($this->points)) {
-            return false;
-        }
-
-        $lastPoint  = end($this->points);
-        $firstPoint = reset($this->points);
-
-        return (
-            $lastPoint->getLatitude() === $firstPoint->getLatitude() &&
-            $lastPoint->getLongitude() === $firstPoint->getLongitude()
-        );
-    }
-
-    public function close()
-    {
-        if (0 === count($this->points)) {
-            return new self();
-        }
-
-        $points = $this->points;
-
-        if (!$this->isClosed()) {
-            $points[] = clone reset($this->points);
-        }
-
-        return new self($points);
+        return new self(...$positions);
     }
 
     /**
-     * @see https://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
-     * @param  LatLng  $latLng
-     * @return boolean
+     * @param iterable<iterable<float>> $iterable
      */
-    public function contains(LatLng $latLng)
+    public static function fromCoordinates(iterable $iterable): Polygon
     {
-        if (0 === count($this->points)) {
+        $positions = [];
+
+        foreach ($iterable as $position) {
+            $positions[] = Position::fromCoordinates($position);
+        }
+
+        return new self(...$positions);
+    }
+
+    public function close(): Polygon
+    {
+        if (count($this->positions) === 0) {
+            return new self();
+        }
+
+        $positions = $this->positions;
+
+        /** @var Position $lastPosition */
+        $lastPosition = end($positions);
+
+        /** @var Position $firstPosition */
+        $firstPosition = reset($positions);
+
+        $isClosed = (
+            $lastPosition->latitude() === $firstPosition->latitude() &&
+            $lastPosition->longitude() === $firstPosition->longitude()
+        );
+
+        if (!$isClosed) {
+            $positions[] = clone reset($this->positions);
+        }
+
+        return new self(...$positions);
+    }
+
+    /**
+     * @see https://wrf.ecse.rpi.edu/Research/Short_Notes/pnpoly.html
+     */
+    public function contains(Position $position): bool
+    {
+        if (count($this->positions) === 0) {
             return false;
         }
 
-        $points = $this->points;
+        $positions = $this->positions;
 
-        $x = $latLng->getLongitude();
-        $y = $latLng->getLatitude();
+        $x = $position->longitude();
+        $y = $position->latitude();
 
-        $p = end($points);
+        /** @var Position $p */
+        $p = end($positions);
 
-        $x0 = $p->getLongitude();
-        $y0 = $p->getLatitude();
+        $x0 = $p->longitude();
+        $y0 = $p->latitude();
 
         $inside = false;
 
-        foreach ($points as $point) {
-            $x1 = $point->getLongitude();
-            $y1 = $point->getLatitude();
+        /** @var Position $pos */
+        foreach ($positions as $pos) {
+            $x1 = $pos->longitude();
+            $y1 = $pos->latitude();
 
-            if (
-                (($y1 > $y) !== ($y0 > $y)) &&
+            if (($y1 > $y) !== ($y0 > $y) &&
                 ($x < ($x0 - $x1) * ($y - $y1) / ($y0 - $y1) + $x1)
             ) {
                 $inside = !$inside;
@@ -84,60 +107,34 @@ class Polygon implements \Countable, \ArrayAccess, \IteratorAggregate
         return $inside;
     }
 
-    public function toBounds()
+    public function toBoundingBox(): BoundingBox
     {
-        if (0 === count($this->points)) {
-            throw new \LogicException('Cannot create Bounds from empty Polygon.');
+        if (count($this->positions) === 0) {
+            throw new Exception\LogicException('Cannot create a BoundingBox from empty Polygon.');
         }
 
-        $points = $this->points;
-        $start = array_shift($points);
+        $positions = $this->positions;
 
-        $bounds = new Bounds($start, $start);
+        /** @var Position $start */
+        $start = array_shift($positions);
 
-        foreach ($points as $latLng) {
-            $bounds = $bounds->extend($latLng);
+        $bbox = BoundingBox::fromCornerPositions($start, $start);
+
+        /** @var Position $position */
+        foreach ($positions as $position) {
+            $bbox = $bbox->extend($position);
         }
 
-        return $bounds;
+        return $bbox;
     }
 
-    public function count()
+    public function count(): int
     {
-        return count($this->points);
+        return count($this->positions);
     }
 
-    public function offsetExists($offset)
+    public function getIterator(): Generator
     {
-        return array_key_exists($offset, $this->points);
-    }
-
-    public function offsetGet($offset)
-    {
-        if ($this->offsetExists($offset)) {
-            return $this->points[$offset];
-        }
-
-        throw new \InvalidArgumentException(
-            sprintf(
-                'Invalid offset %s.',
-                json_encode($offset)
-            )
-        );
-    }
-
-    public function offsetUnset($offset)
-    {
-        throw new \BadMethodCallException('Polygon is immutable.');
-    }
-
-    public function offsetSet($offset, $value)
-    {
-        throw new \BadMethodCallException('Polygon is immutable.');
-    }
-
-    public function getIterator()
-    {
-        return new \ArrayIterator($this->points);
+        yield from $this->positions;
     }
 }
