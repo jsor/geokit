@@ -41,10 +41,10 @@ final class Polygon implements Countable, IteratorAggregate
         return new self(...$positions);
     }
 
-    public function close(): Polygon
+    public function isClosed(): ?bool
     {
         if (count($this->positions) === 0) {
-            return new self();
+            return null;
         }
 
         $positions = $this->positions;
@@ -55,16 +55,25 @@ final class Polygon implements Countable, IteratorAggregate
         /** @var Position $firstPosition */
         $firstPosition = reset($positions);
 
-        $isClosed = (
+        return (
             $lastPosition->latitude() === $firstPosition->latitude() &&
             $lastPosition->longitude() === $firstPosition->longitude()
         );
+    }
 
-        if (!$isClosed) {
-            $positions[] = clone reset($this->positions);
+    public function close(): Polygon
+    {
+        if (count($this->positions) === 0) {
+            return new self();
         }
 
-        return new self(...$positions);
+        if (!$this->isClosed()) {
+            $positions = $this->positions;
+            $positions[] = clone reset($this->positions);
+            return new self(...$positions);
+        }
+
+        return $this;
     }
 
     /**
@@ -136,5 +145,25 @@ final class Polygon implements Countable, IteratorAggregate
     public function getIterator(): Generator
     {
         yield from $this->positions;
+    }
+
+    /**
+     * @return string
+     */
+    public function toWKT(): string
+    {
+        if (count($this->positions) === 0) {
+            return 'NULL';
+        }
+
+        $xyPairs = [];
+        foreach ($this->positions as $position) {
+            $xyPairs[] = $position->x() . ' ' . $position->y();
+        }
+        if (!$this->isClosed()) {
+            $position = $this->positions[0];
+            $xyPairs[] = $position->x() . ' ' . $position->y();
+        }
+        return 'POLYGON((' . implode(', ', $xyPairs) . '))';
     }
 }
