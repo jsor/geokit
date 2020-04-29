@@ -2,24 +2,11 @@ language: php
 
 sudo: false
 
-dist: trusty
-
 php:
-  - 5.4
-  - 5.5
-  - 5.6
-  - 7.0
   - 7.1
   - 7.2
-  - nightly
-
-matrix:
-  include:
-    - php: 5.3
-      dist: precise
-  allow_failures:
-    - php: nightly
-  fast_finish: true
+  - 7.3
+  - 7.4
 
 cache:
   directories:
@@ -30,9 +17,9 @@ install:
 
 script:
   - ./vendor/bin/phpunit -v --coverage-text --coverage-clover=./build/logs/clover.xml
+  - ./vendor/bin/phpcs
+  - ./vendor/bin/psalm
 
 after_success:
-  - if [ -f ./build/logs/clover.xml ]; then wget https://github.com/php-coveralls/php-coveralls/releases/download/v1.1.0/coveralls.phar; fi
-  - if [ -f ./build/logs/clover.xml ]; then php ./coveralls.phar -v; fi
   - if [ -f ./build/logs/clover.xml ]; then wget https://scrutinizer-ci.com/ocular.phar; fi
   - if [ -f ./build/logs/clover.xml ]; then php ocular.phar code-coverage:upload --format=php-clover ./build/logs/clover.xml; fi

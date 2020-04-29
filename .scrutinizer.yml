@@ -1,3 +1,9 @@
+build:
+    nodes:
+        analysis:
+            tests:
+                override:
+                    - php-scrutinizer-run
 checks:
     php: true
 
@@ -8,4 +14,4 @@ filter:
 tools:
     external_code_coverage:
         timeout: 600
-        runs: 5
+        runs: 3
