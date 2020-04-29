@@ -1,201 +1,259 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Geokit;
+
+use Generator;
+use function sprintf;
 
 class DistanceTest extends TestCase
 {
-    public function testShouldConvertToMeters()
+    public function testShouldConvertToMeters(): void
     {
         $distance = new Distance(1000);
-        $this->assertSame(1000.0, $distance->meters());
+        self::assertSame(1000.0, $distance->meters());
     }
 
-    public function testShouldConvertToMetersWithAlias()
+    public function testShouldConvertToMetersWithAlias(): void
     {
         $distance = new Distance(1000);
-        $this->assertSame(1000.0, $distance->m());
+        self::assertSame(1000.0, $distance->m());
     }
 
-    public function testShouldConvertToKilometers()
+    public function testShouldConvertToKilometers(): void
     {
         $distance = new Distance(1000);
-        $this->assertSame(1.0, $distance->kilometers());
+        self::assertSame(1.0, $distance->kilometers());
     }
 
-    public function testShouldConvertToKilometersWithAlias()
+    public function testShouldConvertToKilometersWithAlias(): void
     {
         $distance = new Distance(1000);
-        $this->assertSame(1.0, $distance->km());
+        self::assertSame(1.0, $distance->km());
     }
 
-    public function testShouldConvertToMiles()
+    public function testShouldConvertToMiles(): void
     {
         $distance = new Distance(1000);
-        $this->assertSame(0.62137119223733395, $distance->miles());
+        self::assertSame(0.62137119223733395, $distance->miles());
     }
 
-    public function testShouldConvertToMilesWithAlias()
+    public function testShouldConvertToMilesWithAlias(): void
     {
         $distance = new Distance(1000);
-        $this->assertSame(0.62137119223733395, $distance->mi());
+        self::assertSame(0.62137119223733395, $distance->mi());
     }
 
-    public function testShouldConvertToFeet()
+    public function testShouldConvertToYards(): void
     {
         $distance = new Distance(1000);
-        $this->assertSame(3280.8398950131232, $distance->feet());
+        self::assertSame(1093.6132983377079, $distance->yards());
     }
 
-    public function testShouldConvertToFeetWithAlias()
+    public function testShouldConvertToYardsWithAlias(): void
     {
         $distance = new Distance(1000);
-        $this->assertSame(3280.8398950131232, $distance->ft());
+        self::assertSame(1093.6132983377079, $distance->yd());
     }
 
-    public function testShouldConvertToNauticalMiles()
+    public function testShouldConvertToFeet(): void
     {
         $distance = new Distance(1000);
-        $this->assertSame(0.5399568034557235, $distance->nautical());
+        self::assertSame(3280.8398950131232, $distance->feet());
     }
 
-    public function testShouldConvertToNauticalWithAlias()
+    public function testShouldConvertToFeetWithAlias(): void
     {
         $distance = new Distance(1000);
-        $this->assertSame(0.5399568034557235, $distance->nm());
+        self::assertSame(3280.8398950131232, $distance->ft());
     }
 
-    public function testShouldThrowExceptionForInvalidUnit()
+    public function testShouldConvertToInches(): void
     {
-        $this->setExpectedException('\InvalidArgumentException');
+        $distance = new Distance(1000);
+        self::assertSame(39370.078740157485, $distance->inches());
+    }
+
+    public function testShouldConvertToInchesWithAlias(): void
+    {
+        $distance = new Distance(1000);
+        self::assertSame(39370.078740157485, $distance->in());
+    }
+
+    public function testShouldConvertToNauticalMiles(): void
+    {
+        $distance = new Distance(1000);
+        self::assertSame(0.5399568034557235, $distance->nautical());
+    }
+
+    public function testShouldConvertToNauticalWithAlias(): void
+    {
+        $distance = new Distance(1000);
+        self::assertSame(0.5399568034557235, $distance->nm());
+    }
+
+    public function testShouldThrowExceptionForInvalidUnit(): void
+    {
+        $this->expectException(Exception\InvalidArgumentException::class);
         new Distance(1000, 'foo');
     }
 
-    public function testNormalizeShouldAcceptDistanceArgument()
-    {
-        $distance1 = new Distance(1000);
-        $distance2 = Distance::normalize($distance1);
-
-        $this->assertEquals($distance1, $distance2);
-    }
-
-    public function testNormalizeShouldAcceptFloatArgument()
-    {
-        $distance = Distance::normalize(1000.0);
-
-        $this->assertEquals(1000, $distance->meters());
-    }
-
-    public function testNormalizeShouldAcceptNumericStringArgument()
-    {
-        $distance = Distance::normalize('1000.0');
-
-        $this->assertEquals(1000, $distance->meters());
-    }
-
     /**
-     * @dataProvider normalizeShouldAcceptStringArgumentDataProvider
+     * @dataProvider fromStringDataProvider
      */
-    public function testNormalizeShouldAcceptStringArgument($value, $unit)
+    public function testFromString(float $value, string $unit): void
     {
-        $this->assertEquals(1000, Distance::normalize(sprintf('%.15F%s', $value, $unit))->meters());
-        $this->assertEquals(1000, Distance::normalize(sprintf('%.15F %s', $value, $unit))->meters(), 'With space');
+        self::assertEquals(1000, Distance::fromString(sprintf('%.15F%s', $value, $unit))->meters());
+        self::assertEquals(1000, Distance::fromString(sprintf('%.15F %s', $value, $unit))->meters(), 'With space');
     }
 
-    public function normalizeShouldAcceptStringArgumentDataProvider()
+    public function fromStringDataProvider(): Generator
     {
-        return array(
-            array(
-                1000,
-                'm'
-            ),
-            array(
-                1000,
-                'meter'
-            ),
-            array(
-                1000,
-                'meters'
-            ),
-            array(
-                1000,
-                'metre'
-            ),
-            array(
-                1000,
-                'metres'
-            ),
-            array(
-                1,
-                'km'
-            ),
-            array(
-                1,
-                'kilometer'
-            ),
-            array(
-                1,
-                'kilometers'
-            ),
-            array(
-                1,
-                'kilometre'
-            ),
-            array(
-                1,
-                'kilometres'
-            ),
-            array(
-                0.62137119223733,
-                'mi'
-            ),
-            array(
-                0.62137119223733,
-                'mile'
-            ),
-            array(
-                0.62137119223733,
-                'miles'
-            ),
-            array(
-                3280.83989501312336,
-                'ft'
-            ),
-            array(
-                3280.83989501312336,
-                'foot'
-            ),
-            array(
-                3280.83989501312336,
-                'feet'
-            ),
-            array(
-                0.53995680345572,
-                'nm'
-            ),
-            array(
-                0.53995680345572,
-                'nautical'
-            ),
-            array(
-                0.53995680345572,
-                'nauticalmile'
-            ),
-            array(
-                0.53995680345572,
-                'nauticalmiles'
-            ),
-        );
+        yield [
+            1000,
+            '',
+        ];
+
+        yield [
+            1000,
+            'm',
+        ];
+
+        yield [
+            1000,
+            'meter',
+        ];
+
+        yield [
+            1000,
+            'meters',
+        ];
+
+        yield [
+            1000,
+            'metre',
+        ];
+
+        yield [
+            1000,
+            'metres',
+        ];
+
+        yield [
+            1,
+            'km',
+        ];
+
+        yield [
+            1,
+            'kilometer',
+        ];
+
+        yield [
+            1,
+            'kilometers',
+        ];
+
+        yield [
+            1,
+            'kilometre',
+        ];
+
+        yield [
+            1,
+            'kilometres',
+        ];
+
+        yield [
+            0.62137119223733,
+            'mi',
+        ];
+
+        yield [
+            0.62137119223733,
+            'mile',
+        ];
+
+        yield [
+            0.62137119223733,
+            'miles',
+        ];
+
+        yield [
+            1093.6132983377079,
+            'yd',
+        ];
+
+        yield [
+            1093.6132983377079,
+            'yard',
+        ];
+
+        yield [
+            1093.6132983377079,
+            'yards',
+        ];
+
+        yield [
+            3280.83989501312336,
+            'ft',
+        ];
+
+        yield [
+            3280.83989501312336,
+            'foot',
+        ];
+
+        yield [
+            3280.83989501312336,
+            'feet',
+        ];
+
+        yield [
+            39370.078740157485,
+            '″',
+        ];
+
+        yield [
+            39370.0787401574856,
+            'in',
+        ];
+
+        yield [
+            39370.0787401574856,
+            'inch',
+        ];
+
+        yield [
+            39370.078740157485,
+            'inches',
+        ];
+
+        yield [
+            0.53995680345572,
+            'nm',
+        ];
+
+        yield [
+            0.53995680345572,
+            'nautical',
+        ];
+
+        yield [
+            0.53995680345572,
+            'nauticalmile',
+        ];
+
+        yield [
+            0.53995680345572,
+            'nauticalmiles',
+        ];
     }
 
-    public function testNormalizeShouldThrowExceptionForInvalidInput()
+    public function testFromStringThrowsExceptionForInvalidInput(): void
     {
-        $this->setExpectedException('\InvalidArgumentException');
-        Distance::normalize('1000foo');
-    }
-
-    public function testResolveUnitAliasShouldThrowExceptionForInvalidAlias()
-    {
-        $this->setExpectedException('\InvalidArgumentException');
-        Distance::resolveUnitAlias('foo');
+        $this->expectException(Exception\InvalidArgumentException::class);
+        Distance::fromString('1000foo');
     }
 }
