@@ -89,11 +89,8 @@ final class Position implements JsonSerializable
         return [$this->x, $this->y];
     }
 
-    /**
-     * @return string
-     */
     public function toWKT(): string
     {
-        return "POINT({$this->x} {$this->y})";
+        return 'POINT(' . $this->x . ' ' . $this->y . ')';
     }
 }

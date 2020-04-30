@@ -55,10 +55,9 @@ final class Polygon implements Countable, IteratorAggregate
         /** @var Position $firstPosition */
         $firstPosition = reset($positions);
 
-        return (
+        return
             $lastPosition->latitude() === $firstPosition->latitude() &&
-            $lastPosition->longitude() === $firstPosition->longitude()
-        );
+            $lastPosition->longitude() === $firstPosition->longitude();
     }
 
     public function close(): Polygon
@@ -68,7 +67,7 @@ final class Polygon implements Countable, IteratorAggregate
         }
 
         if ($this->isClosed()===false) {
-            $positions = $this->positions;
+            $positions   = $this->positions;
             $positions[] = clone reset($this->positions);
             return new self(...$positions);
         }
@@ -147,9 +146,6 @@ final class Polygon implements Countable, IteratorAggregate
         yield from $this->positions;
     }
 
-    /**
-     * @return string
-     */
     public function toWKT(): string
     {
         if (count($this->positions) === 0) {
@@ -161,9 +157,15 @@ final class Polygon implements Countable, IteratorAggregate
             $xyPairs[] = $position->x() . ' ' . $position->y();
         }
         if ($this->isClosed()===false) {
-            $position = $this->positions[0];
+            $position  = $this->positions[0];
             $xyPairs[] = $position->x() . ' ' . $position->y();
         }
-        return 'POLYGON((' . implode(', ', $xyPairs) . '))';
+
+        if (count($xyPairs) >= 3) {
+            $outerRing = implode(', ', $xyPairs);
+            return "POLYGON(($outerRing))";
+        }
+
+        return 'NULL';
     }
 }
