@@ -10,8 +10,8 @@ use IteratorAggregate;
 use function array_shift;
 use function count;
 use function end;
-use function reset;
 use function implode;
+use function reset;
 
 final class Polygon implements Countable, IteratorAggregate
 {
@@ -162,7 +162,9 @@ final class Polygon implements Countable, IteratorAggregate
             $xyPairs[] = $position->x() . ' ' . $position->y();
         }
 
-        if (count($xyPairs) >= 3) return 'POLYGON((' . implode(', ', $xyPairs) . '))';
+        if (count($xyPairs) >= 3) {
+            return 'POLYGON((' . implode(', ', $xyPairs) . '))';
+        }
 
         return 'NULL';
     }
