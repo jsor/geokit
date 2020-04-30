@@ -11,6 +11,7 @@ use function array_shift;
 use function count;
 use function end;
 use function reset;
+use function implode;
 
 final class Polygon implements Countable, IteratorAggregate
 {
@@ -55,9 +56,8 @@ final class Polygon implements Countable, IteratorAggregate
         /** @var Position $firstPosition */
         $firstPosition = reset($positions);
 
-        return
-            $lastPosition->latitude() === $firstPosition->latitude() &&
-            $lastPosition->longitude() === $firstPosition->longitude();
+        return $lastPosition->latitude() === $firstPosition->latitude()
+            && $lastPosition->longitude() === $firstPosition->longitude();
     }
 
     public function close(): Polygon
@@ -69,6 +69,7 @@ final class Polygon implements Countable, IteratorAggregate
         if ($this->isClosed()===false) {
             $positions   = $this->positions;
             $positions[] = clone reset($this->positions);
+
             return new self(...$positions);
         }
 
@@ -161,10 +162,7 @@ final class Polygon implements Countable, IteratorAggregate
             $xyPairs[] = $position->x() . ' ' . $position->y();
         }
 
-        if (count($xyPairs) >= 3) {
-            $outerRing = implode(', ', $xyPairs);
-            return "POLYGON(($outerRing))";
-        }
+        if (count($xyPairs) >= 3) return 'POLYGON((' . implode(', ', $xyPairs) . '))';
 
         return 'NULL';
     }
