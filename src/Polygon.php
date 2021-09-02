@@ -82,7 +82,6 @@ final class Polygon implements Countable, IteratorAggregate, JsonSerializable
         $x = $position->longitude();
         $y = $position->latitude();
 
-        /** @var Position $p */
         $p = end($positions);
 
         $x0 = $p->longitude();
@@ -90,7 +89,6 @@ final class Polygon implements Countable, IteratorAggregate, JsonSerializable
 
         $inside = false;
 
-        /** @var Position $pos */
         foreach ($positions as $pos) {
             $x1 = $pos->longitude();
             $y1 = $pos->latitude();
@@ -121,7 +119,6 @@ final class Polygon implements Countable, IteratorAggregate, JsonSerializable
 
         $bbox = BoundingBox::fromCornerPositions($start, $start);
 
-        /** @var Position $position */
         foreach ($positions as $position) {
             $bbox = $bbox->extend($position);
         }
