@@ -8,6 +8,7 @@ use ArrayIterator;
 use Generator;
 use function count;
 use function iterator_to_array;
+use function json_encode;
 
 class PolygonTest extends TestCase
 {
@@ -276,5 +277,27 @@ class PolygonTest extends TestCase
     public function testIterable(): void
     {
         self::assertIsIterable(Polygon::fromPositions());
+    }
+
+    public function testToCoordinates(): void
+    {
+        $polygon = Polygon::fromPositions(
+            Position::fromXY(1, 2)
+        );
+
+        $coordinates = $polygon->toCoordinates();
+
+        foreach ($coordinates as $positionCoordinates) {
+            self::assertSame([1.0, 2.0], $positionCoordinates);
+        }
+    }
+
+    public function testJsonSerialize(): void
+    {
+        $polygon = Polygon::fromPositions(
+            Position::fromXY(1.1, 2)
+        );
+
+        self::assertSame('[[1.1,2]]', json_encode($polygon));
     }
 }

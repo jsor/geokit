@@ -7,12 +7,13 @@ namespace Geokit;
 use Countable;
 use Generator;
 use IteratorAggregate;
+use JsonSerializable;
 use function array_shift;
 use function count;
 use function end;
 use function reset;
 
-final class Polygon implements Countable, IteratorAggregate
+final class Polygon implements Countable, IteratorAggregate, JsonSerializable
 {
     /** @var array<Position> */
     private $positions;
@@ -136,5 +137,29 @@ final class Polygon implements Countable, IteratorAggregate
     public function getIterator(): Generator
     {
         yield from $this->positions;
+    }
+
+    /**
+     * @return iterable<iterable<float>>
+     */
+    public function toCoordinates(): iterable
+    {
+        foreach ($this->positions as $position) {
+            yield $position->toCoordinates();
+        }
+    }
+
+    /**
+     * @return array<array<float>>
+     */
+    public function jsonSerialize(): array
+    {
+        $coordinates = [];
+
+        foreach ($this->positions as $position) {
+            $coordinates[] = $position->jsonSerialize();
+        }
+
+        return $coordinates;
     }
 }
