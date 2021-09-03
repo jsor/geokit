@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  tests:
+    name: Tests (PHP ${{ matrix.php }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - php: '7.4'
+          - php: '8.0'
+            code-coverage: 'yes'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: pcov
+
+      - name: Install dependencies
+        run: composer update --no-interaction --no-progress --prefer-dist
+
+      - name: Run tests
+        if: matrix.code-coverage != 'yes'
+        run: vendor/bin/phpunit --coverage-text
+
+      - name: Run tests with code coverage
+        if: matrix.code-coverage == 'yes'
+        run: vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+
+      - name: Upload coverage results to Coveralls
+        if: matrix.code-coverage == 'yes'
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          composer global require php-coveralls/php-coveralls
+          php-coveralls -v
