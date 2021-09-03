@@ -9,17 +9,17 @@ use function preg_match;
 use function sprintf;
 
 /**
- * Inspired by GeoPy's distance class (https://github.com/geopy/geopy)
+ * Inspired by GeoPy's distance class (https://github.com/geopy/geopy).
  */
 final class Distance
 {
-    public const UNIT_METERS     = 'meters';
+    public const UNIT_METERS = 'meters';
     public const UNIT_KILOMETERS = 'kilometers';
-    public const UNIT_MILES      = 'miles';
-    public const UNIT_YARDS      = 'yards';
-    public const UNIT_FEET       = 'feet';
-    public const UNIT_INCHES     = 'inches';
-    public const UNIT_NAUTICAL   = 'nautical';
+    public const UNIT_MILES = 'miles';
+    public const UNIT_YARDS = 'yards';
+    public const UNIT_FEET = 'feet';
+    public const UNIT_INCHES = 'inches';
+    public const UNIT_NAUTICAL = 'nautical';
 
     public const DEFAULT_UNIT = self::UNIT_METERS;
 
@@ -75,7 +75,7 @@ final class Distance
         $this->value = $value * self::$units[$unit];
     }
 
-    public static function fromString(string $input): Distance
+    public static function fromString(string $input): self
     {
         if ((bool) preg_match('/(\-?\d+\.?\d*)\s*((kilo)?met[er]+s?|m|km|miles?|mi|yards?|yd|feet|foot|ft|in(ch(es)?)?|″|nautical(mile)?s?|nm)?$/u', $input, $match)) {
             $unit = self::DEFAULT_UNIT;

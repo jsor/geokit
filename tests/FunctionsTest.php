@@ -183,7 +183,7 @@ class FunctionsTest extends TestCase
 
     public function testCircle(): void
     {
-        $center   = Position::fromXY(-75.343, 39.984);
+        $center = Position::fromXY(-75.343, 39.984);
         $distance = Distance::fromString('50km');
 
         $circle = circle(

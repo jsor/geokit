@@ -60,7 +60,7 @@ function distanceVincenty(Position $from, Position $to): Distance
     $b = Earth::SEMI_MINOR_AXIS;
     $f = Earth::FLATTENING;
 
-    $L  = deg2rad($lng2 - $lng1);
+    $L = deg2rad($lng2 - $lng1);
     $U1 = atan((1 - $f) * tan(deg2rad($lat1)));
     $U2 = atan((1 - $f) * tan(deg2rad($lat2)));
 
@@ -69,34 +69,34 @@ function distanceVincenty(Position $from, Position $to): Distance
     $sinU2 = sin($U2);
     $cosU2 = cos($U2);
 
-    $lambda    = $L;
+    $lambda = $L;
     $iterLimit = 100;
 
     do {
         $sinLambda = sin($lambda);
         $cosLambda = cos($lambda);
-        $sinSigma  = sqrt(($cosU2 * $sinLambda) * ($cosU2 * $sinLambda) +
+        $sinSigma = sqrt(($cosU2 * $sinLambda) * ($cosU2 * $sinLambda) +
             ($cosU1 * $sinU2 - $sinU1 * $cosU2 * $cosLambda) *
             ($cosU1 * $sinU2 - $sinU1 * $cosU2 * $cosLambda));
 
-        if ($sinSigma === 0.0) {
+        if (0.0 === $sinSigma) {
             return new Distance(0); // co-incident points
         }
 
-        $cosSigma   = $sinU1 * $sinU2 + $cosU1 * $cosU2 * $cosLambda;
-        $sigma      = atan2($sinSigma, $cosSigma);
-        $sinAlpha   = $cosU1 * $cosU2 * $sinLambda / $sinSigma;
+        $cosSigma = $sinU1 * $sinU2 + $cosU1 * $cosU2 * $cosLambda;
+        $sigma = atan2($sinSigma, $cosSigma);
+        $sinAlpha = $cosU1 * $cosU2 * $sinLambda / $sinSigma;
         $cosSqAlpha = (float) 1 - $sinAlpha * $sinAlpha;
 
-        if ($cosSqAlpha !== 0.0) {
+        if (0.0 !== $cosSqAlpha) {
             $cos2SigmaM = $cosSigma - 2 * $sinU1 * $sinU2 / $cosSqAlpha;
         } else {
             $cos2SigmaM = 0.0; // Equatorial line
         }
 
-        $C       = $f / 16 * $cosSqAlpha * (4 + $f * (4 - 3 * $cosSqAlpha));
+        $C = $f / 16 * $cosSqAlpha * (4 + $f * (4 - 3 * $cosSqAlpha));
         $lambdaP = $lambda;
-        $lambda  = $L + (1 - $C) * $f * $sinAlpha *
+        $lambda = $L + (1 - $C) * $f * $sinAlpha *
             ($sigma + $C * $sinSigma * ($cos2SigmaM + $C * $cosSigma * (-1 + 2 * $cos2SigmaM * $cos2SigmaM)));
     } while (--$iterLimit > 0 && abs($lambda - $lambdaP) > 1e-12);
 
@@ -104,12 +104,12 @@ function distanceVincenty(Position $from, Position $to): Distance
         throw new Exception\RuntimeException('Vincenty formula failed to converge.');
     }
 
-    $uSq        = $cosSqAlpha * ($a * $a - $b * $b) / ($b * $b);
-    $A          = 1 + $uSq / 16384 * (4096 + $uSq * (-768 + $uSq * (320 - 175 * $uSq)));
-    $B          = $uSq / 1024 * (256 + $uSq * (-128 + $uSq * (74 - 47 * $uSq)));
+    $uSq = $cosSqAlpha * ($a * $a - $b * $b) / ($b * $b);
+    $A = 1 + $uSq / 16384 * (4096 + $uSq * (-768 + $uSq * (320 - 175 * $uSq)));
+    $B = $uSq / 1024 * (256 + $uSq * (-128 + $uSq * (74 - 47 * $uSq)));
     $deltaSigma = $B * $sinSigma * ($cos2SigmaM + $B / 4 * ($cosSigma * (-1 + 2 * $cos2SigmaM * $cos2SigmaM) -
                 $B / 6 * $cos2SigmaM * (-3 + 4 * $sinSigma * $sinSigma) * (-3 + 4 * $cos2SigmaM * $cos2SigmaM)));
-    $s          = $b * $A * ($sigma - $deltaSigma);
+    $s = $b * $A * ($sigma - $deltaSigma);
 
     return new Distance($s);
 }
@@ -179,7 +179,7 @@ function endpoint(Position $start, float $heading, Distance $distance): Position
     $lng = deg2rad($start->longitude());
 
     $angularDistance = $distance->meters() / Earth::RADIUS;
-    $heading         = deg2rad($heading);
+    $heading = deg2rad($heading);
 
     $lat2 = asin(
         sin($lat) * cos($angularDistance) +
@@ -197,7 +197,7 @@ function circle(Position $center, Distance $radius, int $steps): Polygon
 {
     $points = [];
 
-    for ($i = 0; $i <= $steps; $i++) {
+    for ($i = 0; $i <= $steps; ++$i) {
         $points[] = endpoint(
             $center,
             $i * (-360 / $steps),

@@ -130,12 +130,12 @@ class BoundingBoxTest extends TestCase
 
     public function testGetCenterShouldReturnAPositionObject(): void
     {
-        $bbox   = BoundingBox::fromCornerPositions(Position::fromXY(1.1234, 2.5678), Position::fromXY(3.1234, 4.5678));
+        $bbox = BoundingBox::fromCornerPositions(Position::fromXY(1.1234, 2.5678), Position::fromXY(3.1234, 4.5678));
         $center = Position::fromXY(2.1234, 3.5678);
 
         self::assertEquals($center, $bbox->center());
 
-        $bbox   = BoundingBox::fromCornerPositions(Position::fromXY(179, -45), Position::fromXY(-179, 45));
+        $bbox = BoundingBox::fromCornerPositions(Position::fromXY(179, -45), Position::fromXY(-179, 45));
         $center = Position::fromXY(180, 0);
 
         self::assertEquals($center, $bbox->center());

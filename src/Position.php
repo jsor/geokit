@@ -22,7 +22,7 @@ final class Position implements JsonSerializable
         $this->y = $y;
     }
 
-    public static function fromXY(float $x, float $y): Position
+    public static function fromXY(float $x, float $y): self
     {
         return new self($x, $y);
     }
@@ -30,7 +30,7 @@ final class Position implements JsonSerializable
     /**
      * @param iterable<float> $iterable
      */
-    public static function fromCoordinates(iterable $iterable): Position
+    public static function fromCoordinates(iterable $iterable): self
     {
         $array = [];
 

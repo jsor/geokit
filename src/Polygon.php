@@ -23,7 +23,7 @@ final class Polygon implements Countable, IteratorAggregate, JsonSerializable
         $this->positions = $positions;
     }
 
-    public static function fromPositions(Position ...$positions): Polygon
+    public static function fromPositions(Position ...$positions): self
     {
         return new self(...$positions);
     }
@@ -31,7 +31,7 @@ final class Polygon implements Countable, IteratorAggregate, JsonSerializable
     /**
      * @param iterable<iterable<float>> $iterable
      */
-    public static function fromCoordinates(iterable $iterable): Polygon
+    public static function fromCoordinates(iterable $iterable): self
     {
         $positions = [];
 
@@ -42,9 +42,9 @@ final class Polygon implements Countable, IteratorAggregate, JsonSerializable
         return new self(...$positions);
     }
 
-    public function close(): Polygon
+    public function close(): self
     {
-        if (count($this->positions) === 0) {
+        if (0 === count($this->positions)) {
             return new self();
         }
 
@@ -73,7 +73,7 @@ final class Polygon implements Countable, IteratorAggregate, JsonSerializable
      */
     public function contains(Position $position): bool
     {
-        if (count($this->positions) === 0) {
+        if (0 === count($this->positions)) {
             return false;
         }
 
@@ -108,7 +108,7 @@ final class Polygon implements Countable, IteratorAggregate, JsonSerializable
 
     public function toBoundingBox(): BoundingBox
     {
-        if (count($this->positions) === 0) {
+        if (0 === count($this->positions)) {
             throw new Exception\LogicException('Cannot create a BoundingBox from empty Polygon.');
         }
 

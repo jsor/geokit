@@ -38,14 +38,14 @@ final class BoundingBox implements JsonSerializable
     public static function fromCornerPositions(
         Position $southWest,
         Position $northEast
-    ): BoundingBox {
+    ): self {
         return new self($southWest, $northEast);
     }
 
     /**
      * @param iterable<float> $iterable
      */
-    public static function fromCoordinates(iterable $iterable): BoundingBox
+    public static function fromCoordinates(iterable $iterable): self
     {
         $array = [];
 
@@ -122,7 +122,7 @@ final class BoundingBox implements JsonSerializable
                 $this->southWest->longitude(),
                 $this->northEast->longitude()
             );
-            $lng  = $this->southWest->longitude() + $span / 2;
+            $lng = $this->southWest->longitude() + $span / 2;
         } else {
             $lng = ($this->southWest->longitude() + $this->northEast->longitude()) / 2;
         }
@@ -161,7 +161,7 @@ final class BoundingBox implements JsonSerializable
         return $this->containsLng($position->longitude());
     }
 
-    public function extend(Position $position): BoundingBox
+    public function extend(Position $position): self
     {
         $newSouth = min($this->southWest->latitude(), $position->latitude());
         $newNorth = max($this->northEast->latitude(), $position->latitude());
@@ -185,19 +185,19 @@ final class BoundingBox implements JsonSerializable
         return new self(Position::fromXY($newWest, $newSouth), Position::fromXY($newEast, $newNorth));
     }
 
-    public function union(BoundingBox $bbox): BoundingBox
+    public function union(self $bbox): self
     {
         $newBbox = $this->extend($bbox->southWest());
 
         return $newBbox->extend($bbox->northEast());
     }
 
-    public function expand(Distance $distance): BoundingBox
+    public function expand(Distance $distance): self
     {
         return self::transformBoundingBox($this, $distance->meters());
     }
 
-    public function shrink(Distance $distance): BoundingBox
+    public function shrink(Distance $distance): self
     {
         return self::transformBoundingBox($this, -$distance->meters());
     }
@@ -216,7 +216,7 @@ final class BoundingBox implements JsonSerializable
     /**
      * @see http://janmatuschek.de/LatitudeLongitudeBoundingCoordinates
      */
-    private static function transformBoundingBox(BoundingBox $bbox, float $distanceInMeters): BoundingBox
+    private static function transformBoundingBox(self $bbox, float $distanceInMeters): self
     {
         $latSW = deg2rad($bbox->southWest()->latitude());
         $lngSW = deg2rad($bbox->southWest()->longitude());
