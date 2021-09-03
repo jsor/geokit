@@ -96,7 +96,15 @@ class DistanceTest extends TestCase
     public function testShouldThrowExceptionForInvalidUnit(): void
     {
         $this->expectException(Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid unit "foo".');
         new Distance(1000, 'foo');
+    }
+
+    public function testShouldThrowExceptionForNegativeValue(): void
+    {
+        $this->expectException(Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The distance must be a positive number, got "-1000".');
+        new Distance(-1000);
     }
 
     /**
@@ -251,9 +259,17 @@ class DistanceTest extends TestCase
         ];
     }
 
-    public function testFromStringThrowsExceptionForInvalidInput(): void
+    public function testFromStringThrowsExceptionForInvalidUnit(): void
     {
         $this->expectException(Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Cannot create Distance from string "1000foo".');
         Distance::fromString('1000foo');
+    }
+
+    public function testFromStringThrowsExceptionForNegativeValue(): void
+    {
+        $this->expectException(Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The distance must be a positive number, got "-1000.5".');
+        Distance::fromString('-1000.5m');
     }
 }

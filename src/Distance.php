@@ -72,6 +72,15 @@ final class Distance
             );
         }
 
+        if ($value < 0) {
+            throw new Exception\InvalidArgumentException(
+                sprintf(
+                    'The distance must be a positive number, got "%s".',
+                    $value
+                )
+            );
+        }
+
         $this->value = $value * self::$units[$unit];
     }
 
