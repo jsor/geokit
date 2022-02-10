@@ -234,5 +234,5 @@ Other useful functions are:
 License
 -------
 
-Copyright (c) 2011-2021 Jan Sorgalla.
+Copyright (c) 2011-2022 Jan Sorgalla.
 Released under the [MIT License](LICENSE).
