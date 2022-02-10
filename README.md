@@ -21,7 +21,6 @@ Geokit is a PHP toolkit to solve geo-related tasks like:
         * [Transformations](#transformations)
         * [Other calculations](#other-calculations)
 * [License](#license)
-* [Credits](#credits)
 
 Installation
 ------------
