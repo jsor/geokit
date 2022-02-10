@@ -91,10 +91,12 @@ normalized.
 ```php
 use Geokit\Position;
 
-$position = Position::fromXY(181, 91);
+$position = new Position(181, 91);
 
-$x = $position->x(); // Returns -179.0, normalized
-$y = $position->y(); // Returns 89.0, normalized
+$x = $position->x(); // Returns 181.0
+$y = $position->y(); // Returns 91.0
+$longitude = $position->longitude(); // Returns -179.0, normalized
+$latitude = $position->latitude(); // Returns 89.0, normalized
 ```
 
 ### BoundingBox
