@@ -21,6 +21,16 @@ class PositionTest extends TestCase
         self::assertSame(2.0, $position->latitude());
     }
 
+    public function testConstructorWithNormalization(): void
+    {
+        $position = Position::fromXY(181, 91);
+
+        self::assertSame(181.0, $position->x());
+        self::assertSame(91.0, $position->y());
+        self::assertSame(-179.0, $position->longitude());
+        self::assertSame(89.0, $position->latitude());
+    }
+
     public function testConstructorWithInts(): void
     {
         $position = Position::fromXY(1, 2);
