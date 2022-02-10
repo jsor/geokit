@@ -205,11 +205,11 @@ final class BoundingBox implements JsonSerializable
     public function toPolygon(): Polygon
     {
         return Polygon::fromPositions(
-            Position::fromXY($this->southWest->longitude(), $this->southWest->latitude()),
-            Position::fromXY($this->northEast->longitude(), $this->southWest->latitude()),
-            Position::fromXY($this->northEast->longitude(), $this->northEast->latitude()),
-            Position::fromXY($this->southWest->longitude(), $this->northEast->latitude()),
-            Position::fromXY($this->southWest->longitude(), $this->southWest->latitude())
+            Position::fromXY($this->southWest->x(), $this->southWest->y()),
+            Position::fromXY($this->northEast->x(), $this->southWest->y()),
+            Position::fromXY($this->northEast->x(), $this->northEast->y()),
+            Position::fromXY($this->southWest->x(), $this->northEast->y()),
+            Position::fromXY($this->southWest->x(), $this->southWest->y())
         );
     }
 
