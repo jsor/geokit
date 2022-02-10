@@ -50,10 +50,7 @@ final class Polygon implements Countable, IteratorAggregate, JsonSerializable
 
         $positions = $this->positions;
 
-        /** @var Position $lastPosition */
         $lastPosition = end($positions);
-
-        /** @var Position $firstPosition */
         $firstPosition = reset($positions);
 
         $isClosed = (
@@ -114,7 +111,6 @@ final class Polygon implements Countable, IteratorAggregate, JsonSerializable
 
         $positions = $this->positions;
 
-        /** @var Position $start */
         $start = array_shift($positions);
 
         $bbox = BoundingBox::fromCornerPositions($start, $start);
